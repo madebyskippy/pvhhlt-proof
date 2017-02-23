@@ -20,7 +20,7 @@ public class PP_Butt : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		UpdatePosition ();
+//		UpdatePosition ();
 		UpdateBodies ();
 	}
 
@@ -35,6 +35,7 @@ public class PP_Butt : MonoBehaviour {
 			GameObject t_player = Instantiate (myPlayerPrefab, mySpawnPoint + Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
 			string t_control = (i + 3 * myTeamNumber + 1).ToString ();
 			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, myColors [i + 3 * myTeamNumber], t_control);
+			t_player.GetComponent<SpringJoint2D> ().connectedBody = this.GetComponent<Rigidbody2D> ();
 			myPlayers.Add (t_player);
 
 			GameObject t_body = Instantiate (myBodyPrefab, mySpawnPoint, Quaternion.identity) as GameObject;

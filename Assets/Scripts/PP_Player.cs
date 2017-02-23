@@ -39,8 +39,11 @@ public class PP_Player : MonoBehaviour {
 		//		Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
 
 		//set the speed of the player
-		myRigidbody2D.velocity = myMoveAxis * mySpeed;
 
+//		myRigidbody2D.AddForce (myMoveAxis * mySpeed);
+
+		myRigidbody2D.velocity = myMoveAxis * mySpeed;
+	
 		float t_moveAxisReduce = Time.deltaTime * moveGravity;
 		if (myMoveAxis.magnitude < t_moveAxisReduce)
 			myMoveAxis = Vector2.zero;
