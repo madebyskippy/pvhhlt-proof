@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PP_Player : MonoBehaviour {
 	
-	[SerializeField] int myTeamNumber = 1;
-	[SerializeField] string myControl = "1";
+	private int myTeamNumber = 1;
+	private string myControl = "1";
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 
@@ -61,5 +61,9 @@ public class PP_Player : MonoBehaviour {
 
 	public void SetMyControl (string g_myControl) {
 		myControl = g_myControl;
+	}
+
+	public int GetMyTeamNumber () {
+		return myTeamNumber;
 	}
 }

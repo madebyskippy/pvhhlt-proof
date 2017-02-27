@@ -70,5 +70,8 @@ public class PP_Butt : MonoBehaviour {
 		}
 	}
 
+	public int GetMyTeamNumber () {
+		return myTeamNumber;
+	}
 
 }
