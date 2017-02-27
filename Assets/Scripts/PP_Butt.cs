@@ -11,6 +11,8 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] float mySpawnRadius = 1;
 	[SerializeField] float mySpeed = 5;
 
+	[SerializeField] SpriteRenderer mySpriteRenderer;
+
 	private int myTeamNumber;
 	private Color[] myColors;
 	// Use this for initialization
@@ -24,10 +26,12 @@ public class PP_Butt : MonoBehaviour {
 		UpdateBodies ();
 	}
 
-	public void Init (int g_teamNumber, Color[] g_colors, Vector2 g_spawnPoint) {
+	public void Init (int g_teamNumber, Color[] g_colors, Vector2 g_spawnPoint, Color[] g_midColors) {
 		myTeamNumber = g_teamNumber;
 		myColors = g_colors;
 		mySpawnPoint = g_spawnPoint;
+
+		mySpriteRenderer.color = g_midColors [g_teamNumber];
 
 		this.transform.position = mySpawnPoint;
 
