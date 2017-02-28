@@ -11,7 +11,9 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] float mySpawnRadius = 1;
 	[SerializeField] float mySpeed = 5;
 
+	[SerializeField] Transform mySpriteTransform;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
+	[SerializeField] SpriteRenderer mySpriteRendererBack;
 
 	private int myTeamNumber;
 	private Color[] myColors;
@@ -27,6 +29,7 @@ public class PP_Butt : MonoBehaviour {
 	void Update () {
 //		UpdatePosition ();
 		UpdateBodies ();
+		UpdateBeans ();
 	}
 
 	public void Init (int g_teamNumber, Color[] g_colors, Vector2 g_spawnPoint, Color[] g_midColors) {
@@ -35,6 +38,7 @@ public class PP_Butt : MonoBehaviour {
 		mySpawnPoint = g_spawnPoint;
 
 		mySpriteRenderer.color = g_midColors [g_teamNumber];
+		mySpriteRendererBack.color = Color.gray;
 
 		this.transform.position = mySpawnPoint;
 
@@ -77,6 +81,12 @@ public class PP_Butt : MonoBehaviour {
 		}
 	}
 
+	private void UpdateBeans () {
+		
+		mySpriteTransform.localScale = (float)myBeansCurrent / myBeansMax * Vector3.one;
+//		Debug.Log (myBeansCurrent + ":" + mySpriteTransform.localScale);
+	}
+
 	public int GetMyTeamNumber () {
 		return myTeamNumber;
 	}
@@ -84,7 +94,7 @@ public class PP_Butt : MonoBehaviour {
 	void OnCollisionEnter2D (Collision2D g_collision2D) {
 //		Debug.Log ("Butt-OnCollisionEnter");
 		if (g_collision2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
-			Destroy (g_collision2D.gameObject);
+			g_collision2D.gameObject.GetComponent<PP_Bean> ().Kill ();
 			myBeansCurrent++;
 		}
 	}

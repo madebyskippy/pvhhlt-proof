@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PP_Grape : MonoBehaviour {
+public class PP_Bean : MonoBehaviour {
 
 	[SerializeField] GameObject myEffect;
-	private PP_GrapeManager myManager;
+	private PP_BeanManager myManager;
 
 
-	public void SetMyManager (PP_GrapeManager g_manager) {
+	public void SetMyManager (PP_BeanManager g_manager) {
 		myManager = g_manager;
 	}
 
@@ -16,7 +16,7 @@ public class PP_Grape : MonoBehaviour {
 		if (myEffect != null) {
 			Instantiate (myEffect, this.transform.position, Quaternion.identity);
 		}
-		myManager.StartSpawnTimer ();
+		myManager.RemoveBean (this.gameObject);
 		Destroy (this.gameObject);
 	}
 }
