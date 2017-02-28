@@ -33,11 +33,7 @@ public class PP_MessageBox : MonoBehaviour {
 	private float[] myScores = { 0, 0 };
 	// Use this for initialization
 	void Start () {
-		for (int i = 0; i < 2; i++) {
-			GameObject t_butt = Instantiate (myButtPrefab, myButtsSpawnPoint [0], Quaternion.identity) as GameObject;
-			t_butt.GetComponent<PP_Butt> ().Init (i, myButtColors, myButtsSpawnPoint [i], myMiddleColors);
-			myButts.Add (t_butt);
-		}
+		
 	}
 	
 	// Update is called once per frame
@@ -45,8 +41,15 @@ public class PP_MessageBox : MonoBehaviour {
 		
 	}
 
-	public void AddScore (int g_team, float g_score) {
-		myScores [g_team] += g_score;
-		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
+	public void InitPlay () {
+		for (int i = 0; i < 2; i++) {
+			GameObject t_butt = Instantiate (myButtPrefab, myButtsSpawnPoint [0], Quaternion.identity) as GameObject;
+			t_butt.GetComponent<PP_Butt> ().Init (i, myButtColors, myButtsSpawnPoint [i], myMiddleColors);
+			myButts.Add (t_butt);
+		}
+	}
+
+	public void SetScore (float[] g_scores) {
+		myScores = g_scores;
 	}
 }

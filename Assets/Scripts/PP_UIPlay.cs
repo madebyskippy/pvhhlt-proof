@@ -26,6 +26,8 @@ public class PP_UIPlay : MonoBehaviour {
 	//========================================================================
 
 	[SerializeField] Text[] myScoreDisplays;
+	[SerializeField] GameObject myEndDisplay;
+	[SerializeField] GameObject[] myWinDisplays;
 
 	void Start () {
 		foreach (Text t_score in myScoreDisplays) {
@@ -35,5 +37,10 @@ public class PP_UIPlay : MonoBehaviour {
 
 	public void ShowScore (int g_team, float g_score) {
 		myScoreDisplays [g_team].text = g_score.ToString ("0");
+	}
+
+	public void ShowWinner (int g_team) {
+		myEndDisplay.SetActive (true);
+		myWinDisplays [g_team].SetActive (true);
 	}
 }

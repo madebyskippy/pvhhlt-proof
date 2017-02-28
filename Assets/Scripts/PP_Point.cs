@@ -87,7 +87,7 @@ public class PP_Point : MonoBehaviour {
 
 	private void UpdateScore () {
 		if (myOwnerNumber == 0 || myOwnerNumber == 1) {
-			PP_MessageBox.Instance.AddScore (myOwnerNumber, myScorePerSecond * Time.deltaTime);
+			PP_ScenePlay.Instance.AddScore (myOwnerNumber, myScorePerSecond * Time.deltaTime);
 		}
 	}
 }

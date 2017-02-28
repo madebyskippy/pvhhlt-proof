@@ -12,10 +12,10 @@ public class PP_Base : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D g_other) {
 		if (g_other.tag == PP_Global.TAG_BUTT) {
 			Debug.Log ("POP");
-			PP_MessageBox.Instance.AddScore (myTeamNumber, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean);
+			PP_ScenePlay.Instance.AddScore (myTeamNumber, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean);
 		} else if (g_other.tag == PP_Global.TAG_GRAPE) {
 			g_other.GetComponent<PP_Grape> ().Kill ();
-			PP_MessageBox.Instance.AddScore (myTeamNumber, myScoreRatioGrape);
+			PP_ScenePlay.Instance.AddScore (myTeamNumber, myScoreRatioGrape);
 		}
 	}
 }
