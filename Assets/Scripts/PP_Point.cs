@@ -15,11 +15,14 @@ public class PP_Point : MonoBehaviour {
 	private int myOwnerNumber = -1;
 	[SerializeField] float myInvadeLevelMax = 10;
 
+	[SerializeField] float myScorePerSecond = 1;
+
 	//	void Start () {
 	//	}
 
 	void Update () {
 		UpdateColor ();
+		UpdateScore ();
 	}
 
 	void OnTriggerStay2D (Collider2D g_collider2D) {
@@ -80,5 +83,11 @@ public class PP_Point : MonoBehaviour {
 			mySpriteTransform.localScale = Vector3.one * myInvadeLevel / myInvadeLevelMax;
 		}
 
+	}
+
+	private void UpdateScore () {
+		if (myOwnerNumber == 0 || myOwnerNumber == 1) {
+			PP_MessageBox.Instance.AddScore (myOwnerNumber, myScorePerSecond * Time.deltaTime);
+		}
 	}
 }

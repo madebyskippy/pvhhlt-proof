@@ -29,6 +29,8 @@ public class PP_MessageBox : MonoBehaviour {
 	[SerializeField] Vector2[] myButtsSpawnPoint = { new Vector2 (-1, 0), new Vector2 (1, 0) };
 	[SerializeField] Color[] myButtColors;
 	[SerializeField] Color[] myMiddleColors;
+
+	private float[] myScores = { 0, 0 };
 	// Use this for initialization
 	void Start () {
 		for (int i = 0; i < 2; i++) {
@@ -41,5 +43,10 @@ public class PP_MessageBox : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void AddScore (int g_team, float g_score) {
+		myScores [g_team] += g_score;
+		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
 	}
 }

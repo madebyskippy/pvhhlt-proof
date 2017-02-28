@@ -15,6 +15,9 @@ public class PP_Butt : MonoBehaviour {
 
 	private int myTeamNumber;
 	private Color[] myColors;
+
+	[SerializeField] int myBeansMax = 5;
+	private int myBeansCurrent = 0;
 	// Use this for initialization
 	void Start () {
 		
@@ -78,4 +81,17 @@ public class PP_Butt : MonoBehaviour {
 		return myTeamNumber;
 	}
 
+	void OnCollisionEnter2D (Collision2D g_collision2D) {
+//		Debug.Log ("Butt-OnCollisionEnter");
+		if (g_collision2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
+			Destroy (g_collision2D.gameObject);
+			myBeansCurrent++;
+		}
+	}
+
+	public float Pop () {
+		float t_bean = (float)myBeansCurrent;
+		myBeansCurrent = 0;
+		return t_bean;
+	}
 }
