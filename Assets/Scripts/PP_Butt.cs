@@ -38,7 +38,7 @@ public class PP_Butt : MonoBehaviour {
 		mySpawnPoint = g_spawnPoint;
 
 		mySpriteRenderer.color = g_midColors [g_teamNumber];
-		mySpriteRendererBack.color = (Color.gray + g_midColors [g_teamNumber]) / 2;
+		mySpriteRendererBack.color = g_midColors [g_teamNumber + 2];
 
 		this.transform.position = mySpawnPoint;
 

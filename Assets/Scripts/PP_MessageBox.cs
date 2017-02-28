@@ -28,7 +28,7 @@ public class PP_MessageBox : MonoBehaviour {
 	private List<GameObject> myButts = new List<GameObject> ();
 	[SerializeField] Vector2[] myButtsSpawnPoint = { new Vector2 (-1, 0), new Vector2 (1, 0) };
 	[SerializeField] Color[] myButtColors;
-	[SerializeField] Color[] myMiddleColors;
+	[SerializeField] Color[] myMiddleColors; //needs 4 colors, 12 forwardcolor, 34 backgroundcolor
 
 	private float[] myScores = { 0, 0 };
 	// Use this for initialization
