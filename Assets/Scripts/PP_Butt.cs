@@ -69,7 +69,7 @@ public class PP_Butt : MonoBehaviour {
 
 	private void UpdateBodies () {
 		for (int i = 0; i < myBodies.Count; i++) {
-			Vector2 t_direction = this.transform.position - myPlayers[i].transform.position;
+			Vector2 t_direction = (this.transform.position - myPlayers[i].transform.position) * -1;
 			Vector2 t_position = (this.transform.position + myPlayers[i].transform.position) / 2;
 
 			Quaternion t_quaternion = Quaternion.Euler (0, 0, 
