@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PP_Player : MonoBehaviour {
-	
+
 	private int myTeamNumber = 1;
 	private string myControl = "1";
 	[SerializeField] Rigidbody2D myRigidbody2D;
@@ -16,6 +16,9 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] float moveGravity;
 	[SerializeField] float moveSensitivity;
 
+	[Header("Ability")]
+	[SerializeField] PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -24,6 +27,10 @@ public class PP_Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateMove ();
+	}
+
+	private void UpdateAbility () {
+		
 	}
 
 	private void UpdateMove () {
@@ -54,11 +61,11 @@ public class PP_Player : MonoBehaviour {
 		//Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
 	}
 
-	public void Init (int g_teamNumber, Color g_color, Color g_midcolor, string g_myControl) {
+	public void Init (int g_teamNumber, Color g_color, Color g_borderColor, string g_myControl) {
 		myTeamNumber = g_teamNumber;
 		SetMyControl (g_myControl);
 		mySpriteRenderer.color = g_color;
-		mySpriteRendererBack.color = g_midcolor;
+		mySpriteRendererBack.color = g_borderColor;
 	}
 
 	public void SetMyControl (string g_myControl) {

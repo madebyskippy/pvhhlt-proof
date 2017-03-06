@@ -27,8 +27,9 @@ public class PP_MessageBox : MonoBehaviour {
 	[SerializeField] GameObject myButtPrefab;
 	private List<GameObject> myButts = new List<GameObject> ();
 	[SerializeField] Vector2[] myButtsSpawnPoint = { new Vector2 (-1, 0), new Vector2 (1, 0) };
-	[SerializeField] Color[] myButtColors;
-	[SerializeField] Color[] myMiddleColors; //needs 4 colors, 12 forwardcolor, 34 backgroundcolor
+	[SerializeField] Color[] myPlayerColors;
+	[SerializeField] Color[] myButtColors; //needs 4 colors, 12 forwardcolor, 34 backgroundcolor
+	[SerializeField] Color[] myBorderColors; //needs 2 colors
 
 	private float[] myScores = { 0, 0 };
 	// Use this for initialization
@@ -44,7 +45,7 @@ public class PP_MessageBox : MonoBehaviour {
 	public void InitPlay () {
 		for (int i = 0; i < 2; i++) {
 			GameObject t_butt = Instantiate (myButtPrefab, myButtsSpawnPoint [0], Quaternion.identity) as GameObject;
-			t_butt.GetComponent<PP_Butt> ().Init (i, myButtColors, myButtsSpawnPoint [i], myMiddleColors);
+			t_butt.GetComponent<PP_Butt> ().Init (i, myButtsSpawnPoint [i], myPlayerColors, myButtColors, myBorderColors);
 			myButts.Add (t_butt);
 		}
 	}
