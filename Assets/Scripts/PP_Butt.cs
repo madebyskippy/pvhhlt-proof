@@ -14,6 +14,7 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] Transform mySpriteTransform;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 	[SerializeField] SpriteRenderer mySpriteRendererBack;
+	[SerializeField] SpriteRenderer mySpriteRendererBorder;
 
 	private int myTeamNumber;
 	private Color[] myColors;
@@ -39,18 +40,20 @@ public class PP_Butt : MonoBehaviour {
 
 		mySpriteRenderer.color = g_midColors [g_teamNumber];
 		mySpriteRendererBack.color = g_midColors [g_teamNumber + 2];
+		mySpriteRendererBorder.color = g_midColors [g_teamNumber + 4];
 
 		this.transform.position = mySpawnPoint;
 
 		for (int i = 0; i < 3; i++) {
 			GameObject t_player = Instantiate (myPlayerPrefab, mySpawnPoint + Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
 			string t_control = (i + 3 * myTeamNumber + 1).ToString ();
-			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, myColors [i + 3 * myTeamNumber], t_control);
+			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, myColors [i + 3 * myTeamNumber], g_midColors [g_teamNumber + 4], t_control);
 			t_player.GetComponent<SpringJoint2D> ().connectedBody = this.GetComponent<Rigidbody2D> ();
 			myPlayers.Add (t_player);
 
 			GameObject t_body = Instantiate (myBodyPrefab, mySpawnPoint, Quaternion.identity) as GameObject;
-			t_body.GetComponent<SpriteRenderer> ().color = myColors [i + 3 * myTeamNumber];
+			t_body.GetComponent<SpriteRenderer> ().color = g_midColors[g_teamNumber+4];
+
 			myBodies.Add (t_body);
 		}
 	}
@@ -83,7 +86,7 @@ public class PP_Butt : MonoBehaviour {
 
 	private void UpdateBeans () {
 		
-		mySpriteTransform.localScale = (float)myBeansCurrent / myBeansMax * Vector3.one;
+		mySpriteTransform.localScale = 0.5f*Vector3.one+0.5f*(float)myBeansCurrent / myBeansMax * Vector3.one;
 //		Debug.Log (myBeansCurrent + ":" + mySpriteTransform.localScale);
 	}
 

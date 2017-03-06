@@ -8,6 +8,7 @@ public class PP_Player : MonoBehaviour {
 	private string myControl = "1";
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
+	[SerializeField] SpriteRenderer mySpriteRendererBack;
 
 	private Vector2 myDirection;
 	private Vector2 myMoveAxis;
@@ -53,10 +54,11 @@ public class PP_Player : MonoBehaviour {
 		//Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
 	}
 
-	public void Init (int g_teamNumber, Color g_color, string g_myControl) {
+	public void Init (int g_teamNumber, Color g_color, Color g_midcolor, string g_myControl) {
 		myTeamNumber = g_teamNumber;
 		SetMyControl (g_myControl);
 		mySpriteRenderer.color = g_color;
+		mySpriteRendererBack.color = g_midcolor;
 	}
 
 	public void SetMyControl (string g_myControl) {
