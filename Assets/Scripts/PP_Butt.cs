@@ -29,6 +29,7 @@ public class PP_Butt : MonoBehaviour {
 	void Update () {
 //		UpdatePosition ();
 		UpdateBodies ();
+		UpdatePlayers ();
 		UpdateBeans ();
 	}
 
@@ -79,6 +80,17 @@ public class PP_Butt : MonoBehaviour {
 			myBodies[i].transform.position = t_position;
 			myBodies[i].transform.rotation = t_quaternion;
 			myBodies[i].transform.localScale = new Vector3 (myBodies[i].transform.localScale.x, t_direction.magnitude, 1);
+		}
+	}
+
+	private void UpdatePlayers(){
+		for (int i = 0; i < myPlayers.Count; i++) {
+			Vector2 t_direction = (this.transform.position - myPlayers[i].transform.position) * -1;
+
+			Quaternion t_quaternion = Quaternion.Euler (0, 0, 
+				Vector2.Angle (Vector2.up, t_direction) * Vector3.Cross (Vector3.up, (Vector3)t_direction).normalized.z);
+			
+			myPlayers [i].transform.rotation = t_quaternion;
 		}
 	}
 

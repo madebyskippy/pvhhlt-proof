@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 50d53bed024a44403956cf4ee4c8d8a1
-timeCreated: 1488774135
+timeCreated: 1488912999
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -42,7 +42,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 175
+  spritePixelsToUnits: 300
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -87,8 +87,8 @@ TextureImporter:
         y: 0
         width: 269
         height: 261
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.6506591, y: 0.32725433}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -100,8 +100,8 @@ TextureImporter:
         y: 0
         width: 269
         height: 261
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.6016949, y: 0.43206632}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

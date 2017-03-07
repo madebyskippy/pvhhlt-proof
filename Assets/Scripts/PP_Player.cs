@@ -45,6 +45,14 @@ public class PP_Player : MonoBehaviour {
 		myAbility = (PP_Global.Abilities)((int.Parse (myControl) - 1) % 3);
 		myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 	}
+
+	public void Init (int g_teamNumber, Color g_color, Color g_borderColor, string g_myControl) {
+		myColor = g_color;
+		myTeamNumber = g_teamNumber;
+		SetMyControl (g_myControl);
+		mySpriteRenderer.color = g_color;
+		mySpriteRendererBack.color = g_borderColor;
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -53,6 +61,7 @@ public class PP_Player : MonoBehaviour {
 		}
 		UpdateStatus ();
 		UpdateAbility ();
+
 	}
 
 	private void UpdateStatus () {
@@ -135,14 +144,6 @@ public class PP_Player : MonoBehaviour {
 			myMoveAxis *= (myMoveAxis.magnitude - t_moveAxisReduce);
 
 		//Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
-	}
-
-	public void Init (int g_teamNumber, Color g_color, Color g_borderColor, string g_myControl) {
-		myColor = g_color;
-		myTeamNumber = g_teamNumber;
-		SetMyControl (g_myControl);
-		mySpriteRenderer.color = g_color;
-		mySpriteRendererBack.color = g_borderColor;
 	}
 
 	public void SetMyControl (string g_myControl) {
