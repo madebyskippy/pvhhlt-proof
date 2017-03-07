@@ -18,9 +18,9 @@ public class PP_Skill_Burp : MonoBehaviour {
 		myCaster = g_caster;
 	}
 
-	void OnTrigger2DEnter(Collider2D collider){
-		if (myCaster != collider.gameObject){
-			collider.gameObject.GetComponent<PP_Player>().Stun();
+	void OnTriggerEnter2D (Collider2D collider) {
+		if (myCaster != collider.gameObject && collider.tag == PP_Global.TAG_PLAYER){
+			collider.gameObject.GetComponent<PP_Player> ().Stun ();
 		}
 	}
 }

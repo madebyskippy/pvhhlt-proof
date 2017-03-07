@@ -13,4 +13,5 @@ public static class PP_Global {
 	public static string TAG_BUTT = "Butt";
 	public static string TAG_GRAPE = "Grape";
 	public static string TAG_BEAN = "Bean";
+	public static string TAG_PLAYER = "Player";
 }
