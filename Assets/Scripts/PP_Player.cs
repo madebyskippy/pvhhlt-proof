@@ -19,10 +19,12 @@ public class PP_Player : MonoBehaviour {
 	[Header("Ability")]
 	[SerializeField] PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
 	private float myCDTimer;
+	private float myStunTimer;
 	[Header(" - Burp")]
 	[SerializeField] GameObject myAbility_Burp_Prefab;
 	[SerializeField] Sprite myAbility_Burp_Sprite;
 	[SerializeField] float myAbility_Burp_CD = 5;
+	[SerializeField] float myAbility_Burp_StunTime = 4;
 
 	// Use this for initialization
 	void Start () {
@@ -31,8 +33,20 @@ public class PP_Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateMove ();
+		if (myStunTimer <= 0) {
+			UpdateMove ();
+		}
+		UpdateStatus ();
 		UpdateAbility ();
+	}
+
+	private void UpdateStatus () {
+		if (myStunTimer > 0) {
+			myStunTimer -= Time.deltaTime;
+			if (myStunTimer <= 0) {
+				myStunTimer = 0;
+			}
+		}
 	}
 
 	private void UpdateAbility () {
@@ -45,7 +59,8 @@ public class PP_Player : MonoBehaviour {
 		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myCDTimer = myAbility_Burp_CD;
-				Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity);
+				GameObject t_stun = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
+
 			}
 		}
 	}
@@ -91,5 +106,9 @@ public class PP_Player : MonoBehaviour {
 
 	public int GetMyTeamNumber () {
 		return myTeamNumber;
+	}
+
+	public void Stun () {
+		myStunTimer = myAbility_Burp_StunTime;
 	}
 }
