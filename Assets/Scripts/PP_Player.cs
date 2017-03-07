@@ -18,6 +18,11 @@ public class PP_Player : MonoBehaviour {
 
 	[Header("Ability")]
 	[SerializeField] PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
+	private float myCDTimer;
+	[Header(" - Burp")]
+	[SerializeField] GameObject myAbility_Burp_Prefab;
+	[SerializeField] Sprite myAbility_Burp_Sprite;
+	[SerializeField] float myAbility_Burp_CD = 5;
 
 	// Use this for initialization
 	void Start () {
@@ -27,10 +32,22 @@ public class PP_Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateMove ();
+		UpdateAbility ();
 	}
 
 	private void UpdateAbility () {
-		
+		if (myCDTimer > 0) {
+			myCDTimer -= Time.deltaTime;
+			if (myCDTimer <= 0) {
+				myCDTimer = 0;
+			}
+		}
+		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
+			if (Input.GetButtonDown ("Skill" + myControl)) {
+				myCDTimer = myAbility_Burp_CD;
+				Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity);
+			}
+		}
 	}
 
 	private void UpdateMove () {

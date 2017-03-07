@@ -5,8 +5,8 @@ using UnityEngine;
 public static class PP_Global {
 
 	public enum Abilities {
-		Dash, 
-		Burp, 
+		Burp,
+		Dash,  
 		Freeze
 	};
 
