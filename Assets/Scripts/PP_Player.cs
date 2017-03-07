@@ -8,6 +8,7 @@ public class PP_Player : MonoBehaviour {
 	private string myControl = "1";
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
+	[SerializeField] Animator myAnimator;
 	private Color myColor;
 	[SerializeField] SpriteRenderer mySpriteRendererBack;
 
@@ -42,6 +43,7 @@ public class PP_Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myAbility = (PP_Global.Abilities)((int.Parse (myControl) - 1) % 3);
+		myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 	}
 	
 	// Update is called once per frame
@@ -59,6 +61,7 @@ public class PP_Player : MonoBehaviour {
 			if (myStatus_StunTimer <= 0) {
 				myStatus_StunTimer = 0;
 				mySpriteRenderer.color = myColor;
+				myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 			}
 		}
 		if (myStatus_DashTimer > 0) {
@@ -66,6 +69,7 @@ public class PP_Player : MonoBehaviour {
 			if (myStatus_DashTimer <= 0) {
 				myStatus_DashTimer = 0;
 				myStatus_SpeedRatio = 1f;
+				myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 			}
 		}
 	}
@@ -83,20 +87,24 @@ public class PP_Player : MonoBehaviour {
 				myCDTimer = myAbility_Burp_CD;
 				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
 				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject);
+				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
 			}
 		} else if (myAbility == PP_Global.Abilities.Freeze) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myStatus_IsFrozen = true;
 				myRigidbody2D.isKinematic = true;
+				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
 			} else if (Input.GetButtonUp ("Skill" + myControl)) {
 				myStatus_IsFrozen = false;
 				myRigidbody2D.isKinematic = false;
+				myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 			}
 		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myCDTimer = myAbility_Dash_CD;
 				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio;
 				myStatus_DashTimer = myAbility_Dash_Time;
+				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
 			}
 		}
 	}
