@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PP_Skill_Burp : MonoBehaviour {
 	private GameObject myCaster;
-	private float myStunTime;
 	// Use this for initialization
 	void Start () {
 		
@@ -15,7 +14,13 @@ public class PP_Skill_Burp : MonoBehaviour {
 		
 	}
 
-	public void Init (GameObject g_caster, float g_stun) {
-		
+	public void Init (GameObject g_caster) {
+		myCaster = g_caster;
+	}
+
+	void OnTrigger2DEnter(Collider2D collider){
+		if (myCaster != collider.gameObject){
+			collider.gameObject.GetComponent<PP_Player>().Stun();
+		}
 	}
 }
