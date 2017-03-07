@@ -59,8 +59,8 @@ public class PP_Player : MonoBehaviour {
 		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myCDTimer = myAbility_Burp_CD;
-				GameObject t_stun = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
-
+				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
+				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject);
 			}
 		}
 	}
