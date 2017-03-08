@@ -99,7 +99,7 @@ public class PP_Butt : MonoBehaviour {
 
 	private void UpdateBeans () {
 		
-		mySpriteTransform.localScale = 0.5f*Vector3.one+0.5f*(float)myBeansCurrent / myBeansMax * Vector3.one;
+		mySpriteTransform.localScale = 0.5f * Vector3.one + 0.5f * (float)myBeansCurrent / myBeansMax * Vector3.one;
 		transform.localScale = Vector3.one + Vector3.one * 0.5f * (float)myBeansCurrent / myBeansMax;
 //		myButthole.transform.localScale = Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax;
 //		Debug.Log (myBeansCurrent + ":" + mySpriteTransform.localScale);
@@ -114,16 +114,22 @@ public class PP_Butt : MonoBehaviour {
 		if (g_collision2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
 			g_collision2D.gameObject.GetComponent<PP_Bean> ().Kill ();
 			myBeansCurrent++;
-			//tweenzzzz
-			Sequence sq = DOTween.Sequence ();
-			sq.Append (myButthole.transform.DOScale (myButthole.transform.localScale + Vector3.one * 0.5f, 0.1f));
-			sq.Append (myButthole.transform.DOScale (Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax, 0.15f));
+
+			myButthole.GetComponent<PP_Hole> ().Eat (1 - (float)myBeansCurrent / myBeansMax);
+
+//			//tweenzzzz
+//			Sequence sq = DOTween.Sequence ();
+//			sq.Append (myButthole.transform.DOScale (myButthole.transform.localScale + Vector3.one * 0.5f, 0.1f));
+//			sq.Append (myButthole.transform.DOScale (Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax, 0.15f));
 		}
 	}
 
 	public float Pop () {
 		float t_bean = (float)myBeansCurrent;
-		myButthole.transform.localScale = Vector3.one * 0.75f; //the starting scale
+//		myButthole.transform.localScale = Vector3.one * 0.75f; //the starting scale
+
+		myButthole.GetComponent<PP_Hole> ().Pop (1); //the starting scale
+
 		myBeansCurrent = 0;
 		if (t_bean > 0) {
 			Instantiate (myParticleBeans, this.transform.position, Quaternion.identity);
