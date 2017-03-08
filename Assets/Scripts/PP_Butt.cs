@@ -15,6 +15,7 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 	[SerializeField] SpriteRenderer mySpriteRendererBack;
 	[SerializeField] SpriteRenderer mySpriteRendererBorder;
+	[SerializeField] GameObject myButthole;
 
 	private int myTeamNumber;
 
@@ -98,6 +99,8 @@ public class PP_Butt : MonoBehaviour {
 	private void UpdateBeans () {
 		
 		mySpriteTransform.localScale = 0.5f*Vector3.one+0.5f*(float)myBeansCurrent / myBeansMax * Vector3.one;
+		transform.localScale = Vector3.one + Vector3.one * 0.5f * (float)myBeansCurrent / myBeansMax;
+		myButthole.transform.localScale = Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax;
 //		Debug.Log (myBeansCurrent + ":" + mySpriteTransform.localScale);
 	}
 
