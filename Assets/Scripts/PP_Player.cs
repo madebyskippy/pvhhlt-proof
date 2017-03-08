@@ -62,6 +62,7 @@ public class PP_Player : MonoBehaviour {
 		UpdateStatus ();
 		UpdateAbility ();
 
+		UpdateRotation ();
 	}
 
 	private void UpdateStatus () {
@@ -95,6 +96,7 @@ public class PP_Player : MonoBehaviour {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myCDTimer = myAbility_Burp_CD;
 				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
+				t_burp.transform.parent = this.transform;
 				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject);
 				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
 			}
@@ -102,6 +104,7 @@ public class PP_Player : MonoBehaviour {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myStatus_IsFrozen = true;
 				myRigidbody2D.isKinematic = true;
+				myRigidbody2D.velocity = Vector3.zero;
 				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
 			} else if (Input.GetButtonUp ("Skill" + myControl)) {
 				myStatus_IsFrozen = false;
@@ -144,6 +147,15 @@ public class PP_Player : MonoBehaviour {
 			myMoveAxis *= (myMoveAxis.magnitude - t_moveAxisReduce);
 
 		//Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
+
+		//Rotation
+	}
+
+	public void UpdateRotation () {
+		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
+			Vector2.Angle (Vector2.up, myDirection) * Vector3.Cross (Vector3.up, (Vector3)myDirection).normalized.z);
+
+		this.transform.rotation = t_quaternion;
 	}
 
 	public void SetMyControl (string g_myControl) {

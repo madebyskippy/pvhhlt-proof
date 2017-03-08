@@ -20,6 +20,7 @@ public class PP_Butt : MonoBehaviour {
 
 	[SerializeField] int myBeansMax = 5;
 	private int myBeansCurrent = 0;
+	[SerializeField] GameObject myParticleBeans;
 	// Use this for initialization
 	void Start () {
 		
@@ -29,7 +30,7 @@ public class PP_Butt : MonoBehaviour {
 	void Update () {
 //		UpdatePosition ();
 		UpdateBodies ();
-		UpdatePlayers ();
+//		UpdatePlayers ();
 		UpdateBeans ();
 	}
 
@@ -115,6 +116,9 @@ public class PP_Butt : MonoBehaviour {
 	public float Pop () {
 		float t_bean = (float)myBeansCurrent;
 		myBeansCurrent = 0;
+		if (t_bean > 0) {
+			Instantiate (myParticleBeans, this.transform.position, Quaternion.identity);
+		}
 		return t_bean;
 	}
 }
