@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class PP_Butt : MonoBehaviour {
+	[SerializeField] Rigidbody2D myRigidbody2D;
+
 	[SerializeField] GameObject myPlayerPrefab;
 	[SerializeField] GameObject myBodyPrefab;
 	private List<GameObject> myPlayers = new List<GameObject> ();
@@ -12,15 +13,20 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] float mySpawnRadius = 1;
 	[SerializeField] float mySpeed = 5;
 
-	[SerializeField] Transform mySpriteTransform;
+//	[SerializeField] Transform mySpriteTransform;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
-	[SerializeField] SpriteRenderer mySpriteRendererBack;
+//	[SerializeField] SpriteRenderer mySpriteRendererBack;
 	[SerializeField] SpriteRenderer mySpriteRendererBorder;
 	[SerializeField] GameObject myButthole;
 
 	private int myTeamNumber;
 
+	[Header("Beans")]
 	[SerializeField] int myBeansMax = 5;
+	[Tooltip("x: min mass, without beans, y: max mass, full")]
+	[SerializeField] Vector2 myMassRange = new Vector2 (1, 10);
+	[Tooltip("x: min scale, without beans, y: max scale, full")]
+	[SerializeField] Vector2 myScaleRange = new Vector2 (1, 1.5f);
 	private int myBeansCurrent = 0;
 	[SerializeField] GameObject myParticleBeans;
 	// Use this for initialization
@@ -41,7 +47,7 @@ public class PP_Butt : MonoBehaviour {
 		mySpawnPoint = g_spawnPoint;
 
 		mySpriteRenderer.color = g_buttColors [g_teamNumber];
-		mySpriteRendererBack.color = g_buttColors [g_teamNumber + 2];
+//		mySpriteRendererBack.color = g_buttColors [g_teamNumber + 2];
 		mySpriteRendererBorder.color = g_borderColors [g_teamNumber];
 
 		this.transform.position = mySpawnPoint;
@@ -99,10 +105,12 @@ public class PP_Butt : MonoBehaviour {
 
 	private void UpdateBeans () {
 		
-		mySpriteTransform.localScale = 0.5f * Vector3.one + 0.5f * (float)myBeansCurrent / myBeansMax * Vector3.one;
-		transform.localScale = Vector3.one + Vector3.one * 0.5f * (float)myBeansCurrent / myBeansMax;
+//		mySpriteTransform.localScale = 0.5f * Vector3.one + 0.5f * (float)myBeansCurrent / myBeansMax * Vector3.one;
+		transform.localScale = ((float)myBeansCurrent / myBeansMax * (myScaleRange.y - myScaleRange.x) + myScaleRange.x) * Vector2.one;
 //		myButthole.transform.localScale = Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax;
 //		Debug.Log (myBeansCurrent + ":" + mySpriteTransform.localScale);
+
+		myRigidbody2D.mass = (float)myBeansCurrent / myBeansMax * (myMassRange.y - myMassRange.x) + myMassRange.x;
 	}
 
 	public int GetMyTeamNumber () {
