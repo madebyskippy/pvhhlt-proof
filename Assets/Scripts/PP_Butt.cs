@@ -55,7 +55,7 @@ public class PP_Butt : MonoBehaviour {
 		for (int i = 0; i < 3; i++) {
 			GameObject t_player = Instantiate (myPlayerPrefab, mySpawnPoint + Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
 			string t_control = (i + 3 * myTeamNumber + 1).ToString ();
-			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, g_playerColors [i + 3 * myTeamNumber], g_borderColors [g_teamNumber], t_control);
+			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, this.gameObject, g_playerColors [i + 3 * myTeamNumber], g_borderColors [g_teamNumber], t_control);
 			t_player.GetComponent<SpringJoint2D> ().connectedBody = this.GetComponent<Rigidbody2D> ();
 			myPlayers.Add (t_player);
 
@@ -84,22 +84,11 @@ public class PP_Butt : MonoBehaviour {
 			Vector2 t_position = (this.transform.position + myPlayers[i].transform.position) / 2;
 
 			Quaternion t_quaternion = Quaternion.Euler (0, 0, 
-				Vector2.Angle (Vector2.up, t_direction) * Vector3.Cross (Vector3.up, (Vector3)t_direction).normalized.z);
+				Vector2.Angle (Vector2.up, t_direction) * Mathf.Sign (t_direction.x * -1));
 
 			myBodies[i].transform.position = t_position;
 			myBodies[i].transform.rotation = t_quaternion;
 			myBodies[i].transform.localScale = new Vector3 (myBodies[i].transform.localScale.x, t_direction.magnitude, 1);
-		}
-	}
-
-	private void UpdatePlayers(){
-		for (int i = 0; i < myPlayers.Count; i++) {
-			Vector2 t_direction = (this.transform.position - myPlayers[i].transform.position) * -1;
-
-			Quaternion t_quaternion = Quaternion.Euler (0, 0, 
-				Vector2.Angle (Vector2.up, t_direction) * Vector3.Cross (Vector3.up, (Vector3)t_direction).normalized.z);
-			
-			myPlayers [i].transform.rotation = t_quaternion;
 		}
 	}
 
@@ -143,5 +132,9 @@ public class PP_Butt : MonoBehaviour {
 			Instantiate (myParticleBeans, this.transform.position, Quaternion.identity);
 		}
 		return t_bean;
+	}
+
+	public void SetBodySprite (int g_number, Sprite g_sprite) {
+		myBodies [g_number].GetComponent<PP_Body> ().GetMyPattern ().sprite = g_sprite;
 	}
 }

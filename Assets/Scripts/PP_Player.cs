@@ -5,6 +5,7 @@ using UnityEngine;
 public class PP_Player : MonoBehaviour {
 
 	private int myTeamNumber = 1;
+	private GameObject myButt;
 	private string myControl = "1";
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
@@ -13,6 +14,7 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] SpriteRenderer mySpriteRendererBack;
 
 	private Vector2 myDirection;
+	private Vector2 myRotation = Vector2.up;
 	private Vector2 myMoveAxis;
 	[SerializeField] float mySpeed = 1;
 	[SerializeField] float moveGravity;
@@ -42,13 +44,13 @@ public class PP_Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		myAbility = (PP_Global.Abilities)((int.Parse (myControl) - 1) % 3);
-		myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
+		SetMyAbility ((PP_Global.Abilities)((int.Parse (myControl) - 1) % 3));
 	}
 
-	public void Init (int g_teamNumber, Color g_color, Color g_borderColor, string g_myControl) {
+	public void Init (int g_teamNumber, GameObject g_butt, Color g_color, Color g_borderColor, string g_myControl) {
 		myColor = g_color;
 		myTeamNumber = g_teamNumber;
+		myButt = g_butt;
 		SetMyControl (g_myControl);
 		mySpriteRenderer.color = g_color;
 		mySpriteRendererBack.color = g_borderColor;
@@ -71,7 +73,6 @@ public class PP_Player : MonoBehaviour {
 			if (myStatus_StunTimer <= 0) {
 				myStatus_StunTimer = 0;
 				mySpriteRenderer.color = myColor;
-				myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 			}
 		}
 		if (myStatus_DashTimer > 0) {
@@ -79,7 +80,6 @@ public class PP_Player : MonoBehaviour {
 			if (myStatus_DashTimer <= 0) {
 				myStatus_DashTimer = 0;
 				myStatus_SpeedRatio = 1f;
-				myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
 			}
 		}
 	}
@@ -98,25 +98,25 @@ public class PP_Player : MonoBehaviour {
 				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
 				t_burp.transform.parent = this.transform;
 				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject);
-				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
+				myAnimator.SetTrigger ("isButtonDown");
 			}
 		} else if (myAbility == PP_Global.Abilities.Freeze) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myStatus_IsFrozen = true;
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
-				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
+				myAnimator.SetTrigger ("isButtonDown");
 			} else if (Input.GetButtonUp ("Skill" + myControl)) {
 				myStatus_IsFrozen = false;
 				myRigidbody2D.isKinematic = false;
-				myAnimator.Play ("Player_" + myAbility.ToString () + "_Idle");
+				myAnimator.SetTrigger ("isButtonUp");
 			}
 		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myCDTimer = myAbility_Dash_CD;
 				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio;
 				myStatus_DashTimer = myAbility_Dash_Time;
-				myAnimator.Play ("Player_" + myAbility.ToString () + "_Effect");
+				myAnimator.SetTrigger ("isButtonDown");
 			}
 		}
 	}
@@ -152,14 +152,30 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	public void UpdateRotation () {
+		float t_inputHorizontal = Input.GetAxis ("Horizontal" + myControl);
+		float t_inputVertical = Input.GetAxis ("Vertical" + myControl);
+		if (Mathf.Abs(t_inputHorizontal) > 0.1f || Mathf.Abs(t_inputVertical) > 0.1f) {
+
+//			Debug.Log (t_inputHorizontal + " " + t_inputVertical);
+			myRotation = Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal;
+		}
+		Debug.Log (myRotation);
+
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
-			Vector2.Angle (Vector2.up, myDirection) * Vector3.Cross (Vector3.up, (Vector3)myDirection).normalized.z);
+			Vector2.Angle (Vector2.up, myRotation) * Mathf.Sign (myRotation.x * -1));
 
 		this.transform.rotation = t_quaternion;
 	}
 
 	public void SetMyControl (string g_myControl) {
 		myControl = g_myControl;
+	}
+
+	public void SetMyAbility (PP_Global.Abilities g_ability) {
+		myAbility = g_ability;
+
+		myAnimator.SetInteger ("ability", (int)myAbility);
+//		myButt.GetComponent<PP_Butt>().SetBodySprite(int.Parse(myControl) % 3, )
 	}
 
 	public int GetMyTeamNumber () {
