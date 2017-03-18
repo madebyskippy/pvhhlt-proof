@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PP_Body : MonoBehaviour {
-	[SerializeField] SpriteRenderer myPattern;
+	[SerializeField] SpriteRenderer mySpriteRenderer;
+	[SerializeField] SpriteRenderer mySpriteRendererPattern;
 //	// Use this for initialization
 //	void Start () {
 //		
@@ -13,7 +14,12 @@ public class PP_Body : MonoBehaviour {
 //	void Update () {
 //		
 //	}
-	public SpriteRenderer GetMyPattern () {
-		return myPattern;
+
+	public SpriteRenderer GetMySpriteRenderer () {
+		return mySpriteRenderer;
+	}
+
+	public SpriteRenderer GetMySpriteRendererPattern () {
+		return mySpriteRendererPattern;
 	}
 }

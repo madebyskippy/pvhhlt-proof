@@ -9,9 +9,10 @@ public class PP_Player : MonoBehaviour {
 	private string myControl = "1";
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
+	[SerializeField] SpriteRenderer mySpriteRendererPattern;
 	[SerializeField] Animator myAnimator;
 	private Color myColor;
-	[SerializeField] SpriteRenderer mySpriteRendererBack;
+	[SerializeField] SpriteRenderer mySpriteRendererBorder;
 
 	private Vector2 myDirection;
 	private Vector2 myRotation = Vector2.up;
@@ -47,13 +48,14 @@ public class PP_Player : MonoBehaviour {
 		SetMyAbility ((PP_Global.Abilities)((int.Parse (myControl) - 1) % 3));
 	}
 
-	public void Init (int g_teamNumber, GameObject g_butt, Color g_color, Color g_borderColor, string g_myControl) {
-		myColor = g_color;
+	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, string g_myControl) {
+		myColor = g_colorSet.myColors [0];
 		myTeamNumber = g_teamNumber;
 		myButt = g_butt;
 		SetMyControl (g_myControl);
-		mySpriteRenderer.color = g_color;
-		mySpriteRendererBack.color = g_borderColor;
+		mySpriteRenderer.color = g_colorSet.myColors [0];
+		mySpriteRendererPattern.color = g_colorSet.myColors [1];
+		mySpriteRendererBorder.color = g_colorBorder;
 	}
 	
 	// Update is called once per frame
@@ -159,7 +161,7 @@ public class PP_Player : MonoBehaviour {
 //			Debug.Log (t_inputHorizontal + " " + t_inputVertical);
 			myRotation = Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal;
 		}
-		Debug.Log (myRotation);
+//		Debug.Log (myRotation);
 
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.up, myRotation) * Mathf.Sign (myRotation.x * -1));

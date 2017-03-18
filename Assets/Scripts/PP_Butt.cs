@@ -18,6 +18,9 @@ public class PP_Butt : MonoBehaviour {
 //	[SerializeField] SpriteRenderer mySpriteRendererBack;
 	[SerializeField] SpriteRenderer mySpriteRendererBorder;
 	[SerializeField] GameObject myButthole;
+	[SerializeField] GameObject myButtSprite;
+	[SerializeField] GameObject myButtSpriteBorder;
+	[SerializeField] float myButtSpriteDeltaScale = 0.25f;
 
 	private int myTeamNumber;
 
@@ -42,25 +45,27 @@ public class PP_Butt : MonoBehaviour {
 		UpdateBeans ();
 	}
 
-	public void Init (int g_teamNumber, Vector2 g_spawnPoint, Color[] g_playerColors, Color[] g_buttColors, Color[] g_borderColors) {
+	public void Init (int g_teamNumber, Vector2 g_spawnPoint, PP_ColorSet g_colorSet) {
 		myTeamNumber = g_teamNumber;
 		mySpawnPoint = g_spawnPoint;
 
-		mySpriteRenderer.color = g_buttColors [g_teamNumber];
+		mySpriteRenderer.color = g_colorSet.myColorButt;
 //		mySpriteRendererBack.color = g_buttColors [g_teamNumber + 2];
-		mySpriteRendererBorder.color = g_borderColors [g_teamNumber];
+		mySpriteRendererBorder.color = g_colorSet.myColorBorder;
 
-		this.transform.position = mySpawnPoint;
+		this.transform.position = (Vector3)mySpawnPoint + Vector3.forward * g_teamNumber * 100;
 
 		for (int i = 0; i < 3; i++) {
 			GameObject t_player = Instantiate (myPlayerPrefab, mySpawnPoint + Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
+			t_player.transform.position = Vector3.forward * (i * 10 + this.transform.position.z);
 			string t_control = (i + 3 * myTeamNumber + 1).ToString ();
-			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, this.gameObject, g_playerColors [i + 3 * myTeamNumber], g_borderColors [g_teamNumber], t_control);
+			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, this.gameObject, g_colorSet.myPlayers[i], g_colorSet.myColorBorder, t_control);
 			t_player.GetComponent<SpringJoint2D> ().connectedBody = this.GetComponent<Rigidbody2D> ();
 			myPlayers.Add (t_player);
 
 			GameObject t_body = Instantiate (myBodyPrefab, mySpawnPoint, Quaternion.identity) as GameObject;
-			t_body.GetComponent<SpriteRenderer> ().color = g_borderColors [g_teamNumber];
+			t_body.transform.position = Vector3.forward * (i * 10 + this.transform.position.z);
+			t_body.GetComponent<PP_Body> ().GetMySpriteRenderer ().color = g_colorSet.myColorBorder;
 
 			myBodies.Add (t_body);
 		}
@@ -80,25 +85,23 @@ public class PP_Butt : MonoBehaviour {
 
 	private void UpdateBodies () {
 		for (int i = 0; i < myBodies.Count; i++) {
+			float t_posZ = myBodies [i].transform.position.z;
 			Vector2 t_direction = (this.transform.position - myPlayers[i].transform.position) * -1;
 			Vector2 t_position = (this.transform.position + myPlayers[i].transform.position) / 2;
 
 			Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 				Vector2.Angle (Vector2.up, t_direction) * Mathf.Sign (t_direction.x * -1));
 
-			myBodies[i].transform.position = t_position;
-			myBodies[i].transform.rotation = t_quaternion;
-			myBodies[i].transform.localScale = new Vector3 (myBodies[i].transform.localScale.x, t_direction.magnitude, 1);
+			myBodies [i].transform.position = (Vector3)t_position + Vector3.forward * t_posZ;
+			myBodies [i].transform.rotation = t_quaternion;
+			myBodies [i].transform.localScale = new Vector3 (myBodies [i].transform.localScale.x, t_direction.magnitude, 1);
 		}
 	}
 
 	private void UpdateBeans () {
 		
-//		mySpriteTransform.localScale = 0.5f * Vector3.one + 0.5f * (float)myBeansCurrent / myBeansMax * Vector3.one;
-		transform.localScale = ((float)myBeansCurrent / myBeansMax * (myScaleRange.y - myScaleRange.x) + myScaleRange.x) * Vector2.one;
-//		myButthole.transform.localScale = Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax;
-//		Debug.Log (myBeansCurrent + ":" + mySpriteTransform.localScale);
-
+		myButtSprite.transform.localScale = ((float)myBeansCurrent / myBeansMax * (myScaleRange.y - myScaleRange.x) + myScaleRange.x - myButtSpriteDeltaScale) * Vector2.one;
+		myButtSpriteBorder.transform.localScale = ((float)myBeansCurrent / myBeansMax * (myScaleRange.y - myScaleRange.x) + myScaleRange.x) * Vector2.one;
 		myRigidbody2D.mass = (float)myBeansCurrent / myBeansMax * (myMassRange.y - myMassRange.x) + myMassRange.x;
 	}
 
@@ -135,6 +138,6 @@ public class PP_Butt : MonoBehaviour {
 	}
 
 	public void SetBodySprite (int g_number, Sprite g_sprite) {
-		myBodies [g_number].GetComponent<PP_Body> ().GetMyPattern ().sprite = g_sprite;
+		myBodies [g_number].GetComponent<PP_Body> ().GetMySpriteRendererPattern ().sprite = g_sprite;
 	}
 }
