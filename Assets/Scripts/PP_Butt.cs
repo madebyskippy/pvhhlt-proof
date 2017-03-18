@@ -13,6 +13,7 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] float mySpawnRadius = 1;
 	[SerializeField] float mySpeed = 5;
 
+	private PP_ColorSet myColorSet;
 //	[SerializeField] Transform mySpriteTransform;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 //	[SerializeField] SpriteRenderer mySpriteRendererBack;
@@ -25,6 +26,7 @@ public class PP_Butt : MonoBehaviour {
 	private int myTeamNumber;
 
 	[Header("Beans")]
+	[SerializeField] GameObject myBeanPrefab;
 	[SerializeField] int myBeansMax = 5;
 	[Tooltip("x: min mass, without beans, y: max mass, full")]
 	[SerializeField] Vector2 myMassRange = new Vector2 (1, 10);
@@ -32,6 +34,12 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] Vector2 myScaleRange = new Vector2 (1, 1.5f);
 	private int myBeansCurrent = 0;
 	[SerializeField] GameObject myParticleBeans;
+
+	[Header("Status")]
+	[SerializeField] Color myStunColor = Color.gray;
+	[SerializeField] float myStatus_StunTime = 1;
+	private float myStatus_StunTimer;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -43,11 +51,13 @@ public class PP_Butt : MonoBehaviour {
 		UpdateBodies ();
 //		UpdatePlayers ();
 		UpdateBeans ();
+		UpdateStatus ();
 	}
 
 	public void Init (int g_teamNumber, Vector2 g_spawnPoint, PP_ColorSet g_colorSet) {
 		myTeamNumber = g_teamNumber;
 		mySpawnPoint = g_spawnPoint;
+		myColorSet = g_colorSet;
 
 		mySpriteRenderer.color = g_colorSet.myColorButt;
 //		mySpriteRendererBack.color = g_buttColors [g_teamNumber + 2];
@@ -68,6 +78,16 @@ public class PP_Butt : MonoBehaviour {
 			t_body.GetComponent<PP_Body> ().GetMySpriteRenderer ().color = g_colorSet.myColorBorder;
 
 			myBodies.Add (t_body);
+		}
+	}
+
+	private void UpdateStatus () {
+		if (myStatus_StunTimer > 0) {
+			myStatus_StunTimer -= Time.deltaTime;
+			if (myStatus_StunTimer <= 0) {
+				myStatus_StunTimer = 0;
+				mySpriteRenderer.color = myColorSet.myColorButt;
+			}
 		}
 	}
 
@@ -111,6 +131,9 @@ public class PP_Butt : MonoBehaviour {
 
 	void OnCollisionEnter2D (Collision2D g_collision2D) {
 //		Debug.Log ("Butt-OnCollisionEnter");
+		if (myStatus_StunTimer > 0)
+			return;
+
 		if (g_collision2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
 			g_collision2D.gameObject.GetComponent<PP_Bean> ().Kill ();
 			myBeansCurrent++;
@@ -139,5 +162,15 @@ public class PP_Butt : MonoBehaviour {
 
 	public void SetBodySprite (int g_number, Sprite g_sprite) {
 		myBodies [g_number].GetComponent<PP_Body> ().GetMySpriteRendererPattern ().sprite = g_sprite;
+	}
+
+	public void Stun () {
+		myStatus_StunTimer = myStatus_StunTime;
+		mySpriteRenderer.color = myStunColor;
+		for (int i = 0; i < myBeansCurrent; i++) {
+			Instantiate (myBeanPrefab, this.transform.position + (Vector3)(Random.insideUnitCircle * 0.1f), Quaternion.identity);
+		}
+		myBeansCurrent = 0;
+		myButthole.GetComponent<PP_Hole> ().Pop (1);
 	}
 }

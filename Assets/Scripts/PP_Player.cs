@@ -32,6 +32,7 @@ public class PP_Player : MonoBehaviour {
 	[Header("Ability")]
 	[SerializeField] PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
 	[Header(" - Burp")]
+	[SerializeField] Transform myAbility_Burp_Position;
 	[SerializeField] GameObject myAbility_Burp_Prefab;
 	[SerializeField] Sprite myAbility_Burp_Sprite;
 	[SerializeField] float myAbility_Burp_CD = 5;
@@ -94,11 +95,15 @@ public class PP_Player : MonoBehaviour {
 			}
 		}
 
+		if (myStatus_StunTimer > 0) {
+			return;
+		}
+
 		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				myCDTimer = myAbility_Burp_CD;
-				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, this.transform.position, Quaternion.identity) as GameObject;
-				t_burp.transform.parent = this.transform;
+				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
+//				t_burp.transform.parent = this.transform;
 				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject);
 				myAnimator.SetTrigger ("isButtonDown");
 			}

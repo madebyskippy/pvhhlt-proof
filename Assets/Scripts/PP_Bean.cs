@@ -16,7 +16,9 @@ public class PP_Bean : MonoBehaviour {
 		if (myEffect != null) {
 			Instantiate (myEffect, this.transform.position, Quaternion.identity);
 		}
-		myManager.RemoveBean (this.gameObject);
+		if (myManager != null) {
+			myManager.RemoveBean (this.gameObject);
+		}
 		Destroy (this.gameObject);
 	}
 }
