@@ -104,7 +104,7 @@ public class PP_Player : MonoBehaviour {
 				myCDTimer = myAbility_Burp_CD;
 				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
 //				t_burp.transform.parent = this.transform;
-				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject);
+				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject, myAbility_Burp_Position);
 				myAnimator.SetTrigger ("isButtonDown");
 			}
 		} else if (myAbility == PP_Global.Abilities.Freeze) {
