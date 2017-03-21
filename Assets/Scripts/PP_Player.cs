@@ -12,6 +12,7 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] SpriteRenderer mySpriteRendererPattern;
 	[SerializeField] Animator myAnimator;
 	private Color myColor;
+	private Color myColorDetail;
 	[SerializeField] SpriteRenderer mySpriteRendererBorder;
 
 	private Vector2 myDirection;
@@ -30,7 +31,7 @@ public class PP_Player : MonoBehaviour {
 	private float myCDTimer;
 
 	[Header("Ability")]
-	[SerializeField] PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
+	private PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
 	[Header(" - Burp")]
 	[SerializeField] Transform myAbility_Burp_Position;
 	[SerializeField] GameObject myAbility_Burp_Prefab;
@@ -51,6 +52,7 @@ public class PP_Player : MonoBehaviour {
 
 	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, string g_myControl) {
 		myColor = g_colorSet.myColors [0];
+		myColorDetail = g_colorSet.myColors [1];
 		myTeamNumber = g_teamNumber;
 		myButt = g_butt;
 		SetMyControl (g_myControl);
@@ -187,6 +189,18 @@ public class PP_Player : MonoBehaviour {
 
 	public int GetMyTeamNumber () {
 		return myTeamNumber;
+	}
+
+	public Color GetMyColor () {
+		return myColor;
+	}
+
+	public Color GetMyColorDetail () {
+		return myColorDetail;
+	}
+
+	public PP_Global.Abilities GetMyAbility () {
+		return myAbility;
 	}
 
 	public void Stun () {
