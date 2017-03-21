@@ -25,12 +25,16 @@ public class PP_ScenePlay : MonoBehaviour {
 	//========================================================================
 
 	[SerializeField] float myWinnerScore = 500;
+	[SerializeField] Transform[] myScoresDisplay;
 	private float[] myScores = { 0, 0 };
 	private bool isGameEnd = false;
 
 	// Use this for initialization
 	void Start () {
 		PP_MessageBox.Instance.InitPlay ();
+
+		myScoresDisplay [0].localScale = new Vector2 (1, 0);
+		myScoresDisplay [1].localScale = new Vector2 (1, 0);
 	}
 	
 	// Update is called once per frame
@@ -44,6 +48,7 @@ public class PP_ScenePlay : MonoBehaviour {
 		
 		myScores [g_team] += g_score;
 		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
+		myScoresDisplay [g_team].localScale = new Vector2 (1, myScores [g_team] / myWinnerScore);
 
 		CheckWinner (g_team);
 	}
