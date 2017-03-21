@@ -63,7 +63,7 @@ public class PP_Butt : MonoBehaviour {
 //		mySpriteRendererBack.color = g_buttColors [g_teamNumber + 2];
 		mySpriteRendererBorder.color = g_colorSet.myColorBorder;
 
-		this.transform.position = (Vector3)mySpawnPoint + Vector3.forward * g_teamNumber * 100;
+		this.transform.position = (Vector3)mySpawnPoint + Vector3.forward * g_teamNumber * 50;
 
 		for (int i = 0; i < 3; i++) {
 			GameObject t_player = Instantiate (myPlayerPrefab, mySpawnPoint + Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
