@@ -21,7 +21,9 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] GameObject myButthole;
 	[SerializeField] GameObject myButtSprite;
 	[SerializeField] GameObject myButtSpriteBorder;
+	[SerializeField] GameObject myButtSpriteMask;
 	[SerializeField] float myButtSpriteDeltaScale = 0.25f;
+	[SerializeField] float myButtMaskDeltaScale = 0.2f;
 
 	private int myTeamNumber;
 
@@ -119,9 +121,9 @@ public class PP_Butt : MonoBehaviour {
 	}
 
 	private void UpdateBeans () {
-		
-		myButtSprite.transform.localScale = ((float)myBeansCurrent / myBeansMax * (myScaleRange.y - myScaleRange.x) + myScaleRange.x - myButtSpriteDeltaScale) * Vector2.one;
 		myButtSpriteBorder.transform.localScale = ((float)myBeansCurrent / myBeansMax * (myScaleRange.y - myScaleRange.x) + myScaleRange.x) * Vector2.one;
+		myButtSprite.transform.localScale = (myButtSpriteBorder.transform.localScale.x - myButtSpriteDeltaScale) * Vector2.one;
+		myButtSpriteMask.transform.localScale = (myButtSpriteBorder.transform.localScale.x - myButtMaskDeltaScale) * Vector2.one;
 		myRigidbody2D.mass = (float)myBeansCurrent / myBeansMax * (myMassRange.y - myMassRange.x) + myMassRange.x;
 	}
 
@@ -144,6 +146,19 @@ public class PP_Butt : MonoBehaviour {
 //			Sequence sq = DOTween.Sequence ();
 //			sq.Append (myButthole.transform.DOScale (myButthole.transform.localScale + Vector3.one * 0.5f, 0.1f));
 //			sq.Append (myButthole.transform.DOScale (Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax, 0.15f));
+		}
+	}
+
+	void OnTriggerEnter2D (Collider2D g_Collider2D) {
+		//		Debug.Log ("Butt-OnCollisionEnter");
+		if (myStatus_StunTimer > 0)
+			return;
+
+		if (g_Collider2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
+			g_Collider2D.gameObject.GetComponent<PP_Bean> ().Kill ();
+			myBeansCurrent++;
+
+			myButthole.GetComponent<PP_Hole> ().Eat (1 - (float)myBeansCurrent / myBeansMax);
 		}
 	}
 
