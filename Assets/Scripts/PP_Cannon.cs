@@ -15,6 +15,8 @@ public class PP_Cannon : MonoBehaviour {
 	[SerializeField] GameObject myCannonBall;
 	private float myCannonTimer = 0;
 
+	[SerializeField] Transform[] myBases;
+
 	// Use this for initialization
 	void Start () {
 		myLimitsMax = myHingeJoint2D.limits.max;
@@ -22,7 +24,7 @@ public class PP_Cannon : MonoBehaviour {
 		myLimitsCenter = (myLimitsMax + myLimitsMin) / 2.0f;
 		myAngleMax = myLimitsMax - myLimitsCenter;
 
-		Debug.Log (myLimitsMax + ":" + myLimitsMin + ":" + myLimitsCenter + ":" + myAngleMax);
+//		Debug.Log (myLimitsMax + ":" + myLimitsMin + ":" + myLimitsCenter + ":" + myAngleMax);
 	}
 	
 	// Update is called once per frame
@@ -37,18 +39,26 @@ public class PP_Cannon : MonoBehaviour {
 
 		myCannonTimer += Mathf.Abs (t_angle - myLimitsCenter) / myAngleMax * myMaxScorePerSecond * Time.deltaTime;
 
-		Debug.Log (t_angle);
+//		Debug.Log (t_angle);
 		if (t_angle > myLimitsCenter) {
 			t_myOwnerNumber = 0;
-			Debug.Log ("0");
+//			Debug.Log ("0");
 		} else if (t_angle < myLimitsCenter) {
 			t_myOwnerNumber = 1;
-			Debug.Log ("1");
+//			Debug.Log ("1");
 		}
 
 		if (t_myOwnerNumber != -1) {
 			if (myCannonTimer > 1) {
 				GameObject t_ball = Instantiate (myCannonBall, myCannonHole.transform.position, Quaternion.identity);
+				t_ball.GetComponent<PP_CannonBall> ().Init (
+					t_myOwnerNumber, 
+					myCannonHole.transform.position, 
+					myBases [t_myOwnerNumber].position, 
+					-t_angle
+				);
+				myCannonTimer -= 1;
+
 			}
 		}
 	}
