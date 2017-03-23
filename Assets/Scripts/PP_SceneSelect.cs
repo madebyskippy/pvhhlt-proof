@@ -42,7 +42,7 @@ public class PP_SceneSelect : MonoBehaviour {
 	void Start () {
 		teamA = new GameObject [3];
 		teamB = new GameObject [3];
-		teamAReady = new bool[3] { true, false, false };
+		teamAReady = new bool[3] { false, false, false };
 		teamBReady = new bool[3] { false, false, false };
 		selectA = GameObject.FindGameObjectsWithTag ("SelectA");
 		selectB = GameObject.FindGameObjectsWithTag ("SelectB");
