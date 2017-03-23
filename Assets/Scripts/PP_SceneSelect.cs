@@ -28,6 +28,8 @@ public class PP_SceneSelect : MonoBehaviour {
 	private GameObject[] teamB;
 	private GameObject[] selectA;
 	private GameObject[] selectB;
+	private bool[] teamAReady;
+	private bool[] teamBReady;
 	private int teamACounter = 0;
 	private int teamBCounter = 0;
 	private bool firstGenerate = false;
@@ -40,10 +42,14 @@ public class PP_SceneSelect : MonoBehaviour {
 	void Start () {
 		teamA = new GameObject [3];
 		teamB = new GameObject [3];
+		teamAReady = new bool[3] { true, false, false };
+		teamBReady = new bool[3] { false, false, false };
 		selectA = GameObject.FindGameObjectsWithTag ("SelectA");
 		selectB = GameObject.FindGameObjectsWithTag ("SelectB");
 		PP_MessageBox.Instance.InitPlay ();
 		GetPlayersStatus ();
+		CheckReadys (teamAReady, selectA);
+		CheckReadys (teamBReady, selectB);
 	}
 	
 	// Update is called once per frame
@@ -52,6 +58,25 @@ public class PP_SceneSelect : MonoBehaviour {
 		if (Time.time > 0.005 && !firstGenerate) {
 			firstGenerate = true;
 			UpdateSelection (false);
+		}
+
+		for (int i = 0; i < 3; i++) {
+			string name1 = "Ready" + (i+1);
+			if (Input.GetButtonDown (name1)) {
+				teamAReady [i] = true;
+			}
+
+			string name2 = "Ready" + (i + 4);
+			if (Input.GetButtonDown (name2)) {
+				teamBReady [i] = true;
+			}
+		}
+
+		bool checkTeamAReady = CheckReadys (teamAReady, selectA);
+		bool checkTeamBReady = CheckReadys (teamBReady, selectB);
+
+		if (checkTeamAReady && checkTeamBReady) {
+			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
 		}
 	}
 		
@@ -94,6 +119,8 @@ public class PP_SceneSelect : MonoBehaviour {
 			currentSelect.transform.localPosition = new Vector3 (0f, -0.5f, 0f);
 			currentSelect.transform.localScale = new Vector3 (1.5f, 1.5f, 0f);
 			currentSelect.GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColor();
+			positions[i].GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
+			positions[i].transform.GetChild(0).GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
 			currentSelect.transform.GetChild (0).GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
 
 		}
@@ -109,5 +136,29 @@ public class PP_SceneSelect : MonoBehaviour {
 			GameObject typeObj = selectB [i].transform.GetChild (selectA.Length).gameObject;
 			Destroy (typeObj);
 		}
+	}
+
+	bool CheckReadys(bool[] teamReady, GameObject[] select) {
+		bool ready = true;
+		for (int i = 0; i < teamReady.Length; i++) {
+			GameObject prompText = select [i].transform.FindChild ("ready_promp_text").gameObject;
+			GameObject readyText = select [i].transform.FindChild ("ready_text").gameObject;
+			Color tmpPrompText = prompText.GetComponent<SpriteRenderer>().color;
+			Color tmpReadyText = readyText.GetComponent<SpriteRenderer> ().color;
+			if (teamReady [i]) {
+				tmpPrompText.a = 0f;
+				tmpReadyText.a = 1f;
+				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
+				readyText.GetComponent<SpriteRenderer> ().color = tmpReadyText;
+			} else {
+				tmpPrompText.a = 1f;
+				tmpReadyText.a = 0f;
+				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
+				readyText.GetComponent<SpriteRenderer> ().color = tmpReadyText;
+				ready = false;
+			}
+		}
+
+		return ready;
 	}
 }
