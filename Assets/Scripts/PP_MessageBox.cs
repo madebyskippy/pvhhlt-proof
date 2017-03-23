@@ -31,6 +31,10 @@ public class PP_MessageBox : MonoBehaviour {
 	public PP_ColorSet[] myColors; 
 
 	private float[] myScores = { 0, 0 };
+	private PP_Global.Abilities[] myPlayerAbilities = {
+		PP_Global.Abilities.Burp, PP_Global.Abilities.Dash, PP_Global.Abilities.Freeze,
+		PP_Global.Abilities.Burp, PP_Global.Abilities.Dash, PP_Global.Abilities.Freeze
+	};
 	// Use this for initialization
 	void Start () {
 		
@@ -55,6 +59,10 @@ public class PP_MessageBox : MonoBehaviour {
 	}
 
 	public void SavePlayerAbility (string g_control, PP_Global.Abilities g_ability) {
+		myPlayerAbilities [int.Parse (g_control)] = g_ability;
+	}
 
+	public PP_Global.Abilities GetPlayerAbility (string g_control) {
+		return myPlayerAbilities [int.Parse (g_control)];
 	}
 }

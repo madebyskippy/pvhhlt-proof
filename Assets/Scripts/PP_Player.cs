@@ -47,7 +47,7 @@ public class PP_Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		SetMyAbility ((PP_Global.Abilities)((int.Parse (myControl) - 1) % 3));
+		SetMyAbility (PP_MessageBox.Instance.GetPlayerAbility (myControl));
 	}
 
 	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, string g_myControl) {
@@ -182,6 +182,7 @@ public class PP_Player : MonoBehaviour {
 
 	public void SetMyAbility (PP_Global.Abilities g_ability) {
 		myAbility = g_ability;
+		PP_MessageBox.Instance.SavePlayerAbility (myControl, g_ability);
 
 		myAnimator.SetInteger ("ability", (int)myAbility);
 //		myButt.GetComponent<PP_Butt>().SetBodySprite(int.Parse(myControl) % 3, )
