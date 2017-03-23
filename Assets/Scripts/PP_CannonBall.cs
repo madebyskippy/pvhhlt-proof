@@ -49,7 +49,9 @@ public class PP_CannonBall : MonoBehaviour {
 //		float t_y = 2 * a * t_x;
 
 		//TEMPORARY FIX
-		t_y = (myTargetPosition.y - myInitialPosition.y) / (myTargetPosition.x - myInitialPosition.x ) * t_x;
+		float slope = (myTargetPosition.y - myInitialPosition.y) / (myTargetPosition.x - myInitialPosition.x );
+		float offset = myInitialPosition.y - slope * myInitialPosition.x;
+		t_y = slope * t_x + offset;
 
 		transform.position = new Vector3 (t_x, t_y, transform.position.z);
 		if (Mathf.Abs (this.transform.position.x) - Mathf.Abs (myTargetPosition.x) > 0) {
