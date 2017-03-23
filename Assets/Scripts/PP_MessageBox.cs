@@ -20,7 +20,7 @@ public class PP_MessageBox : MonoBehaviour {
 			instance = this;
 		}
 
-		//		DontDestroyOnLoad(this.gameObject);
+		DontDestroyOnLoad(this.gameObject);
 	}
 	//========================================================================
 
@@ -59,10 +59,10 @@ public class PP_MessageBox : MonoBehaviour {
 	}
 
 	public void SavePlayerAbility (string g_control, PP_Global.Abilities g_ability) {
-		myPlayerAbilities [int.Parse (g_control)] = g_ability;
+		myPlayerAbilities [int.Parse (g_control) - 1] = g_ability;
 	}
 
 	public PP_Global.Abilities GetPlayerAbility (string g_control) {
-		return myPlayerAbilities [int.Parse (g_control)];
+		return myPlayerAbilities [int.Parse (g_control) - 1];
 	}
 }
