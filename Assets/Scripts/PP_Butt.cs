@@ -69,7 +69,7 @@ public class PP_Butt : MonoBehaviour {
 
 		for (int i = 0; i < 3; i++) {
 			GameObject t_player = Instantiate (myPlayerPrefab, mySpawnPoint + Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
-			t_player.transform.position = Vector3.forward * (i * 10 + this.transform.position.z);
+			t_player.transform.position = t_player.transform.position + Vector3.forward * (i * 10 + this.transform.position.z);
 			string t_control = (i + 3 * myTeamNumber + 1).ToString ();
 			t_player.GetComponent<PP_Player> ().Init (myTeamNumber, this.gameObject, g_colorSet.myPlayers[i], g_colorSet.myColorBorder, t_control);
 			t_player.GetComponent<SpringJoint2D> ().connectedBody = this.GetComponent<Rigidbody2D> ();
