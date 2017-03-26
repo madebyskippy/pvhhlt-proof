@@ -66,11 +66,12 @@ public class PP_Player : MonoBehaviour {
 	void Update () {
 		if (myStatus_StunTimer <= 0 && !myStatus_IsFrozen) {
 			UpdateMove ();
+			UpdateRotation ();
 		}
+
 		UpdateStatus ();
 		UpdateAbility ();
 
-		UpdateRotation ();
 	}
 
 	private void UpdateStatus () {
