@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PP_Player : MonoBehaviour {
 
+	[SerializeField] bool isActive = true;
+
 	private int myTeamNumber = 1;
 	private GameObject myButt;
 	private string myControl = "1";
@@ -65,7 +67,8 @@ public class PP_Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (myStatus_StunTimer <= 0 && !myStatus_IsFrozen) {
-			UpdateMove ();
+			if (isActive)
+				UpdateMove ();
 			UpdateRotation ();
 		}
 

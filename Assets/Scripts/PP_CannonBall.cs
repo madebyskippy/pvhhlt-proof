@@ -38,8 +38,8 @@ public class PP_CannonBall : MonoBehaviour {
 		a = Mathf.Abs ((0.5f) * Mathf.Tan (Mathf.Deg2Rad * (myAngle - 90)));
 		h = (x0 + xb) / 2f - (y0 - yb) / (2f * a * (x0 - xb));
 		k = yb - a * (xb - h) * (xb - h);
-		Debug.Log (myAngle + ", a:" + a + ", tan:" + Mathf.Tan (Mathf.Deg2Rad * myAngle) + ", h:" + h + ", k:" + k);
-		Debug.Log ("x0: " + x0 + " y0: " + y0 + ",   xb: " + xb + " yb: " + yb);
+//		Debug.Log (myAngle + ", a:" + a + ", tan:" + Mathf.Tan (Mathf.Deg2Rad * myAngle) + ", h:" + h + ", k:" + k);
+//		Debug.Log ("x0: " + x0 + " y0: " + y0 + ",   xb: " + xb + " yb: " + yb);
 	}
 	
 	// Update is called once per frame
@@ -56,6 +56,7 @@ public class PP_CannonBall : MonoBehaviour {
 		transform.position = new Vector3 (t_x, t_y, transform.position.z);
 		if (Mathf.Abs (this.transform.position.x) - Mathf.Abs (myTargetPosition.x) > 0) {
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, 1);
+//			PP_ScenePlay.Instance.AddScore (myTeamNumber, 2, 1);
 			Destroy (this.gameObject);
 		}
 	}

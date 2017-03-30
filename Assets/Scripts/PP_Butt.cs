@@ -28,6 +28,7 @@ public class PP_Butt : MonoBehaviour {
 	private int myTeamNumber;
 
 	[Header("Beans")]
+	[SerializeField] float myBeanPickUpSpeed = 10;
 	[SerializeField] GameObject myBeanPrefab;
 	[SerializeField] int myBeansMax = 5;
 	[Tooltip("x: min mass, without beans, y: max mass, full")]
@@ -104,15 +105,16 @@ public class PP_Butt : MonoBehaviour {
 //		this.transform.position = t_position;
 		this.transform.position = Vector3.Lerp (this.transform.position, t_position, Time.deltaTime * mySpeed);
 	}
-
-	private void UpdateBodies () {
+		
+	private void UpdateBodies () { 
+		//Update body's position, rotation & localScale
 		for (int i = 0; i < myBodies.Count; i++) {
 			float t_posZ = myBodies [i].transform.position.z;
-			Vector2 t_direction = (this.transform.position - myPlayers[i].transform.position) * -1;
-			Vector2 t_position = (this.transform.position + myPlayers[i].transform.position) / 2;
+			Vector2 t_direction = (this.transform.position - myPlayers [i].transform.position) * -1;
+			Vector2 t_position = (this.transform.position + myPlayers [i].transform.position) / 2;
 
 			Quaternion t_quaternion = Quaternion.Euler (0, 0, 
-				Vector2.Angle (Vector2.up, t_direction) * Mathf.Sign (t_direction.x * -1));
+				                          Vector2.Angle (Vector2.up, t_direction) * Mathf.Sign (t_direction.x * -1));
 
 			myBodies [i].transform.position = (Vector3)t_position + Vector3.forward * t_posZ;
 			myBodies [i].transform.rotation = t_quaternion;
@@ -131,30 +133,30 @@ public class PP_Butt : MonoBehaviour {
 		return myTeamNumber;
 	}
 
-	void OnCollisionEnter2D (Collision2D g_collision2D) {
-//		Debug.Log ("Butt-OnCollisionEnter");
-		if (myStatus_StunTimer > 0)
-			return;
-
-		if (g_collision2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
-			g_collision2D.gameObject.GetComponent<PP_Bean> ().Kill ();
-			myBeansCurrent++;
-
-			myButthole.GetComponent<PP_Hole> ().Eat (1 - (float)myBeansCurrent / myBeansMax);
-
-//			//tweenzzzz
-//			Sequence sq = DOTween.Sequence ();
-//			sq.Append (myButthole.transform.DOScale (myButthole.transform.localScale + Vector3.one * 0.5f, 0.1f));
-//			sq.Append (myButthole.transform.DOScale (Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax, 0.15f));
-		}
-	}
+//	void OnCollisionEnter2D (Collision2D g_collision2D) {
+////		Debug.Log ("Butt-OnCollisionEnter");
+//		if (myStatus_StunTimer > 0)
+//			return;
+//
+//		if (g_collision2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
+//			g_collision2D.gameObject.GetComponent<PP_Bean> ().Kill ();
+//			myBeansCurrent++;
+//
+//			myButthole.GetComponent<PP_Hole> ().Eat (1 - (float)myBeansCurrent / myBeansMax);
+//
+////			//tweenzzzz
+////			Sequence sq = DOTween.Sequence ();
+////			sq.Append (myButthole.transform.DOScale (myButthole.transform.localScale + Vector3.one * 0.5f, 0.1f));
+////			sq.Append (myButthole.transform.DOScale (Vector3.one * 0.75f - Vector3.one * 0.75f * (float)myBeansCurrent / myBeansMax, 0.15f));
+//		}
+//	}
 
 	void OnTriggerEnter2D (Collider2D g_Collider2D) {
 		//		Debug.Log ("Butt-OnCollisionEnter");
 		if (myStatus_StunTimer > 0)
 			return;
 
-		if (g_Collider2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
+		if (g_Collider2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax && myRigidbody2D.velocity.magnitude > myBeanPickUpSpeed) {
 			g_Collider2D.gameObject.GetComponent<PP_Bean> ().Kill ();
 			myBeansCurrent++;
 

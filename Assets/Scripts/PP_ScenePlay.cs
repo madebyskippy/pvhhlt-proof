@@ -53,13 +53,34 @@ public class PP_ScenePlay : MonoBehaviour {
 		CheckWinner (g_team);
 	}
 
+//	public void AddScore (int g_team, int g_type, float g_score) {
+//		if (isGameEnd)
+//			return;
+//
+//		myScores [g_team * 3 + g_type] += g_score;
+//		PP_UIPlay.Instance.ShowScore (g_team, g_type, myScores [g_team * 3 + g_type]);
+////		myScoresDisplay [g_team].localScale = new Vector2 (1, myScores [g_team] / myWinnerScore);
+//
+//		CheckWinner (g_team, g_type);
+//	}
+
 	private void CheckWinner (int g_team) {
 		if (isGameEnd)
 			return;
-		
-		if (myScores [g_team] > myWinnerScore) {
+
+		if (myScores [g_team] >= myWinnerScore) {
 			PP_UIPlay.Instance.ShowWinner (g_team);
 			isGameEnd = true;
 		}
 	}
+
+//	private void CheckWinner (int g_team, int g_type) {
+//		if (isGameEnd)
+//			return;
+//		
+//		if (myScores [g_team * 3 + g_type] > 300) {
+//			PP_UIPlay.Instance.ShowWinner (g_team);
+//			isGameEnd = true;
+//		}
+//	}
 }

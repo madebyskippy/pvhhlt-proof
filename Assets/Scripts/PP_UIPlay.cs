@@ -39,6 +39,11 @@ public class PP_UIPlay : MonoBehaviour {
 		myScoreDisplays [g_team].text = g_score.ToString ("0");
 	}
 
+//	public void ShowScore (int g_team, int g_type, float g_score) {
+//		Debug.Log ("ShowScore");
+//		myScoreDisplays [g_team * 3 + g_type].text = g_score.ToString ("0");
+//	}
+
 	public void ShowWinner (int g_team) {
 		myEndDisplay.SetActive (true);
 		myWinDisplays [g_team].SetActive (true);
