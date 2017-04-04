@@ -28,7 +28,7 @@ public class PP_Butt : MonoBehaviour {
 	private int myTeamNumber;
 
 	[Header("Beans")]
-	[SerializeField] float myBeanPickUpSpeed = 10;
+//	[SerializeField] float myBeanPickUpSpeed = 10;
 	[SerializeField] GameObject myBeanPrefab;
 	[SerializeField] int myBeansMax = 5;
 	[Tooltip("x: min mass, without beans, y: max mass, full")]
@@ -156,7 +156,8 @@ public class PP_Butt : MonoBehaviour {
 		if (myStatus_StunTimer > 0)
 			return;
 
-		if (g_Collider2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax && myRigidbody2D.velocity.magnitude > myBeanPickUpSpeed) {
+//		if (g_Collider2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax && myRigidbody2D.velocity.magnitude > myBeanPickUpSpeed) {
+		if (g_Collider2D.gameObject.tag == PP_Global.TAG_BEAN && myBeansCurrent < myBeansMax) {
 			g_Collider2D.gameObject.GetComponent<PP_Bean> ().Kill ();
 			myBeansCurrent++;
 
