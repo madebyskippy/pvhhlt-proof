@@ -85,7 +85,7 @@ public class PP_SceneSelect : MonoBehaviour {
 		for (int i = 0; i < players.Length; i++) {
 			GameObject currentPlayer = players [i];
 			int currentTeamNum = currentPlayer.GetComponent<PP_Player> ().GetMyTeamNumber();
-			PP_Global.Abilities currentType = currentPlayer.GetComponent<PP_Player> ().GetMyAbility();
+//			PP_Global.Abilities currentType = currentPlayer.GetComponent<PP_Player> ().GetMyAbility();
 			if (currentTeamNum == 0) {
 				teamA [teamACounter++] = currentPlayer;
 			} else {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PP_Skill_Burp : MonoBehaviour {
 	private GameObject myCaster;
-	private Transform myPosition;
+	private Transform myTransform;
 	// Use this for initialization
 	void Start () {
 		
@@ -12,12 +12,13 @@ public class PP_Skill_Burp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.transform.position = myPosition.position;
+		this.transform.position = myTransform.position;
+		this.transform.rotation = myTransform.rotation;
 	}
 
 	public void Init (GameObject g_caster, Transform g_position) {
 		myCaster = g_caster;
-		myPosition = g_position;
+		myTransform = g_position;
 	}
 
 	void OnTriggerEnter2D (Collider2D collider) {
