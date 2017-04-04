@@ -1,5 +1,5 @@
 ﻿//https://forum.unity3d.com/threads/is-it-possible-to-clip-a-sprite-with-another-sprite.254144/
-Shader "Custom/SD_StencilMask" {
+Shader "Custom/Mask/SD_StencilMask" {
 
     Properties
     {
@@ -82,7 +82,7 @@ Shader "Custom/SD_StencilMask" {
             fixed4 frag(v2f IN) : SV_Target
             {
                 fixed4 c = tex2D(_MainTex, IN.texcoord) * IN.color;
-                if (c.a < 0.003) discard;            //Most IMPORTANT working Code
+                if (c.a < 0.03) discard;            //Most IMPORTANT working Code
                 if (_ShowMask == 0) c.a = 0;
                 c.rgb *= c.a;
                 return c;

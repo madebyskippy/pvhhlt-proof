@@ -209,6 +209,10 @@ public class PP_Player : MonoBehaviour {
 		return myAbility;
 	}
 
+	public GameObject GetMyButt () {
+		return myButt;
+	}
+
 	public void Stun () {
 		if (myStatus_IsFrozen)
 			return;

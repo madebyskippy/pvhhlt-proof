@@ -54,8 +54,12 @@ public class PP_MessageBox : MonoBehaviour {
 		}
 	}
 
-	public void SetScore (float[] g_scores) {
+	public void SetScores (float[] g_scores) {
 		myScores = g_scores;
+	}
+
+	public float[] GetScores () {
+		return myScores;
 	}
 
 	public void SavePlayerAbility (string g_control, PP_Global.Abilities g_ability) {
