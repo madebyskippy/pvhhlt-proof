@@ -15,7 +15,7 @@ public class PP_Point : MonoBehaviour {
 	private int myOwnerNumber = -1;
 	[SerializeField] float myInvadeLevelMax = 10;
 
-	[SerializeField] float myScorePerSecond = 1;
+//	[SerializeField] float myScorePerSecond = 1;
 
 	//	void Start () {
 	//	}
@@ -87,7 +87,7 @@ public class PP_Point : MonoBehaviour {
 
 	private void UpdateScore () {
 		if (myOwnerNumber == 0 || myOwnerNumber == 1) {
-			PP_ScenePlay.Instance.AddScore (myOwnerNumber, myScorePerSecond * Time.deltaTime);
+//			PP_ScenePlay.Instance.AddScore (myOwnerNumber, myScorePerSecond * Time.deltaTime);
 		}
 	}
 }
