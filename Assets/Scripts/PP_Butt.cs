@@ -31,6 +31,7 @@ public class PP_Butt : MonoBehaviour {
 //	[SerializeField] float myBeanPickUpSpeed = 10;
 	[SerializeField] GameObject myBeanPrefab;
 	[SerializeField] int myBeansMax = 5;
+	[SerializeField] float myBeanSpawnRadius = 1;
 	[Tooltip("x: min mass, without beans, y: max mass, full")]
 	[SerializeField] Vector2 myMassRange = new Vector2 (1, 10);
 	[Tooltip("x: min scale, without beans, y: max scale, full")]
@@ -186,7 +187,8 @@ public class PP_Butt : MonoBehaviour {
 		myStatus_StunTimer = myStatus_StunTime;
 		mySpriteRenderer.color = myStunColor;
 		for (int i = 0; i < myBeansCurrent; i++) {
-			Instantiate (myBeanPrefab, this.transform.position + (Vector3)(Random.insideUnitCircle * 0.1f), Quaternion.identity);
+			GameObject t_bean = Instantiate (myBeanPrefab, this.transform.position + (Vector3)(Random.insideUnitCircle * 0.1f), Quaternion.identity);
+			t_bean.GetComponent<PP_Bean> ().Init (this.transform.position,myBeanSpawnRadius,true);
 		}
 		myBeansCurrent = 0;
 		myButthole.GetComponent<PP_Hole> ().Pop (1);

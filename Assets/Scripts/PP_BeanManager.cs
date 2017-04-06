@@ -25,6 +25,7 @@ public class PP_BeanManager : MonoBehaviour {
 
 			GameObject t_bean = 
 				Instantiate (myBeanPrefeb, this.transform.position + (Vector3)Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
+			t_bean.GetComponent<PP_Bean> ().Init (this.transform.position,mySpawnRadius,false);
 			t_bean.GetComponent<PP_Bean> ().SetMyManager (this);
 			myBeans.Add (t_bean);
 		}
