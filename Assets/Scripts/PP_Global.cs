@@ -10,6 +10,11 @@ public static class PP_Global {
 		Freeze
 	};
 
+	public enum BeanStatus {
+		Idle,
+		Running
+	};
+
 	public static string TAG_BUTT = "Butt";
 	public static string TAG_GRAPE = "Grape";
 	public static string TAG_BEAN = "Bean";
