@@ -15,8 +15,17 @@ public static class PP_Global {
 		Running
 	};
 
-	public static string TAG_BUTT = "Butt";
-	public static string TAG_GRAPE = "Grape";
-	public static string TAG_BEAN = "Bean";
-	public static string TAG_PLAYER = "Player";
+	public enum ScoreMethod : int {
+		Grape = 0,
+		Bean,
+		Cannon
+	};
+
+	public const string TAG_BUTT = "Butt";
+	public const string TAG_GRAPE = "Grape";
+	public const string TAG_BEAN = "Bean";
+	public const string TAG_PLAYER = "Player";
+
+	public const string SCENE_PLAY = "Play";
+	public const string SCENE_SELECT = "Select";
 }

@@ -15,6 +15,10 @@ public class PP_Body : MonoBehaviour {
 //		
 //	}
 
+	void Start () {
+		
+	}
+
 	public SpriteRenderer GetMySpriteRenderer () {
 		return mySpriteRenderer;
 	}
@@ -22,4 +26,5 @@ public class PP_Body : MonoBehaviour {
 	public SpriteRenderer GetMySpriteRendererPattern () {
 		return mySpriteRendererPattern;
 	}
+
 }

@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PP_Mask : MonoBehaviour {
+	[SerializeField] SpriteRenderer[] myMaskSpriteRenderers;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
 	// Update is called once per frame
-	void Update () {
-		this.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y, 99);
+	public void SetMyMeterialStencilRef (int g_StencilRef) {
+		for (int i = 0; i < myMaskSpriteRenderers.Length; i++) {
+//			myMaskSpriteRenderers [i].material.SetInt ("_StencilRef", g_StencilRef + 1);
+//			myMaskSpriteRenderers [i].material.renderQueue = 3000 + g_StencilRef + 1;
+
+
+			myMaskSpriteRenderers [i].material.SetInt ("_StencilRef", 1);
+			myMaskSpriteRenderers [i].material.renderQueue = 3001;
+		}
 	}
 }

@@ -48,6 +48,11 @@ public class PP_Player : MonoBehaviour {
 	[Header(" - Freeze")]
 	[SerializeField] Sprite myAbility_Freeze_Sprite;
 
+	[Header("SFX")]
+	[SerializeField] AudioClip mySFX_Burp;
+	[SerializeField] AudioClip mySFX_Dash;
+	[SerializeField] AudioClip mySFX_Freeze;
+
 	// Use this for initialization
 	void Start () {
 		SetMyAbility (PP_MessageBox.Instance.GetPlayerAbility (myControl));
@@ -108,6 +113,8 @@ public class PP_Player : MonoBehaviour {
 
 		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
+				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+
 				myCDTimer = myAbility_Burp_CD;
 				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
 //				t_burp.transform.parent = this.transform;
@@ -116,6 +123,8 @@ public class PP_Player : MonoBehaviour {
 			}
 		} else if (myAbility == PP_Global.Abilities.Freeze) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
+				CS_AudioManager.Instance.PlaySFX (mySFX_Freeze);
+
 				myStatus_IsFrozen = true;
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
@@ -127,6 +136,8 @@ public class PP_Player : MonoBehaviour {
 			}
 		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
+				CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
+
 				myCDTimer = myAbility_Dash_CD;
 				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio;
 				myStatus_DashTimer = myAbility_Dash_Time;
