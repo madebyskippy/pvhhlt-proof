@@ -55,7 +55,7 @@ public class PP_CannonBall : MonoBehaviour {
 
 		transform.position = new Vector3 (t_x, t_y, transform.position.z);
 		if (Mathf.Abs (this.transform.position.x) - Mathf.Abs (myTargetPosition.x) > 0) {
-			PP_ScenePlay.Instance.AddScore (myTeamNumber, 1);
+			PP_ScenePlay.Instance.AddScore (myTeamNumber, 1, PP_Global.ScoreMethod.Cannon);
 //			PP_ScenePlay.Instance.AddScore (myTeamNumber, 2, 1);
 			Destroy (this.gameObject);
 		}

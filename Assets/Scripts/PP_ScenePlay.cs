@@ -27,6 +27,10 @@ public class PP_ScenePlay : MonoBehaviour {
 	[SerializeField] float myWinnerScore = 500;
 	[SerializeField] Transform[] myScoresDisplay;
 	private float[] myScores = { 0, 0 };
+	private float[] myScoreMethod = { 0, 0, 0, 0, 0, 0 };
+	[SerializeField] AudioClip mySFX_Grape;
+	[SerializeField] AudioClip mySFX_Bean;
+	[SerializeField] AudioClip mySFX_Cannon;
 	private bool isGameEnd = false;
 
 	// Use this for initialization
@@ -39,16 +43,29 @@ public class PP_ScenePlay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
- 
+		if (isGameEnd) {
+			if (Input.GetButtonDown ("Menu")) {
+				UnityEngine.SceneManagement.SceneManager.LoadScene (PP_Global.SCENE_SELECT);
+			}
+		}
 	}
 		
-	public void AddScore (int g_team, float g_score) {
+	public void AddScore (int g_team, float g_score, PP_Global.ScoreMethod g_method) {
 		if (isGameEnd)
 			return;
 		
 		myScores [g_team] += g_score;
+		myScoreMethod [g_team * 2 + (int)g_method] += g_score;
 		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
 		myScoresDisplay [g_team].localScale = new Vector2 (1, myScores [g_team] / myWinnerScore);
+
+		//play sound
+		if (g_method == PP_Global.ScoreMethod.Grape)
+			CS_AudioManager.Instance.PlaySFX (mySFX_Grape);
+		else if (g_method == PP_Global.ScoreMethod.Bean)
+			CS_AudioManager.Instance.PlaySFX (mySFX_Bean);
+		else if (g_method == PP_Global.ScoreMethod.Cannon)
+			CS_AudioManager.Instance.PlaySFX (mySFX_Cannon);
 
 		CheckWinner (g_team);
 	}
