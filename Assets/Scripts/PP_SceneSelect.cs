@@ -61,12 +61,12 @@ public class PP_SceneSelect : MonoBehaviour {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			string name1 = "Ready" + (i+1);
+			string name1 = "Ready" + (i * 2 + 1);
 			if (Input.GetButtonDown (name1)) {
 				teamAReady [i] = true;
 			}
 
-			string name2 = "Ready" + (i + 4);
+			string name2 = "Ready" + (i * 2 + 2);
 			if (Input.GetButtonDown (name2)) {
 				teamBReady [i] = true;
 			}
