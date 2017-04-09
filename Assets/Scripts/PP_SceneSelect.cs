@@ -33,6 +33,8 @@ public class PP_SceneSelect : MonoBehaviour {
 	private int teamACounter = 0;
 	private int teamBCounter = 0;
 	private bool firstGenerate = false;
+	private bool checkTeamAReady;
+	private bool checkTeamBReady;
 
 	[SerializeField] GameObject burpObject;
 	[SerializeField] GameObject dashObject;
@@ -64,16 +66,19 @@ public class PP_SceneSelect : MonoBehaviour {
 			string name1 = "Ready" + (i * 2 + 1);
 			if (Input.GetButtonDown (name1)) {
 				teamAReady [i] = true;
+				checkTeamAReady = CheckReadys (teamAReady, selectA);
+				checkTeamBReady = CheckReadys (teamBReady, selectB);
 			}
 
 			string name2 = "Ready" + (i * 2 + 2);
 			if (Input.GetButtonDown (name2)) {
 				teamBReady [i] = true;
+				checkTeamAReady = CheckReadys (teamAReady, selectA);
+				checkTeamBReady = CheckReadys (teamBReady, selectB);
 			}
 		}
 
-		bool checkTeamAReady = CheckReadys (teamAReady, selectA);
-		bool checkTeamBReady = CheckReadys (teamBReady, selectB);
+
 
 		if (checkTeamAReady && checkTeamBReady) {
 			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
