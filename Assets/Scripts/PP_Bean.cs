@@ -46,17 +46,17 @@ public class PP_Bean : MonoBehaviour {
 			transform.position = myTargets [0];
 			myCurrentTarget = 1;
 		}
-		getDirection (myTargets[myCurrentTarget]);
+		GetDirection (myTargets[myCurrentTarget]);
 		Look();
 	}
 
 	void Update () {
 		if (myState == PP_Global.BeanStatus.Idle) {
-			getDirection (myTargets [myCurrentTarget]);
+			GetDirection (myTargets [myCurrentTarget]);
 
 			if ((myTargets[myCurrentTarget] - transform.position).magnitude < 0.5f) {
 				myCurrentTarget = (myCurrentTarget + 1) % myTargets.Length;
-				getDirection (myTargets[myCurrentTarget]);
+				GetDirection (myTargets[myCurrentTarget]);
 				Look ();
 			}
 
@@ -85,7 +85,7 @@ public class PP_Bean : MonoBehaviour {
 		transform.position += myDirection * mySpeed;
 	}
 
-	void getDirection(Vector3 g_target){
+	void GetDirection(Vector3 g_target){
 		myDirection = g_target - transform.position;
 		myDirection.z = 0f;
 		myDirection.Normalize ();

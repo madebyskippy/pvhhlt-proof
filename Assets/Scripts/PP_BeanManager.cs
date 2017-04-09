@@ -5,6 +5,7 @@ using UnityEngine;
 public class PP_BeanManager : MonoBehaviour {
 
 	[SerializeField] GameObject myBeanPrefeb;
+	[SerializeField] Transform[] mySpawnTransform;
 	[SerializeField] int myBeanMaxNumber = 5;
 	private List<GameObject> myBeans = new List<GameObject> ();
 	[SerializeField] float mySpawnRadius = 1;

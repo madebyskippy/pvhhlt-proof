@@ -17,6 +17,6 @@ public class PP_Grape : MonoBehaviour {
 			Instantiate (myEffect, this.transform.position, Quaternion.identity);
 		}
 		myManager.StartSpawnTimer ();
-		Destroy (this.gameObject);
+		this.gameObject.SetActive (false);
 	}
 }

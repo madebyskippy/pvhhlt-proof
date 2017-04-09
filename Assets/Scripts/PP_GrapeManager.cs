@@ -12,6 +12,9 @@ public class PP_GrapeManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myTimer = mySpawnTime;
+		myGrapePrefab = Instantiate (myGrapePrefab, this.transform) as GameObject;
+		myGrapePrefab.GetComponent<PP_Grape> ().SetMyManager (this);
+		myGrapePrefab.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -19,8 +22,8 @@ public class PP_GrapeManager : MonoBehaviour {
 		if (myTimer > 0) {
 			myTimer -= Time.deltaTime;
 			if (myTimer <= 0) {
-				GameObject t_grape = Instantiate (myGrapePrefab, this.transform.position, Quaternion.identity) as GameObject;
-				t_grape.GetComponent<PP_Grape> ().SetMyManager (this);
+				myGrapePrefab.transform.position = this.transform.position;
+				myGrapePrefab.SetActive (true);
 				myTimer = 0;
 			}
 		}

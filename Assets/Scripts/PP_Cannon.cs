@@ -12,7 +12,9 @@ public class PP_Cannon : MonoBehaviour {
 	private float myAngleMax;
 
 	[SerializeField] Transform myCannonHole;
-	[SerializeField] GameObject myCannonBall;
+	[SerializeField] GameObject myCannonBallPrefab;
+	[SerializeField] int myCannonBallMaxNumber = 30;
+	private List<GameObject> myCannonBallPool = new List<GameObject> ();
 	private float myCannonTimer = 0;
 
 	[SerializeField] Transform[] myBases;
@@ -25,6 +27,11 @@ public class PP_Cannon : MonoBehaviour {
 		myAngleMax = myLimitsMax - myLimitsCenter;
 
 //		Debug.Log (myLimitsMax + ":" + myLimitsMin + ":" + myLimitsCenter + ":" + myAngleMax);
+
+		//Init the ball pool
+		for (int i = 0; i < myCannonBallMaxNumber; i++) {
+			myCannonBallPool.Add (Instantiate (myCannonBallPrefab, this.transform));
+		}
 	}
 	
 	// Update is called once per frame
@@ -50,15 +57,24 @@ public class PP_Cannon : MonoBehaviour {
 
 		if (t_myOwnerNumber != -1) {
 			if (myCannonTimer > 1) {
-				GameObject t_ball = Instantiate (myCannonBall, myCannonHole.transform.position, Quaternion.identity);
-				t_ball.GetComponent<PP_CannonBall> ().Init (
-					t_myOwnerNumber, 
-					myCannonHole.transform.position, 
-					myBases [t_myOwnerNumber].position, 
-					-t_angle
-				);
-				myCannonTimer -= 1;
+				
+				for (int i = 0; i < myCannonBallPool.Count; i++) {
+					if (myCannonBallPool [i].activeSelf == false) {
+						myCannonBallPool [i].GetComponent<PP_CannonBall>().Init (
+							myCannonHole.position,
+							t_myOwnerNumber, 
+							myBases [t_myOwnerNumber].position, 
+							t_angle
+						);
+						myCannonTimer -= 1;
+						break;
+					}
 
+					if (i == myCannonBallPool.Count - 1) {
+						Debug.Log ("Run out of cannon ball!");
+						myCannonBallPool.Add (Instantiate (myCannonBallPrefab, this.transform));
+					}
+				}
 			}
 		}
 	}
