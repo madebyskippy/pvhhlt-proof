@@ -16,7 +16,7 @@ public class PP_Bean : MonoBehaviour {
 
 	[SerializeField] GameObject myEffect;
 	[SerializeField] Sprite[] mySprites; //can eventually become Animations instead
-	private PP_BeanManager myManager;
+	private PP_BeanSpawnPoint myManager;
 	private Vector3[] myTargets; //the two points it swims between
 	private int myCurrentTarget;
 	private float mySpeed = 0.05f;
@@ -28,19 +28,27 @@ public class PP_Bean : MonoBehaviour {
 
 	private Vector3 myDirection;
 
-	public void Init (Vector3 g_spawnPoint, float g_spawnRadius, bool g_fromButt) {
+	void Start () {
+		this.gameObject.SetActive (false);
+	}
+
+	public void Init (Vector3 g_position, Vector3 g_spawnPosition, float g_spawnRadius, PP_BeanSpawnPoint g_manager = null) {
+		myManager = g_manager;
+
+		this.transform.position = g_position;
+
 		myButts = GameObject.FindGameObjectsWithTag ("Butt");
 		GetComponent<SpriteRenderer> ().sprite = mySprites [Random.Range (0, mySprites.Length)];
 
 		myTargets = new Vector3[5];
 		for (int i = 0; i < myTargets.Length; i++) {
-			myTargets [i] = g_spawnPoint + (Vector3)Random.insideUnitCircle.normalized * g_spawnRadius;
+			myTargets [i] = g_spawnPosition + (Vector3)Random.insideUnitCircle.normalized * g_spawnRadius;
 		}
 
 		myState = PP_Global.BeanStatus.Idle;
 
-		if (g_fromButt) {
-			transform.position = g_spawnPoint;
+		if (g_manager == null) {
+			transform.position = g_spawnPosition;
 			myCurrentTarget = 0;
 		} else {
 			transform.position = myTargets [0];
@@ -48,6 +56,8 @@ public class PP_Bean : MonoBehaviour {
 		}
 		GetDirection (myTargets[myCurrentTarget]);
 		Look();
+
+		this.gameObject.SetActive (true);
 	}
 
 	void Update () {
@@ -82,6 +92,7 @@ public class PP_Bean : MonoBehaviour {
 				}
 			}
 		}
+
 		transform.position += myDirection * mySpeed;
 	}
 
@@ -98,17 +109,14 @@ public class PP_Bean : MonoBehaviour {
 	}
 
 
-	public void SetMyManager (PP_BeanManager g_manager) {
-		myManager = g_manager;
-	}
-
 	public void Kill () {
 		if (myEffect != null) {
 			Instantiate (myEffect, this.transform.position, Quaternion.identity);
 		}
 		if (myManager != null) {
-			myManager.RemoveBean (this.gameObject);
+			myManager.RemoveBean ();
 		}
-		Destroy (this.gameObject);
+
+		this.gameObject.SetActive (false);
 	}
 }

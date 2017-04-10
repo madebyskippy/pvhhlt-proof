@@ -4,37 +4,53 @@ using UnityEngine;
 
 public class PP_BeanManager : MonoBehaviour {
 
-	[SerializeField] GameObject myBeanPrefeb;
-	[SerializeField] Transform[] mySpawnTransform;
-	[SerializeField] int myBeanMaxNumber = 5;
-	private List<GameObject> myBeans = new List<GameObject> ();
-	[SerializeField] float mySpawnRadius = 1;
-	[SerializeField] float mySpawnTime = 5;
-	private float myTimer;
+	private static PP_BeanManager instance = null;
 
-	// Use this for initialization
-	void Start () {
-		myTimer = mySpawnTime;
-	}
-
-	// Update is called once per frame
-	void Update () {
-		if (myTimer > 0) {
-			myTimer -= Time.deltaTime;
-		} else if (myBeans.Count < myBeanMaxNumber) {
-			myTimer = mySpawnTime;
-
-			GameObject t_bean = 
-				Instantiate (myBeanPrefeb, this.transform.position + (Vector3)Random.insideUnitCircle * mySpawnRadius, Quaternion.identity) as GameObject;
-			t_bean.GetComponent<PP_Bean> ().Init (this.transform.position,mySpawnRadius,false);
-			t_bean.GetComponent<PP_Bean> ().SetMyManager (this);
-			myBeans.Add (t_bean);
+	//========================================================================
+	public static PP_BeanManager Instance {
+		get { 
+			return instance;
 		}
 	}
 
-	public void RemoveBean (GameObject g_bean) {
-		myBeans.Remove (g_bean);
-//		Destroy (g_bean);
-//		myBeans.Remove (g_bean);
+	void Awake () {
+		if (instance != null && instance != this) {
+			Destroy(this.gameObject);
+		} else {
+			instance = this;
+		}
+
+//		DontDestroyOnLoad(this.gameObject);
+	}
+	//========================================================================
+
+//	[SerializeField] Transform[] mySpawnPoint;
+	[SerializeField] GameObject myBeanPrefeb;
+	private List<GameObject> myBeanPool = new List<GameObject> ();
+	[SerializeField] int myBeanMaxNumber = 30;
+
+	// Use this for initialization
+	void Start () {
+		for (int i = 0; i < myBeanMaxNumber; i++) {
+			myBeanPool.Add (Instantiate (myBeanPrefeb, this.transform));
+		}
+	}
+
+//	// Update is called once per frame
+//	void Update () {
+//		
+//	}
+
+	public GameObject GetBean () {
+		for (int i = 0; i < myBeanPool.Count; i++) {
+			if (myBeanPool [i].activeSelf == false) {
+				return myBeanPool [i];
+			}
+		}
+
+		Debug.Log ("Run out of bean!");
+		GameObject t_bean = Instantiate (myBeanPrefeb, this.transform) as GameObject;
+		myBeanPool.Add (t_bean);
+		return t_bean;
 	}
 }

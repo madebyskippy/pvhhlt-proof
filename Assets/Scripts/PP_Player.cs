@@ -56,6 +56,10 @@ public class PP_Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		SetMyAbility (PP_MessageBox.Instance.GetPlayerAbility (myControl));
+
+		myAbility_Burp_Prefab = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
+		myAbility_Burp_Prefab.GetComponent<PP_Skill_Burp> ().Init (this.gameObject, myAbility_Burp_Position);
+		myAbility_Burp_Prefab.SetActive (false);
 	}
 
 	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, string g_myControl) {
@@ -115,10 +119,10 @@ public class PP_Player : MonoBehaviour {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
 
+				myAbility_Burp_Prefab.SetActive (true);
+				
 				myCDTimer = myAbility_Burp_CD;
-				GameObject t_burp = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
-//				t_burp.transform.parent = this.transform;
-				t_burp.GetComponent<PP_Skill_Burp> ().Init (this.gameObject, myAbility_Burp_Position);
+
 				myAnimator.SetTrigger ("isButtonDown");
 			}
 		} else if (myAbility == PP_Global.Abilities.Freeze) {

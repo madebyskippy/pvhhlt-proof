@@ -197,8 +197,8 @@ public class PP_Butt : MonoBehaviour {
 		myStatus_StunTimer = myStatus_StunTime;
 		mySpriteRenderer.color = myStunColor;
 		for (int i = 0; i < myBeansCurrent; i++) {
-			GameObject t_bean = Instantiate (myBeanPrefab, this.transform.position + (Vector3)(Random.insideUnitCircle * 0.1f), Quaternion.identity);
-			t_bean.GetComponent<PP_Bean> ().Init (this.transform.position,myBeanSpawnRadius,true);
+			GameObject t_bean = PP_BeanManager.Instance.GetBean ();
+			t_bean.GetComponent<PP_Bean> ().Init (this.transform.position + (Vector3)Random.insideUnitCircle * myBeanSpawnRadius, this.transform.position, myBeanSpawnRadius, null);
 		}
 		myBeansCurrent = 0;
 		myButthole.GetComponent<PP_Hole> ().Pop (1);

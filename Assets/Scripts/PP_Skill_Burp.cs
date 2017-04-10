@@ -30,4 +30,8 @@ public class PP_Skill_Burp : MonoBehaviour {
 			collider.gameObject.GetComponent<PP_Butt> ().Stun ();
 		}
 	}
+
+	public void HideMyself () {
+		this.gameObject.SetActive (false);
+	}
 }
