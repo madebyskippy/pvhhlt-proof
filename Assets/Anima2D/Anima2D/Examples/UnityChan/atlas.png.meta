@@ -428,6 +428,10 @@ TextureImporter:
       tessellationDetail: -1
     outline: []
   spritePackingTag: uchan
-  userData: 97765237784576
+<<<<<<< HEAD
+  userData: 97775429681152
+=======
+  userData: 97775623536640
+>>>>>>> 9823bdede4093583eb9861ed57c81c1b22ef3278
   assetBundleName: 
   assetBundleVariant: 
