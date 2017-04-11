@@ -5,13 +5,13 @@ using UnityEngine;
 public class PP_GrapeManager : MonoBehaviour {
 
 	[SerializeField] GameObject myGrapePrefab;
-
+	[SerializeField] float myFirstSpawnTime = 5;
 	[SerializeField] float mySpawnTime = 5;
 	private float myTimer;
 
 	// Use this for initialization
 	void Start () {
-		myTimer = mySpawnTime;
+		myTimer = myFirstSpawnTime;
 		myGrapePrefab = Instantiate (myGrapePrefab, this.transform) as GameObject;
 		myGrapePrefab.GetComponent<PP_Grape> ().SetMyManager (this);
 		myGrapePrefab.SetActive (false);
