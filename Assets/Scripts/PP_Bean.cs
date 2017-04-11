@@ -15,7 +15,7 @@ public class PP_Bean : MonoBehaviour {
 	 */
 
 	[SerializeField] GameObject myEffect;
-	[SerializeField] Sprite[] mySprites; //can eventually become Animations instead
+	[SerializeField] Animator myAnimator;
 	private PP_BeanSpawnPoint myManager;
 	private Vector3[] myTargets; //the two points it swims between
 	private int myCurrentTarget;
@@ -38,7 +38,6 @@ public class PP_Bean : MonoBehaviour {
 		this.transform.position = g_position;
 
 		myButts = GameObject.FindGameObjectsWithTag ("Butt");
-		GetComponent<SpriteRenderer> ().sprite = mySprites [Random.Range (0, mySprites.Length)];
 
 		myTargets = new Vector3[5];
 		for (int i = 0; i < myTargets.Length; i++) {
@@ -58,6 +57,7 @@ public class PP_Bean : MonoBehaviour {
 		Look();
 
 		this.gameObject.SetActive (true);
+		myAnimator.SetInteger ("Type", (int)Random.Range (0, 4));
 	}
 
 	void Update () {
