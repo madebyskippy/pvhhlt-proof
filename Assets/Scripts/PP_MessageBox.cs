@@ -35,6 +35,9 @@ public class PP_MessageBox : MonoBehaviour {
 		PP_Global.Abilities.Burp, PP_Global.Abilities.Dash, PP_Global.Abilities.Freeze,
 		PP_Global.Abilities.Burp, PP_Global.Abilities.Dash, PP_Global.Abilities.Freeze
 	};
+
+	private bool isPaused;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -68,5 +71,18 @@ public class PP_MessageBox : MonoBehaviour {
 
 	public PP_Global.Abilities GetPlayerAbility (string g_control) {
 		return myPlayerAbilities [int.Parse (g_control) - 1];
+	}
+
+	public void Pause (bool g_status) {
+		isPaused = g_status;
+		if (isPaused) {
+			Time.timeScale = 0;
+		} else {
+			Time.timeScale = 1;
+		}
+	}
+
+	public bool GetIsPaused () {
+		return isPaused;
 	}
 }
