@@ -32,6 +32,7 @@ public class PP_Player : MonoBehaviour {
 	private float myStatus_SpeedRatio = 1;
 	private float myStatus_DashTimer;
 	private float myCDTimer;
+	private float myChargeTimer;
 
 	[Header("Ability")]
 	private PP_Global.Abilities myAbility = PP_Global.Abilities.Burp;
@@ -39,10 +40,12 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Transform myAbility_Burp_Position;
 	[SerializeField] GameObject myAbility_Burp_Prefab;
 	[SerializeField] Sprite myAbility_Burp_Sprite;
-	[SerializeField] float myAbility_Burp_CD = 5;
+	[SerializeField] float myAbility_Burp_CD = 2;
+	[SerializeField] float myAbility_Burp_MaxChargeTime = 3;
 	[SerializeField] float myAbility_Burp_StunTime = 4;
 	[Header(" - Dash")]
 	[SerializeField] float myAbility_Dash_CD = 2;
+	[SerializeField] float myAbility_Dash_MaxChargeTime = 3;
 	[SerializeField] float myAbility_Dash_SpeedRatio = 10;
 	[SerializeField] float myAbility_Dash_Time = 0.5f;
 	[Header(" - Freeze")]
@@ -80,22 +83,23 @@ public class PP_Player : MonoBehaviour {
 				UpdateMove ();
 			UpdateRotation ();
 		}
+	}
 
+	void Update () {
 		UpdateStatus ();
 		UpdateAbility ();
-
 	}
 
 	private void UpdateStatus () {
 		if (myStatus_StunTimer > 0) {
-			myStatus_StunTimer -= Time.fixedDeltaTime;
+			myStatus_StunTimer -= Time.deltaTime;
 			if (myStatus_StunTimer <= 0) {
 				myStatus_StunTimer = 0;
 				mySpriteRenderer.color = myColor;
 			}
 		}
 		if (myStatus_DashTimer > 0) {
-			myStatus_DashTimer -= Time.fixedDeltaTime;
+			myStatus_DashTimer -= Time.deltaTime;
 			if (myStatus_DashTimer <= 0) {
 				myStatus_DashTimer = 0;
 				myStatus_SpeedRatio = 1f;
@@ -105,7 +109,7 @@ public class PP_Player : MonoBehaviour {
 
 	private void UpdateAbility () {
 		if (myCDTimer > 0) {
-			myCDTimer -= Time.fixedDeltaTime;
+			myCDTimer -= Time.deltaTime;
 			if (myCDTimer <= 0) {
 				myCDTimer = 0;
 			}
@@ -117,14 +121,32 @@ public class PP_Player : MonoBehaviour {
 
 		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
-				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
-
-				myAbility_Burp_Prefab.SetActive (true);
-				
-				myCDTimer = myAbility_Burp_CD;
-
 				myAnimator.SetTrigger ("isButtonDown");
 			}
+			if (Input.GetButton ("Skill" + myControl)) {
+				myChargeTimer += Time.deltaTime;
+				if (myChargeTimer > myAbility_Burp_MaxChargeTime) {
+					myChargeTimer = myAbility_Burp_MaxChargeTime;
+				}
+			}
+
+			if (Input.GetButtonUp ("Skill" + myControl)) {
+				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+				myAbility_Burp_Prefab.transform.localScale = Vector3.one * myChargeTimer;
+				myChargeTimer = 0;
+				myAbility_Burp_Prefab.SetActive (true);
+				myAnimator.SetTrigger ("isButtonUp");
+			}
+
+//			if (Input.GetButtonDown ("Skill" + myControl)) {
+//				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+//
+//				myAbility_Burp_Prefab.SetActive (true);
+//				
+//				myCDTimer = myAbility_Burp_CD;
+//
+//				myAnimator.SetTrigger ("isButtonDown");
+//			}
 		} else if (myAbility == PP_Global.Abilities.Freeze) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
 				CS_AudioManager.Instance.PlaySFX (mySFX_Freeze);
