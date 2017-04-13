@@ -12,7 +12,8 @@ public static class PP_Global {
 
 	public enum BeanStatus {
 		Idle,
-		Running
+		Running,
+		Frozen
 	};
 
 	public enum ScoreMethod : int {

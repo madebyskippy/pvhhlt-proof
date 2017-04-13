@@ -28,6 +28,9 @@ public class PP_Bean : MonoBehaviour {
 
 	private PP_Global.BeanStatus myState;
 
+	private float myStatus_FreezeTimer;
+	[SerializeField] float myStatus_FreezeTime = 1f;
+
 	private Vector3 myDirection;
 
 	void Start () {
@@ -64,14 +67,14 @@ public class PP_Bean : MonoBehaviour {
 
 	void FixedUpdate () {
 		if (myState == PP_Global.BeanStatus.Idle) {
-//			GetComponent<SpriteRenderer> ().color = Color.white;
+			GetComponent<SpriteRenderer> ().color = Color.white;
 			GetDirection (myTargets [myCurrentTarget]);
 			Look ();
 			mySpeed = myIdleSpeed;
 
-			if ((myTargets[myCurrentTarget] - transform.position).magnitude < 0.5f) {
+			if ((myTargets [myCurrentTarget] - transform.position).magnitude < 0.5f) {
 				myCurrentTarget = (myCurrentTarget + 1) % myTargets.Length;
-				GetDirection (myTargets[myCurrentTarget]);
+				GetDirection (myTargets [myCurrentTarget]);
 				Look ();
 			}
 
@@ -79,7 +82,7 @@ public class PP_Bean : MonoBehaviour {
 			int t_ClosestButt = -1;
 			float t_ClosestDistance = 0f;
 			for (int i = 0; i < myButts.Length; i++) {
-				if (((Vector2)(myButts [i].transform.position)-(Vector2)(transform.position)).sqrMagnitude < myButtDistance) {
+				if (((Vector2)(myButts [i].transform.position) - (Vector2)(transform.position)).sqrMagnitude < myButtDistance) {
 					float t_Distance = ((Vector2)(myButts [i].transform.position) - (Vector2)(transform.position)).sqrMagnitude;
 					if (t_Distance < t_ClosestDistance || t_ClosestDistance == 0f) {
 						t_ClosestButt = i;
@@ -93,7 +96,6 @@ public class PP_Bean : MonoBehaviour {
 				Vector3 t_target = transform.position + t_direction.normalized * 100f;
 				GetDirection (t_target);
 				Look ();
-				Debug.Log ("running!!");
 			}
 
 		} else if (myState == PP_Global.BeanStatus.Running) {
@@ -102,7 +104,7 @@ public class PP_Bean : MonoBehaviour {
 			PP_Global.BeanStatus t_MyState = PP_Global.BeanStatus.Idle;
 			for (int i = 0; i < myButts.Length; i++) {
 				//stay running if either butt is too close
-				if (((Vector2)(myButts [i].transform.position)-(Vector2)(transform.position)).sqrMagnitude < myButtDistance*2f) {
+				if (((Vector2)(myButts [i].transform.position) - (Vector2)(transform.position)).sqrMagnitude < myButtDistance * 2f) {
 					Vector3 t_direction = ((Vector2)(transform.position) - (Vector2)(myButts [i].transform.position));
 					Vector3 t_target = transform.position + t_direction.normalized * 100f;
 					GetDirection (t_target);
@@ -110,10 +112,13 @@ public class PP_Bean : MonoBehaviour {
 					t_MyState = PP_Global.BeanStatus.Running;
 				}
 			}
-			if (t_MyState == PP_Global.BeanStatus.Idle) {
-				Debug.Log ("everything fine ");
-			}
 			myState = t_MyState;
+		} else if (myState == PP_Global.BeanStatus.Frozen) {
+			mySpeed = 0f;
+			myStatus_FreezeTimer += Time.deltaTime;
+			if (myStatus_FreezeTimer > myStatus_FreezeTime) {
+				myState = PP_Global.BeanStatus.Idle;
+			}
 		}
 
 		transform.position += myDirection * mySpeed;
@@ -141,5 +146,14 @@ public class PP_Bean : MonoBehaviour {
 		}
 
 		this.gameObject.SetActive (false);
+	}
+
+	public void Stun () {
+		if (myState != PP_Global.BeanStatus.Frozen) {
+			Debug.Log ("bean down");
+			GetComponent<SpriteRenderer> ().color = Color.gray;
+			myState = PP_Global.BeanStatus.Frozen;
+			myStatus_FreezeTimer = 0f;
+		}
 	}
 }

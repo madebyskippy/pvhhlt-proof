@@ -26,6 +26,10 @@ public class PP_Skill_Burp : MonoBehaviour {
 			collider.gameObject.GetComponent<PP_Player> ().Stun ();
 		}
 
+		if (collider.tag == PP_Global.TAG_BEAN){
+			collider.gameObject.GetComponent<PP_Bean> ().Stun ();
+		}
+
 		if (collider.tag == PP_Global.TAG_BUTT) {
 			collider.gameObject.GetComponent<PP_Butt> ().Stun ();
 		}
