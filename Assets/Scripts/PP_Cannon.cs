@@ -3,6 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PP_Cannon : MonoBehaviour {
+	
+	private static PP_Cannon instance = null;
+
+	//========================================================================
+	public static PP_Cannon Instance {
+		get { 
+			return instance;
+		}
+	}
+
+	void Awake () {
+		if (instance != null && instance != this) {
+			Destroy(this.gameObject);
+		} else {
+			instance = this;
+		}
+
+//		DontDestroyOnLoad(this.gameObject);
+	}
+	//========================================================================
+
 	[SerializeField] float myMaxScorePerSecond = 2;
 	[SerializeField] Transform myCannon;
 	[SerializeField] HingeJoint2D myHingeJoint2D;
@@ -18,6 +39,20 @@ public class PP_Cannon : MonoBehaviour {
 	private float myCannonTimer = 0;
 
 	[SerializeField] Transform[] myBases;
+
+	[Header("Shell")]
+	[SerializeField] Transform myClam;
+	[SerializeField] Transform myShellLeft;
+	[SerializeField] Transform myShellRight;
+	private float myShellCharge = 0;
+	[SerializeField] float myShellChargeMax = 60;
+	[SerializeField] float myShellChargePerSecond = 1;
+	private float myShellTimer;
+	[SerializeField] float myShellClosedTime = 10;
+	private float myShellAngleTarget;
+	[SerializeField] float myShellRotationSpeed = 10;
+	[SerializeField] Vector2 myShellAngleRange = new Vector2 (60, 120);
+	[SerializeField] float myShellAngleClosed = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -35,7 +70,15 @@ public class PP_Cannon : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+		UpdateShoot ();
+		UpdateShell ();
+	}
+
+	private void UpdateShoot () {
+		if (myShellTimer > 0)
+			return;
+
 		int t_myOwnerNumber = -1;
 
 		float t_angle = myCannon.rotation.eulerAngles.z;
@@ -44,20 +87,20 @@ public class PP_Cannon : MonoBehaviour {
 		}
 		t_angle = Mathf.Clamp (t_angle, myLimitsMin, myLimitsMax);
 
-		myCannonTimer += Mathf.Abs (t_angle - myLimitsCenter) / myAngleMax * myMaxScorePerSecond * Time.deltaTime;
+		myCannonTimer += Mathf.Abs (t_angle - myLimitsCenter) / myAngleMax * myMaxScorePerSecond * Time.fixedDeltaTime;
 
-//		Debug.Log (t_angle);
+		//		Debug.Log (t_angle);
 		if (t_angle > myLimitsCenter) {
 			t_myOwnerNumber = 0;
-//			Debug.Log ("0");
+			//			Debug.Log ("0");
 		} else if (t_angle < myLimitsCenter) {
 			t_myOwnerNumber = 1;
-//			Debug.Log ("1");
+			//			Debug.Log ("1");
 		}
 
 		if (t_myOwnerNumber != -1) {
 			if (myCannonTimer > 1) {
-				
+
 				for (int i = 0; i < myCannonBallPool.Count; i++) {
 					if (myCannonBallPool [i].activeSelf == false) {
 						myCannonBallPool [i].GetComponent<PP_CannonBall>().Init (
@@ -76,6 +119,54 @@ public class PP_Cannon : MonoBehaviour {
 					}
 				}
 			}
+		}
+
+		myCannon.rotation.eulerAngles.Set (0, 0, t_angle);
+
+		myCannon.transform.localPosition = Vector3.zero;
+	}
+
+	private void UpdateShell () {
+		//shell rotate
+		myClam.rotation = myCannon.rotation;
+
+		if (myShellTimer > 0) {
+			myShellTimer -= Time.fixedDeltaTime;
+			if (myShellTimer <= 0) {
+				//Open
+				myShellTimer = 0;
+				myCannon.gameObject.SetActive (true);
+			}
+		} else {
+			myShellAngleTarget = 
+				(myShellAngleRange.y - myShellAngleRange.x) * myShellCharge / myShellChargeMax + myShellAngleRange.x;
+		}
+
+		myShellLeft.localRotation = Quaternion.Lerp (
+			myShellLeft.localRotation, 
+			Quaternion.Euler (0, 0, myShellAngleTarget), 
+			Time.fixedDeltaTime * myShellRotationSpeed
+		);
+
+		myShellRight.localRotation = Quaternion.Lerp (
+			myShellRight.localRotation, 
+			Quaternion.Euler (0, 0, -myShellAngleTarget), 
+			Time.fixedDeltaTime * myShellRotationSpeed
+		);
+
+	}
+
+	public void ShellCharge () {
+		if (myShellTimer > 0)
+			return;
+		
+		myShellCharge += Time.fixedDeltaTime * myShellChargePerSecond;
+		if (myShellCharge > myShellChargeMax) {
+			//Close
+			myShellTimer = myShellClosedTime;
+			myShellCharge = 0;
+			myShellAngleTarget = myShellAngleClosed;
+			myCannon.gameObject.SetActive (false);
 		}
 	}
 }

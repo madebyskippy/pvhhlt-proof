@@ -12,9 +12,9 @@ public class PP_CharacterSelect : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+//	void Update () {
+//		
+//	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Player") {

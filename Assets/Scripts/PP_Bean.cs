@@ -62,7 +62,7 @@ public class PP_Bean : MonoBehaviour {
 		myAnimator.SetInteger ("Type", (int)Random.Range (0, 4));
 	}
 
-	void Update () {
+	void FixedUpdate () {
 		if (myState == PP_Global.BeanStatus.Idle) {
 //			GetComponent<SpriteRenderer> ().color = Color.white;
 			GetDirection (myTargets [myCurrentTarget]);

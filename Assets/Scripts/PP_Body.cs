@@ -15,9 +15,9 @@ public class PP_Body : MonoBehaviour {
 //		
 //	}
 
-	void Start () {
-		
-	}
+//	void Start () {
+//		
+//	}
 
 	public SpriteRenderer GetMySpriteRenderer () {
 		return mySpriteRenderer;
