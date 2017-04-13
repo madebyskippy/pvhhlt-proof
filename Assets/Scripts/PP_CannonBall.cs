@@ -32,10 +32,10 @@ public class PP_CannonBall : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
-		this.transform.position += (Vector3)myDirection * mySpeed * Time.deltaTime;
-		float t_ratio = Mathf.Clamp01 (mySpeedRatio * Time.deltaTime);
+		this.transform.position += (Vector3)myDirection * mySpeed * Time.fixedDeltaTime;
+		float t_ratio = Mathf.Clamp01 (mySpeedRatio * Time.fixedDeltaTime);
 		myDirection = ((Vector2)(myTargetPosition - this.transform.position) * t_ratio + myDirection * (1 - t_ratio)).normalized;
 //		Debug.Log (myDirection.magnitude + " " + t_ratio);
 

@@ -74,7 +74,7 @@ public class PP_Player : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (myStatus_StunTimer <= 0 && !myStatus_IsFrozen) {
 			if (isActive)
 				UpdateMove ();
@@ -88,14 +88,14 @@ public class PP_Player : MonoBehaviour {
 
 	private void UpdateStatus () {
 		if (myStatus_StunTimer > 0) {
-			myStatus_StunTimer -= Time.deltaTime;
+			myStatus_StunTimer -= Time.fixedDeltaTime;
 			if (myStatus_StunTimer <= 0) {
 				myStatus_StunTimer = 0;
 				mySpriteRenderer.color = myColor;
 			}
 		}
 		if (myStatus_DashTimer > 0) {
-			myStatus_DashTimer -= Time.deltaTime;
+			myStatus_DashTimer -= Time.fixedDeltaTime;
 			if (myStatus_DashTimer <= 0) {
 				myStatus_DashTimer = 0;
 				myStatus_SpeedRatio = 1f;
@@ -105,7 +105,7 @@ public class PP_Player : MonoBehaviour {
 
 	private void UpdateAbility () {
 		if (myCDTimer > 0) {
-			myCDTimer -= Time.deltaTime;
+			myCDTimer -= Time.fixedDeltaTime;
 			if (myCDTimer <= 0) {
 				myCDTimer = 0;
 			}
@@ -169,7 +169,7 @@ public class PP_Player : MonoBehaviour {
 
 		myRigidbody2D.velocity = myMoveAxis * mySpeed * myStatus_SpeedRatio;
 	
-		float t_moveAxisReduce = Time.deltaTime * moveGravity;
+		float t_moveAxisReduce = Time.fixedDeltaTime * moveGravity;
 		if (myMoveAxis.magnitude < t_moveAxisReduce)
 			myMoveAxis = Vector2.zero;
 		else
@@ -193,7 +193,7 @@ public class PP_Player : MonoBehaviour {
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.up, myRotation) * Mathf.Sign (myRotation.x * -1));
 
-		this.transform.rotation = Quaternion.Lerp (this.transform.rotation, t_quaternion, Time.deltaTime * myRotationSpeed);
+		this.transform.rotation = Quaternion.Lerp (this.transform.rotation, t_quaternion, Time.fixedDeltaTime * myRotationSpeed);
 	}
 
 	public void SetMyControl (string g_myControl) {
