@@ -11,7 +11,7 @@ public class PP_Bean : MonoBehaviour {
 	 * 
 	 * 
 	 * todo: 
-	 * 		avoid butt
+	 * 		stop when burped
 	 */
 
 	[SerializeField] GameObject myEffect;
@@ -20,11 +20,16 @@ public class PP_Bean : MonoBehaviour {
 	private Vector3[] myTargets; //the two points it swims between
 	private int myCurrentTarget;
 	private float mySpeed = 0.05f;
+	[SerializeField] float myIdleSpeed = 0.05f;
+	[SerializeField] float myRunningSpeed = 0.1f;
 
 	private GameObject[] myButts;
-	[SerializeField] float myButtDistance = 2f;
+	[SerializeField] float myButtDistance = 6f;
 
 	private PP_Global.BeanStatus myState;
+
+	private float myStatus_FreezeTimer;
+	[SerializeField] float myStatus_FreezeTime = 1f;
 
 	private Vector3 myDirection;
 
@@ -60,36 +65,59 @@ public class PP_Bean : MonoBehaviour {
 		myAnimator.SetInteger ("Type", (int)Random.Range (0, 4));
 	}
 
-	void Update () {
+	void FixedUpdate () {
 		if (myState == PP_Global.BeanStatus.Idle) {
+			GetComponent<SpriteRenderer> ().color = Color.white;
 			GetDirection (myTargets [myCurrentTarget]);
+			Look ();
+			mySpeed = myIdleSpeed;
 
-			if ((myTargets[myCurrentTarget] - transform.position).magnitude < 0.5f) {
+			if ((myTargets [myCurrentTarget] - transform.position).magnitude < 0.5f) {
 				myCurrentTarget = (myCurrentTarget + 1) % myTargets.Length;
-				GetDirection (myTargets[myCurrentTarget]);
+				GetDirection (myTargets [myCurrentTarget]);
 				Look ();
 			}
 
-			//running away doesn't work yet so it's not going in
-//			for (int i = 0; i < myButts.Length; i++) {
-//				if (((Vector2)(myButts [i].transform.position)-(Vector2)(transform.position)).sqrMagnitude < myButtDistance) {
-//					myState = PP_Global.BeanStatus.Running;
-//					Vector3 t_direction = ((Vector2)(transform.position) - (Vector2)(myButts [i].transform.position));
-//					Vector3 t_target = transform.position + t_direction.normalized * 100f;
-//					getDirection (t_target);
-//					Look ();
-//					Debug.Log ("running!!");
-//					break;
-//				}
-//			}
+			//check if it should run away from a butt
+			int t_ClosestButt = -1;
+			float t_ClosestDistance = 0f;
+			for (int i = 0; i < myButts.Length; i++) {
+				if (((Vector2)(myButts [i].transform.position) - (Vector2)(transform.position)).sqrMagnitude < myButtDistance) {
+					float t_Distance = ((Vector2)(myButts [i].transform.position) - (Vector2)(transform.position)).sqrMagnitude;
+					if (t_Distance < t_ClosestDistance || t_ClosestDistance == 0f) {
+						t_ClosestButt = i;
+						t_ClosestDistance = t_Distance;
+					}
+				}
+			}
+			if (t_ClosestButt > -1) {
+				myState = PP_Global.BeanStatus.Running;
+				Vector3 t_direction = ((Vector2)(transform.position) - (Vector2)(myButts [t_ClosestButt].transform.position));
+				Vector3 t_target = transform.position + t_direction.normalized * 100f;
+				GetDirection (t_target);
+				Look ();
+			}
 
 		} else if (myState == PP_Global.BeanStatus.Running) {
-			myState = PP_Global.BeanStatus.Idle;
+//			GetComponent<SpriteRenderer> ().color = Color.red;
+			mySpeed = myRunningSpeed;
+			PP_Global.BeanStatus t_MyState = PP_Global.BeanStatus.Idle;
 			for (int i = 0; i < myButts.Length; i++) {
 				//stay running if either butt is too close
-				if (((Vector2)(myButts [i].transform.position)-(Vector2)(transform.position)).sqrMagnitude < myButtDistance) {
-					myState = PP_Global.BeanStatus.Running;
+				if (((Vector2)(myButts [i].transform.position) - (Vector2)(transform.position)).sqrMagnitude < myButtDistance * 2f) {
+					Vector3 t_direction = ((Vector2)(transform.position) - (Vector2)(myButts [i].transform.position));
+					Vector3 t_target = transform.position + t_direction.normalized * 100f;
+					GetDirection (t_target);
+					Look ();
+					t_MyState = PP_Global.BeanStatus.Running;
 				}
+			}
+			myState = t_MyState;
+		} else if (myState == PP_Global.BeanStatus.Frozen) {
+			mySpeed = 0f;
+			myStatus_FreezeTimer += Time.deltaTime;
+			if (myStatus_FreezeTimer > myStatus_FreezeTime) {
+				myState = PP_Global.BeanStatus.Idle;
 			}
 		}
 
@@ -118,5 +146,14 @@ public class PP_Bean : MonoBehaviour {
 		}
 
 		this.gameObject.SetActive (false);
+	}
+
+	public void Stun () {
+		if (myState != PP_Global.BeanStatus.Frozen) {
+			Debug.Log ("bean down");
+			GetComponent<SpriteRenderer> ().color = Color.gray;
+			myState = PP_Global.BeanStatus.Frozen;
+			myStatus_FreezeTimer = 0f;
+		}
 	}
 }

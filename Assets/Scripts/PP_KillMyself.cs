@@ -16,9 +16,9 @@ public class PP_KillMyself : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (isTimeTrigger) {
-			myTimer -= Time.deltaTime;
+			myTimer -= Time.fixedDeltaTime;
 			if (myTimer <= 0) {
 				KillMyself ();
 			}

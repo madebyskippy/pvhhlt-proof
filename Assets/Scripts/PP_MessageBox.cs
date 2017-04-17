@@ -38,15 +38,15 @@ public class PP_MessageBox : MonoBehaviour {
 
 	private bool isPaused;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+//	// Use this for initialization
+//	void Start () {
+//		
+//	}
+//	
+//	// Update is called once per frame
+//	void Update () {
+//		
+//	}
 
 	public void InitPlay () {
 		for (int i = 0; i < 2; i++) {

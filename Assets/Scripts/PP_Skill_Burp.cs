@@ -11,7 +11,7 @@ public class PP_Skill_Burp : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		this.transform.position = myTransform.position;
 		this.transform.rotation = myTransform.rotation;
 	}
@@ -24,6 +24,10 @@ public class PP_Skill_Burp : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D collider) {
 		if (myCaster != collider.gameObject && collider.tag == PP_Global.TAG_PLAYER){
 			collider.gameObject.GetComponent<PP_Player> ().Stun ();
+		}
+
+		if (collider.tag == PP_Global.TAG_BEAN){
+			collider.gameObject.GetComponent<PP_Bean> ().Stun ();
 		}
 
 		if (collider.tag == PP_Global.TAG_BUTT) {

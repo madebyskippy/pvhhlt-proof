@@ -70,7 +70,7 @@ public class PP_Cannon : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		UpdateShoot ();
 		UpdateShell ();
 	}
@@ -87,7 +87,7 @@ public class PP_Cannon : MonoBehaviour {
 		}
 		t_angle = Mathf.Clamp (t_angle, myLimitsMin, myLimitsMax);
 
-		myCannonTimer += Mathf.Abs (t_angle - myLimitsCenter) / myAngleMax * myMaxScorePerSecond * Time.deltaTime;
+		myCannonTimer += Mathf.Abs (t_angle - myLimitsCenter) / myAngleMax * myMaxScorePerSecond * Time.fixedDeltaTime;
 
 		//		Debug.Log (t_angle);
 		if (t_angle > myLimitsCenter) {
@@ -121,6 +121,8 @@ public class PP_Cannon : MonoBehaviour {
 			}
 		}
 
+		myCannon.rotation.eulerAngles.Set (0, 0, t_angle);
+
 		myCannon.transform.localPosition = Vector3.zero;
 	}
 
@@ -129,7 +131,7 @@ public class PP_Cannon : MonoBehaviour {
 		myClam.rotation = myCannon.rotation;
 
 		if (myShellTimer > 0) {
-			myShellTimer -= Time.deltaTime;
+			myShellTimer -= Time.fixedDeltaTime;
 			if (myShellTimer <= 0) {
 				//Open
 				myShellTimer = 0;
@@ -143,13 +145,13 @@ public class PP_Cannon : MonoBehaviour {
 		myShellLeft.localRotation = Quaternion.Lerp (
 			myShellLeft.localRotation, 
 			Quaternion.Euler (0, 0, myShellAngleTarget), 
-			Time.deltaTime * myShellRotationSpeed
+			Time.fixedDeltaTime * myShellRotationSpeed
 		);
 
 		myShellRight.localRotation = Quaternion.Lerp (
 			myShellRight.localRotation, 
 			Quaternion.Euler (0, 0, -myShellAngleTarget), 
-			Time.deltaTime * myShellRotationSpeed
+			Time.fixedDeltaTime * myShellRotationSpeed
 		);
 
 	}
@@ -158,7 +160,7 @@ public class PP_Cannon : MonoBehaviour {
 		if (myShellTimer > 0)
 			return;
 		
-		myShellCharge += Time.deltaTime * myShellChargePerSecond;
+		myShellCharge += Time.fixedDeltaTime * myShellChargePerSecond;
 		if (myShellCharge > myShellChargeMax) {
 			//Close
 			myShellTimer = myShellClosedTime;
