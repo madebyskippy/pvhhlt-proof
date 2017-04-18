@@ -29,6 +29,7 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Color myStunColor = Color.gray;
 	private float myStatus_StunTimer;
 	private bool myStatus_IsFrozen = false;
+//	private Vector2 myStatus_FrozenPosition;
 	private float myStatus_SpeedRatio = 1;
 	private float myStatus_DashTimer;
 	private float myCDTimer;
@@ -40,11 +41,11 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Transform myAbility_Burp_Position;
 	[SerializeField] GameObject myAbility_Burp_Prefab;
 	[SerializeField] Sprite myAbility_Burp_Sprite;
-	[SerializeField] float myAbility_Burp_CD = 2;
+//	[SerializeField] float myAbility_Burp_CD = 2;
 	[SerializeField] float myAbility_Burp_MaxChargeTime = 3;
 	[SerializeField] float myAbility_Burp_StunTime = 4;
 	[Header(" - Dash")]
-	[SerializeField] float myAbility_Dash_CD = 2;
+//	[SerializeField] float myAbility_Dash_CD = 2;
 	[SerializeField] float myAbility_Dash_MaxChargeTime = 3;
 	[SerializeField] float myAbility_Dash_SpeedRatio = 10;
 	[SerializeField] float myAbility_Dash_Time = 0.5f;
@@ -105,6 +106,10 @@ public class PP_Player : MonoBehaviour {
 				myStatus_SpeedRatio = 1f;
 			}
 		}
+
+//		if (myStatus_IsFrozen) {
+//			this.transform.position = myStatus_FrozenPosition;
+//		}
 	}
 
 	private void UpdateAbility () {
@@ -152,6 +157,7 @@ public class PP_Player : MonoBehaviour {
 				CS_AudioManager.Instance.PlaySFX (mySFX_Freeze);
 
 				myStatus_IsFrozen = true;
+//				myStatus_FrozenPosition = this.transform.position;
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
 				myAnimator.SetTrigger ("isButtonDown");
@@ -162,14 +168,26 @@ public class PP_Player : MonoBehaviour {
 			}
 		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
-				CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
-
-				myCDTimer = myAbility_Dash_CD;
-				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio;
-				myStatus_DashTimer = myAbility_Dash_Time;
 				myAnimator.SetTrigger ("isButtonDown");
 			}
+
+			if (Input.GetButton ("Skill" + myControl)) {
+				myChargeTimer += Time.deltaTime;
+				if (myChargeTimer > myAbility_Dash_MaxChargeTime) {
+					myChargeTimer = myAbility_Dash_MaxChargeTime;
+				}
+			}
+
+			if (Input.GetButtonUp ("Skill" + myControl)) {
+				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio * myChargeTimer;
+				myStatus_DashTimer = myAbility_Dash_Time;
+				myChargeTimer = 0;
+				myAnimator.SetTrigger ("isButtonUp");
+			}
 		}
+
+//		Debug.Log (myChargeTimer);
 	}
 
 	private void UpdateMove () {

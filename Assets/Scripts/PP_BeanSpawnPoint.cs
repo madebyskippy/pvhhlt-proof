@@ -10,6 +10,8 @@ public class PP_BeanSpawnPoint : MonoBehaviour {
 	[SerializeField] float mySpawnTime = 5;
 	private float myTimer;
 
+	[SerializeField] GameObject myBoundsMarker;
+
 	// Use this for initialization
 	void Start () {
 		myTimer = mySpawnTime;
@@ -26,6 +28,10 @@ public class PP_BeanSpawnPoint : MonoBehaviour {
 			GameObject t_bean = PP_BeanManager.Instance.GetBean ();
 			t_bean.GetComponent<PP_Bean> ().Init (this.transform.position + (Vector3)Random.insideUnitCircle * mySpawnRadius, this.transform.position, mySpawnRadius, this);
 		}
+	}
+
+	public Vector3 GetBounds() {
+		return myBoundsMarker.transform.position;
 	}
 
 	public void RemoveBean () {
