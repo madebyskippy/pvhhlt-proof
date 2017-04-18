@@ -29,6 +29,7 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Color myStunColor = Color.gray;
 	private float myStatus_StunTimer;
 	private bool myStatus_IsFrozen = false;
+//	private Vector2 myStatus_FrozenPosition;
 	private float myStatus_SpeedRatio = 1;
 	private float myStatus_DashTimer;
 	private float myCDTimer;
@@ -105,6 +106,10 @@ public class PP_Player : MonoBehaviour {
 				myStatus_SpeedRatio = 1f;
 			}
 		}
+
+//		if (myStatus_IsFrozen) {
+//			this.transform.position = myStatus_FrozenPosition;
+//		}
 	}
 
 	private void UpdateAbility () {
@@ -152,6 +157,7 @@ public class PP_Player : MonoBehaviour {
 				CS_AudioManager.Instance.PlaySFX (mySFX_Freeze);
 
 				myStatus_IsFrozen = true;
+//				myStatus_FrozenPosition = this.transform.position;
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
 				myAnimator.SetTrigger ("isButtonDown");

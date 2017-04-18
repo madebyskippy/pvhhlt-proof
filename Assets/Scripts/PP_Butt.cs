@@ -51,12 +51,15 @@ public class PP_Butt : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		UpdatePosition ();
+		//		UpdatePosition ();
 		UpdateBodies ();
 //		UpdatePlayers ();
 		UpdateBeans ();
 		UpdateStatus ();
 	}
+
+//	void LateUpdate () {
+//	}
 
 	public void Init (int g_teamNumber, Vector2 g_spawnPoint, PP_ColorSet g_colorSet) {
 		myTeamNumber = g_teamNumber;
