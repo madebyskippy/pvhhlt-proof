@@ -7,7 +7,8 @@ public class PP_Skill_Burp : MonoBehaviour {
 	private Transform myTransform;
 	// Use this for initialization
 	void Start () {
-		
+		//		this.GetComponent<Animator> ().Play ("Burp");
+//		this.GetComponent<Animator> ().enabled = true;
 	}
 	
 	// Update is called once per frame
@@ -36,6 +37,8 @@ public class PP_Skill_Burp : MonoBehaviour {
 	}
 
 	public void HideMyself () {
+		Debug.Log ("HideMyself");
 		this.gameObject.SetActive (false);
+//		this.GetComponent<Animator> ().enabled = false;
 	}
 }
