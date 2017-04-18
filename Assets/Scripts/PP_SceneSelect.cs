@@ -124,10 +124,10 @@ public class PP_SceneSelect : MonoBehaviour {
 			}
 
 			GameObject currentSelect = Instantiate(currentType, positions[i].transform);
-			currentSelect.transform.localPosition = new Vector3 (0f, -0.5f, 0f);
-			currentSelect.transform.localScale = new Vector3 (1.5f, 1.5f, 0f);
+			currentSelect.transform.localPosition = new Vector3 (0f, 1.26f, 0f);
+			currentSelect.transform.localScale = new Vector3 (1f, 1f, 0f);
 			currentSelect.GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColor();
-			positions[i].GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
+//			positions[i].GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
 			positions[i].transform.GetChild(0).GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
 			currentSelect.transform.GetChild (0).GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
 
@@ -136,12 +136,12 @@ public class PP_SceneSelect : MonoBehaviour {
 
 	void ClearSelections() {
 		for (int i = 0; i < selectA.Length; i++) {
-			GameObject typeObj = selectA [i].transform.GetChild (selectA.Length).gameObject;
+			GameObject typeObj = selectA [i].transform.GetChild (2).gameObject;
 			Destroy (typeObj);
 		}
 
 		for (int i = 0; i < selectB.Length; i++) {
-			GameObject typeObj = selectB [i].transform.GetChild (selectA.Length).gameObject;
+			GameObject typeObj = selectB [i].transform.GetChild (2).gameObject;
 			Destroy (typeObj);
 		}
 	}
@@ -149,19 +149,19 @@ public class PP_SceneSelect : MonoBehaviour {
 	bool CheckReadys(bool[] teamReady, GameObject[] select) {
 		bool ready = true;
 		for (int i = 0; i < teamReady.Length; i++) {
-			GameObject prompText = select [i].transform.FindChild ("ready_promp_text").gameObject;
+//			GameObject prompText = select [i].transform.FindChild ("ready_promp_text").gameObject;
 			GameObject readyText = select [i].transform.FindChild ("ready_text").gameObject;
-			Color tmpPrompText = prompText.GetComponent<SpriteRenderer>().color;
+//			Color tmpPrompText = prompText.GetComponent<SpriteRenderer>().color;
 			Color tmpReadyText = readyText.GetComponent<SpriteRenderer> ().color;
 			if (teamReady [i]) {
-				tmpPrompText.a = 0f;
+//				tmpPrompText.a = 0f;
 				tmpReadyText.a = 1f;
-				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
+//				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
 				readyText.GetComponent<SpriteRenderer> ().color = tmpReadyText;
 			} else {
-				tmpPrompText.a = 1f;
+//				tmpPrompText.a = 1f;
 				tmpReadyText.a = 0f;
-				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
+//				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
 				readyText.GetComponent<SpriteRenderer> ().color = tmpReadyText;
 				ready = false;
 			}
