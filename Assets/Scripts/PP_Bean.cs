@@ -23,6 +23,8 @@ public class PP_Bean : MonoBehaviour {
 	[SerializeField] float myStatus_FreezeTime = 1f;
 
 	private Vector3 myDirection;
+	private float myRotationSpeed = 8f;
+	private Quaternion myTargetRotation;
 
 	void Start () {
 		this.gameObject.SetActive (false);
@@ -115,7 +117,8 @@ public class PP_Bean : MonoBehaviour {
 			}
 		}
 
-		transform.position += myDirection * mySpeed;
+		transform.position += myDirection * mySpeed * Time.fixedDeltaTime;
+		UpdateRotation ();
 	}
 
 	void GetDirection(Vector3 g_target){
@@ -127,7 +130,8 @@ public class PP_Bean : MonoBehaviour {
 	void Look(){
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.right, myDirection) * Mathf.Sign (myDirection.y));
-		transform.rotation = t_quaternion;
+//		transform.rotation = t_quaternion;
+		myTargetRotation = t_quaternion;
 	}
 
 
@@ -149,5 +153,9 @@ public class PP_Bean : MonoBehaviour {
 			myState = PP_Global.BeanStatus.Frozen;
 			myStatus_FreezeTimer = 0f;
 		}
+	}
+
+	void UpdateRotation () {
+		this.transform.rotation = Quaternion.Lerp (this.transform.rotation, myTargetRotation, Time.fixedDeltaTime * myRotationSpeed);
 	}
 }
