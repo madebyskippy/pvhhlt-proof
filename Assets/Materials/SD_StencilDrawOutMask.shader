@@ -1,4 +1,6 @@
-﻿//https://forum.unity3d.com/threads/is-it-possible-to-clip-a-sprite-with-another-sprite.254144/
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//https://forum.unity3d.com/threads/is-it-possible-to-clip-a-sprite-with-another-sprite.254144/
 Shader "Custom/Mask/SD_StencilDrawOutMask" {
     Properties
     {
@@ -59,7 +61,7 @@ Shader "Custom/Mask/SD_StencilDrawOutMask" {
             v2f vert(appdata_t IN)
             {
                 v2f OUT;
-                OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);
+                OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.texcoord = IN.texcoord;
                 OUT.color = IN.color * _Color;
                 #ifdef PIXELSNAP_ON
