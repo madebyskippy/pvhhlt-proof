@@ -38,6 +38,7 @@ public class PP_Butt : MonoBehaviour {
 	[SerializeField] Vector2 myScaleRange = new Vector2 (1, 1.5f);
 	private int myBeansCurrent = 0;
 	[SerializeField] GameObject myParticleBeans;
+	[SerializeField] AudioClip mySFX_EatBean;
 
 	[Header("Status")]
 	[SerializeField] Color myStunColor = Color.gray;
@@ -176,6 +177,8 @@ public class PP_Butt : MonoBehaviour {
 			myBeansCurrent++;
 
 			myButthole.GetComponent<PP_Hole> ().Eat (1 - (float)myBeansCurrent / myBeansMax);
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_EatBean);
 		}
 	}
 

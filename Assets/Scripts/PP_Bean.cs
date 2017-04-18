@@ -23,7 +23,7 @@ public class PP_Bean : MonoBehaviour {
 	[SerializeField] float myStatus_FreezeTime = 1f;
 
 	private Vector3 myDirection;
-	private float myRotationSpeed = 8f;
+	[SerializeField] float myRotationSpeed = 8f;
 	private Quaternion myTargetRotation;
 
 	void Start () {
@@ -136,6 +136,7 @@ public class PP_Bean : MonoBehaviour {
 
 
 	public void Kill () {
+		
 		if (myEffect != null) {
 			Instantiate (myEffect, this.transform.position, Quaternion.identity);
 		}
