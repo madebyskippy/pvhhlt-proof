@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class PP_Bean : MonoBehaviour {
 
-	/*
-	 * two states (set an enum from global)
-	 * 		first state: 	idle (just moving around)
-	 * 		second state:	running away
-	 * 
-	 * 
-	 * todo: 
-	 * 		stop when burped
-	 */
 
 	[SerializeField] GameObject myEffect;
 	[SerializeField] Animator myAnimator;
@@ -32,6 +23,8 @@ public class PP_Bean : MonoBehaviour {
 	[SerializeField] float myStatus_FreezeTime = 1f;
 
 	private Vector3 myDirection;
+	[SerializeField] float myRotationSpeed = 8f;
+	private Quaternion myTargetRotation;
 
 	void Start () {
 		this.gameObject.SetActive (false);
@@ -46,7 +39,10 @@ public class PP_Bean : MonoBehaviour {
 
 		myTargets = new Vector3[5];
 		for (int i = 0; i < myTargets.Length; i++) {
-			myTargets [i] = g_spawnPosition + (Vector3)Random.insideUnitCircle.normalized * g_spawnRadius;
+			Vector3 t_targetPoint = g_spawnPosition + (Vector3)Random.insideUnitCircle.normalized * g_spawnRadius;
+			t_targetPoint.x = Mathf.Clamp (t_targetPoint.x, myManager.GetBounds ().x * -1f, myManager.GetBounds ().x);
+			t_targetPoint.y = Mathf.Clamp (t_targetPoint.y, myManager.GetBounds ().y * -1f, myManager.GetBounds ().y);
+			myTargets [i] = t_targetPoint;
 		}
 
 		myState = PP_Global.BeanStatus.Idle;
@@ -121,7 +117,8 @@ public class PP_Bean : MonoBehaviour {
 			}
 		}
 
-		transform.position += myDirection * mySpeed;
+		transform.position += myDirection * mySpeed * Time.fixedDeltaTime;
+		UpdateRotation ();
 	}
 
 	void GetDirection(Vector3 g_target){
@@ -133,11 +130,13 @@ public class PP_Bean : MonoBehaviour {
 	void Look(){
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.right, myDirection) * Mathf.Sign (myDirection.y));
-		transform.rotation = t_quaternion;
+//		transform.rotation = t_quaternion;
+		myTargetRotation = t_quaternion;
 	}
 
 
 	public void Kill () {
+		
 		if (myEffect != null) {
 			Instantiate (myEffect, this.transform.position, Quaternion.identity);
 		}
@@ -155,5 +154,9 @@ public class PP_Bean : MonoBehaviour {
 			myState = PP_Global.BeanStatus.Frozen;
 			myStatus_FreezeTimer = 0f;
 		}
+	}
+
+	void UpdateRotation () {
+		this.transform.rotation = Quaternion.Lerp (this.transform.rotation, myTargetRotation, Time.fixedDeltaTime * myRotationSpeed);
 	}
 }
