@@ -32,6 +32,8 @@ public class PP_PauseController : MonoBehaviour {
 
 	private bool isStickActive = false;
 
+	private bool isMenuActive = true;
+
 	// Use this for initialization
 	void Start () {
 		resumeBtn = this.transform.GetChild (0).GetChild (2).gameObject;
@@ -42,6 +44,9 @@ public class PP_PauseController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!isMenuActive)
+			return;
+		
 		if (Input.GetButtonDown("Menu")) {
 			Debug.Log ("change the pause key");
 			toggleMenuShowHide ();
@@ -96,5 +101,9 @@ public class PP_PauseController : MonoBehaviour {
 		bool isPaused = messageBox.GetComponent<PP_MessageBox> ().GetIsPaused();
 		messageBox.GetComponent<PP_MessageBox> ().Pause(!isPaused);
 		this.transform.GetChild(0).gameObject.SetActive (!isPaused);
+	}
+
+	public void SetIsMenuActive (bool g_isActive) {
+		isMenuActive = g_isActive;
 	}
 }
