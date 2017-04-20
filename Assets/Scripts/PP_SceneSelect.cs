@@ -20,7 +20,7 @@ public class PP_SceneSelect : MonoBehaviour {
 			instance = this;
 		}
 
-		//		DontDestroyOnLoad(this.gameObject);
+//		DontDestroyOnLoad(this.gameObject);
 	}
 	//========================================================================
 
@@ -28,6 +28,8 @@ public class PP_SceneSelect : MonoBehaviour {
 	private GameObject[] teamB;
 	private GameObject[] selectA;
 	private GameObject[] selectB;
+	private GameObject[] pauseA;
+	private GameObject[] pauseB;
 	private bool[] teamAReady;
 	private bool[] teamBReady;
 	private int teamACounter = 0;
@@ -35,6 +37,7 @@ public class PP_SceneSelect : MonoBehaviour {
 	private bool firstGenerate = false;
 	private bool checkTeamAReady;
 	private bool checkTeamBReady;
+	private GameObject pauseCore;
 
 	[SerializeField] GameObject burpObject;
 	[SerializeField] GameObject dashObject;
@@ -44,10 +47,13 @@ public class PP_SceneSelect : MonoBehaviour {
 	void Start () {
 		teamA = new GameObject [3];
 		teamB = new GameObject [3];
+		pauseA = new GameObject [3];
+		pauseB = new GameObject [3];
 		teamAReady = new bool[3] { false, false, false };
 		teamBReady = new bool[3] { false, false, false };
 		selectA = GameObject.FindGameObjectsWithTag ("SelectA");
 		selectB = GameObject.FindGameObjectsWithTag ("SelectB");
+		GetPauseInfo ();
 		PP_MessageBox.Instance.InitPlay ();
 		GetPlayersStatus ();
 		CheckReadys (teamAReady, selectA);
@@ -84,11 +90,20 @@ public class PP_SceneSelect : MonoBehaviour {
 			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
 		}
 	}
+
+	void GetPauseInfo() {
+		pauseCore = GameObject.Find ("PauseScreen").transform.GetChild (0).gameObject;
+		pauseA [0] = pauseCore.transform.GetChild (0).GetChild (0).gameObject;
+		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
+		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
+		pauseB [0] = pauseCore.transform.GetChild (1).GetChild (0).gameObject;
+		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
+		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
+	}
 		
 	void GetPlayersStatus() {
 		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 		for (int i = 0; i < players.Length; i++) {
-//			Debug.Log (players.Length);
 			GameObject currentPlayer = players [i];
 			int currentTeamNum = currentPlayer.GetComponent<PP_Player> ().GetMyTeamNumber();
 //			PP_Global.Abilities currentType = currentPlayer.GetComponent<PP_Player> ().GetMyAbility();
@@ -106,11 +121,13 @@ public class PP_SceneSelect : MonoBehaviour {
 		if (changed) {
 			ClearSelections ();
 		}
-		GenerateSelections (selectA, teamA);
-		GenerateSelections (selectB, teamB);
+		GenerateSelections (selectA, teamA, false);
+		GenerateSelections (selectB, teamB, false);
+		GenerateSelections (pauseA, teamA, true);
+		GenerateSelections (pauseB, teamB, true);
 	}
 
-	void GenerateSelections(GameObject[] positions, GameObject[] team){
+	void GenerateSelections(GameObject[] positions, GameObject[] team, bool isPause){
 		for (int i = 0; i < 3; i++) {
 			PP_Global.Abilities currentAAbility = team [i].GetComponent<PP_Player> ().GetMyAbility();
 			GameObject currentType = burpObject;
@@ -131,6 +148,16 @@ public class PP_SceneSelect : MonoBehaviour {
 			positions[i].transform.GetChild(0).GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
 			currentSelect.transform.GetChild (0).GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
 
+			if (isPause) {
+				SpriteRenderer selfSprites = currentSelect.GetComponent<SpriteRenderer> ();
+				selfSprites.sortingOrder = 3;
+				selfSprites.sortingLayerName = "UI";
+				for (int j = 0; j < currentSelect.transform.childCount; j++) {
+					SpriteRenderer childSprites = currentSelect.transform.GetChild(j).GetComponent<SpriteRenderer> ();
+					childSprites.sortingOrder = 3;
+					childSprites.sortingLayerName = "UI";
+				}
+			}
 		}
 	}
 
@@ -138,11 +165,15 @@ public class PP_SceneSelect : MonoBehaviour {
 		for (int i = 0; i < selectA.Length; i++) {
 			GameObject typeObj = selectA [i].transform.GetChild (2).gameObject;
 			Destroy (typeObj);
+			GameObject uiObj = pauseA [i].transform.GetChild (1).gameObject;
+			Destroy (uiObj);
 		}
 
 		for (int i = 0; i < selectB.Length; i++) {
 			GameObject typeObj = selectB [i].transform.GetChild (2).gameObject;
 			Destroy (typeObj);
+			GameObject uiObj = pauseB [i].transform.GetChild (1).gameObject;
+			Destroy (uiObj);
 		}
 	}
 
