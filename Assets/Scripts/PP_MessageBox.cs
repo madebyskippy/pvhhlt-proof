@@ -38,6 +38,9 @@ public class PP_MessageBox : MonoBehaviour {
 
 	private bool isPaused;
 
+	private string mySceneSelect = "Select";
+	private string myScenePlay = "Play";
+
 //	// Use this for initialization
 //	void Start () {
 //		
@@ -84,5 +87,21 @@ public class PP_MessageBox : MonoBehaviour {
 
 	public bool GetIsPaused () {
 		return isPaused;
+	}
+
+	public void SetScenePlay (string g_name) {
+		myScenePlay = g_name;
+	}
+
+	public void SetSceneSelect (string g_name) {
+		mySceneSelect = g_name;
+	}
+
+	public void LoadScenePlay () {
+		UnityEngine.SceneManagement.SceneManager.LoadScene (myScenePlay);
+	}
+
+	public void LoadSceneSelect () {
+		UnityEngine.SceneManagement.SceneManager.LoadScene (mySceneSelect);
 	}
 }

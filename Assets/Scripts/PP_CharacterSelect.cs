@@ -5,6 +5,7 @@ using UnityEngine;
 public class PP_CharacterSelect : MonoBehaviour {
 	public PP_Global.Abilities ability;
 	private GameObject sceneSelect;
+	public bool changeable = false;
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +18,7 @@ public class PP_CharacterSelect : MonoBehaviour {
 //	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Player") {
+		if (coll.gameObject.tag == "Player" && changeable) {
 			coll.gameObject.GetComponent<PP_Player> ().SetMyAbility (ability);
 			sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection (true);
 		}
