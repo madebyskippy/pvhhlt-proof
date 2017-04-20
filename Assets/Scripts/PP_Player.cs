@@ -79,6 +79,9 @@ public class PP_Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (PP_MessageBox.Instance.GetIsPaused ())
+			return;
+		
 		if (myStatus_StunTimer <= 0 && !myStatus_IsFrozen) {
 			if (isActive)
 				UpdateMove ();
@@ -87,6 +90,9 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	void Update () {
+		if (PP_MessageBox.Instance.GetIsPaused ())
+			return;
+
 		UpdateStatus ();
 		UpdateAbility ();
 	}

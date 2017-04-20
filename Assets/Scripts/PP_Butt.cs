@@ -52,6 +52,8 @@ public class PP_Butt : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (PP_MessageBox.Instance.GetIsPaused ())
+			return;
 		//		UpdatePosition ();
 		UpdateBodies ();
 //		UpdatePlayers ();

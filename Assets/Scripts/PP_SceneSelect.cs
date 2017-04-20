@@ -87,7 +87,8 @@ public class PP_SceneSelect : MonoBehaviour {
 
 
 		if (checkTeamAReady && checkTeamBReady) {
-			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
+//			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
+			PP_MessageBox.Instance.LoadScenePlay ();
 		}
 	}
 

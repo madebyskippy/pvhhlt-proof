@@ -30,6 +30,8 @@ public class PP_PauseController : MonoBehaviour {
 	private GameObject resumeBtn;
 	private GameObject exitBtn;
 
+	private bool isStickActive = false;
+
 	// Use this for initialization
 	void Start () {
 		resumeBtn = this.transform.GetChild (0).GetChild (2).gameObject;
@@ -40,25 +42,32 @@ public class PP_PauseController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Z)) {
+		if (Input.GetButtonDown("Menu")) {
 			Debug.Log ("change the pause key");
 			toggleMenuShowHide ();
 		}
 
-		if (Time.timeScale == 0 && Input.GetKeyDown (KeyCode.UpArrow)) {
+		if (Input.GetAxisRaw ("Vertical") == 0) {
+			isStickActive = false;
+		}
+
+		if (Time.timeScale == 0 && Input.GetAxisRaw("Vertical") > 0 && !isStickActive) {
 			Debug.Log ("change the menu select key");
+			isStickActive = true;
 			toggleMenuSelect ();
 		}
 
-		if (Time.timeScale == 0 && Input.GetKeyDown (KeyCode.DownArrow)) {
+		if (Time.timeScale == 0 && Input.GetAxisRaw("Vertical") < 0 && !isStickActive) {
 			Debug.Log ("change the menu select key");
+			isStickActive = true;
 			toggleMenuSelect ();
 		}
 
-		if (Time.timeScale == 0 && Input.GetKeyDown (KeyCode.Return)) {
+		if (Time.timeScale == 0 && Input.GetButtonDown("Submit")) {
 			Debug.Log ("change the menu Confirm key");
 			if (exitChoose) {
-				Debug.Log ("do the return to menu function");
+//				Debug.Log ("do the return to menu function");
+				PP_MessageBox.Instance.LoadSceneSelect ();
 			}
 
 			toggleMenuShowHide ();
