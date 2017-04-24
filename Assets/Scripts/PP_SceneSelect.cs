@@ -58,6 +58,8 @@ public class PP_SceneSelect : MonoBehaviour {
 		GetPlayersStatus ();
 		CheckReadys (teamAReady, selectA);
 		CheckReadys (teamBReady, selectB);
+
+		PP_TransitionManager.Instance.EndTransition ();
 	}
 	
 	// Update is called once per frame

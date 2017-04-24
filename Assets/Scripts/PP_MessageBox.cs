@@ -98,10 +98,11 @@ public class PP_MessageBox : MonoBehaviour {
 	}
 
 	public void LoadScenePlay () {
-		UnityEngine.SceneManagement.SceneManager.LoadScene (myScenePlay);
+		PP_TransitionManager.Instance.StartTransition (myScenePlay);
 	}
 
 	public void LoadSceneSelect () {
-		UnityEngine.SceneManagement.SceneManager.LoadScene (mySceneSelect);
+
+		PP_TransitionManager.Instance.StartTransition (mySceneSelect);
 	}
 }

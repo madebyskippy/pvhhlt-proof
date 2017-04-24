@@ -39,13 +39,15 @@ public class PP_ScenePlay : MonoBehaviour {
 
 		myScoresDisplay [0].localScale = new Vector2 (1, 0);
 		myScoresDisplay [1].localScale = new Vector2 (1, 0);
+
+		PP_TransitionManager.Instance.EndTransition ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (isGameEnd) {
 			if (Input.GetButtonDown ("Menu")) {
-				UnityEngine.SceneManagement.SceneManager.LoadScene (PP_Global.SCENE_SELECT);
+				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			}
 		}
 	}
