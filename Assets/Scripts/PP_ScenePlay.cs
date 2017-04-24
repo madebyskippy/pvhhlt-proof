@@ -25,7 +25,7 @@ public class PP_ScenePlay : MonoBehaviour {
 	//========================================================================
 
 	[SerializeField] float myWinnerScore = 500;
-	[SerializeField] Transform[] myScoresDisplay;
+	[SerializeField] PP_Base[] myBases;
 	private float[] myScores = { 0, 0 };
 	private float[] myScoreMethod = { 0, 0, 0, 0, 0, 0 };
 	[SerializeField] AudioClip mySFX_Grape;
@@ -37,8 +37,8 @@ public class PP_ScenePlay : MonoBehaviour {
 	void Start () {
 		PP_MessageBox.Instance.InitPlay ();
 
-		myScoresDisplay [0].localScale = new Vector2 (1, 0);
-		myScoresDisplay [1].localScale = new Vector2 (1, 0);
+		myBases [0].ShowScore (myScores[0]);
+		myBases [1].ShowScore (myScores[1]);
 
 		PP_TransitionManager.Instance.EndTransition ();
 	}
@@ -59,7 +59,7 @@ public class PP_ScenePlay : MonoBehaviour {
 		myScores [g_team] += g_score;
 		myScoreMethod [g_team * 2 + (int)g_method] += g_score;
 		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
-		myScoresDisplay [g_team].localScale = new Vector2 (1, myScores [g_team] / myWinnerScore);
+		myBases [g_team].ShowScore (myScores [g_team] / myWinnerScore);
 
 		//play sound
 		if (g_method == PP_Global.ScoreMethod.Grape)

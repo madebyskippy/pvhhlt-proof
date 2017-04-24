@@ -26,7 +26,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	//========================================================================
 
 	[SerializeField] Animator myAnimator;
-	[SerializeField] float myLoadingWaitTime = 5;
+//	[SerializeField] float myLoadingWaitTime = 5;
 	private string myNextScene;
 
 	// Use this for initialization
