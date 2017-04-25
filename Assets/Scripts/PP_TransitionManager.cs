@@ -26,6 +26,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	//========================================================================
 
 	[SerializeField] Animator myAnimator;
+	[SerializeField] Animator myGrapeAnimator;
 //	[SerializeField] float myLoadingWaitTime = 5;
 	private string myNextScene;
 
@@ -41,6 +42,7 @@ public class PP_TransitionManager : MonoBehaviour {
 
 	public void StartTransition (string g_scene) {
 		myNextScene = g_scene;
+		myGrapeAnimator.SetBool ("isGrape", true);
 		TransitionOut ();
 	}
 
@@ -58,5 +60,9 @@ public class PP_TransitionManager : MonoBehaviour {
 
 	public void StartLoading () {
 		SceneManager.LoadSceneAsync (myNextScene);
+	}
+
+	public void ShowPressToStart () {
+		myGrapeAnimator.SetBool ("isGrape", false);
 	}
 }

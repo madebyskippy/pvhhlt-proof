@@ -31,6 +31,7 @@ public class PP_ScenePlay : MonoBehaviour {
 	[SerializeField] AudioClip mySFX_Grape;
 	[SerializeField] AudioClip mySFX_Bean;
 	[SerializeField] AudioClip mySFX_Cannon;
+	private bool isGameStart = false;
 	private bool isGameEnd = false;
 
 	// Use this for initialization
@@ -40,11 +41,23 @@ public class PP_ScenePlay : MonoBehaviour {
 		myBases [0].ShowScore (myScores[0]);
 		myBases [1].ShowScore (myScores[1]);
 
-		PP_TransitionManager.Instance.EndTransition ();
+		//Transition
+		PP_MessageBox.Instance.Pause (true);
+		PP_TransitionManager.Instance.ShowPressToStart ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!isGameStart) {
+			Debug.Log ("!isGameStart");
+			if (Input.GetButtonDown ("Submit")) {
+				Debug.Log ("Submit");
+				PP_MessageBox.Instance.Pause (false);
+				PP_TransitionManager.Instance.EndTransition ();
+				isGameStart = true;
+			}
+		}
+
 		if (isGameEnd) {
 			if (Input.GetButtonDown ("Menu")) {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
