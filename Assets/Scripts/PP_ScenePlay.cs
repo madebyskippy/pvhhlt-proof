@@ -49,9 +49,9 @@ public class PP_ScenePlay : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!isGameStart) {
-			Debug.Log ("!isGameStart");
+//			Debug.Log ("!isGameStart");
 			if (Input.GetButtonDown ("Submit")) {
-				Debug.Log ("Submit");
+//				Debug.Log ("Submit");
 				PP_MessageBox.Instance.Pause (false);
 				PP_TransitionManager.Instance.EndTransition ();
 				isGameStart = true;
