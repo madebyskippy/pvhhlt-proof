@@ -72,15 +72,17 @@ public class PP_SceneSelect : MonoBehaviour {
 
 		for (int i = 0; i < 3; i++) {
 			string name1 = "Ready" + (i * 2 + 1);
-			if (Input.GetButtonDown (name1)) {
-				teamAReady [i] = true;
+			if (Input.GetButtonDown (name1) && Time.timeScale != 0) {
+				teamAReady [i] = !teamAReady[i];
+				teamA [i].GetComponent<PP_Player> ().ToggleReady ();
 				checkTeamAReady = CheckReadys (teamAReady, selectA);
 				checkTeamBReady = CheckReadys (teamBReady, selectB);
 			}
 
 			string name2 = "Ready" + (i * 2 + 2);
-			if (Input.GetButtonDown (name2)) {
-				teamBReady [i] = true;
+			if (Input.GetButtonDown (name2) && Time.timeScale != 0) {
+				teamBReady [i] = !teamBReady[i];
+				teamA [i].GetComponent<PP_Player> ().ToggleReady ();
 				checkTeamAReady = CheckReadys (teamAReady, selectA);
 				checkTeamBReady = CheckReadys (teamBReady, selectB);
 			}
@@ -124,13 +126,13 @@ public class PP_SceneSelect : MonoBehaviour {
 		if (changed) {
 			ClearSelections ();
 		}
-		GenerateSelections (selectA, teamA, false);
-		GenerateSelections (selectB, teamB, false);
-		GenerateSelections (pauseA, teamA, true);
-		GenerateSelections (pauseB, teamB, true);
+		GenerateSelections (selectA, teamA, teamAReady, false);
+		GenerateSelections (selectB, teamB, teamBReady, false);
+		GenerateSelections (pauseA, teamA, teamAReady, true);
+		GenerateSelections (pauseB, teamB, teamBReady, true);
 	}
 
-	void GenerateSelections(GameObject[] positions, GameObject[] team, bool isPause){
+	void GenerateSelections(GameObject[] positions, GameObject[] team, bool[] teamReady, bool isPause){
 		for (int i = 0; i < 3; i++) {
 			PP_Global.Abilities currentAAbility = team [i].GetComponent<PP_Player> ().GetMyAbility();
 			GameObject currentType = burpObject;
@@ -144,8 +146,8 @@ public class PP_SceneSelect : MonoBehaviour {
 			}
 
 			GameObject currentSelect = Instantiate(currentType, positions[i].transform);
-			currentSelect.transform.localPosition = new Vector3 (0f, 1.26f, 0f);
-			currentSelect.transform.localScale = new Vector3 (1f, 1f, 0f);
+			currentSelect.transform.localPosition = new Vector3 (0f, 1.6f, 0f);
+			currentSelect.transform.localScale = new Vector3 (0.3f, 0.3f, 0f);
 			currentSelect.GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColor();
 //			positions[i].GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
 			positions[i].transform.GetChild(0).GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
@@ -157,7 +159,7 @@ public class PP_SceneSelect : MonoBehaviour {
 				selfSprites.sortingLayerName = "UI";
 				for (int j = 0; j < currentSelect.transform.childCount; j++) {
 					SpriteRenderer childSprites = currentSelect.transform.GetChild(j).GetComponent<SpriteRenderer> ();
-					childSprites.sortingOrder = 3;
+					childSprites.sortingOrder = 3 + j;
 					childSprites.sortingLayerName = "UI";
 				}
 			}
