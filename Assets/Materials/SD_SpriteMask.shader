@@ -34,7 +34,7 @@ Shader "Custom/Mask/SD_SpriteMask"
 			#pragma fragment frag
 			#pragma target 2.0
 			#pragma multi_compile _ PIXELSNAP_ON
-			#pragma multi_compile _ ETC1_EXTERNAL_ALPHA
+//			#pragma multi_compile _ ETC1_EXTERNAL_ALPHA
 			#include "UnityCG.cginc"
 			
 			struct appdata_t
@@ -87,12 +87,14 @@ Shader "Custom/Mask/SD_SpriteMask"
 				color.a = tex2D (_AlphaTex, uv).r;
 #endif //ETC1_EXTERNAL_ALPHA
 				if (_Reverse == 0) {
-					if (colorMask.a <= _Progress) {
-						color.a = 0;
+					if (colorMask.a < _Progress) {
+						discard;
+//						color.a = 0;
 					}
 				} else {
 					if (colorMask.a > _Progress) {
-						color.a = 0;
+						discard;
+//						color.a = 0;
 					}
 				}
 
