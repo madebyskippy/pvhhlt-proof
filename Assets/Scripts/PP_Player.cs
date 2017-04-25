@@ -188,7 +188,7 @@ public class PP_Player : MonoBehaviour {
 			}
 
 			if (Input.GetButtonUp ("Skill" + myControl)) {
-				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+				CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
 				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio * myChargeTimer;
 				myStatus_DashTimer = myAbility_Dash_Time;
 				myChargeTimer = 0;
