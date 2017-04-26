@@ -38,6 +38,8 @@ public class PP_Cannon : MonoBehaviour {
 	private List<GameObject> myCannonBallPool = new List<GameObject> ();
 	private float myCannonTimer = 0;
 
+	[SerializeField] Animator myAnimator;
+
 	[SerializeField] Transform[] myBases;
 
 	[Header("Shell")]
@@ -109,6 +111,7 @@ public class PP_Cannon : MonoBehaviour {
 							myBases [t_myOwnerNumber].position, 
 							t_angle
 						);
+						myAnimator.SetTrigger ("isShooting");
 						myCannonTimer -= 1;
 						break;
 					}
