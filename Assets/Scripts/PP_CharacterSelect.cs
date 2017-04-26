@@ -19,8 +19,10 @@ public class PP_CharacterSelect : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Player" && changeable) {
-			coll.gameObject.GetComponent<PP_Player> ().SetMyAbility (ability);
-			sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection (true);
+			if (!coll.gameObject.GetComponent<PP_Player> ().GetReadyStatus ()) {
+				coll.gameObject.GetComponent<PP_Player> ().SetMyAbility (ability);
+				sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection (true);
+			}
 		}
 //		
 //		Debug.Log ();

@@ -56,6 +56,8 @@ public class PP_Cannon : MonoBehaviour {
 	[SerializeField] Vector2 myShellAngleRange = new Vector2 (60, 120);
 	[SerializeField] float myShellAngleClosed = 0;
 
+	[SerializeField] AudioClip mySFX_Close;
+
 	// Use this for initialization
 	void Start () {
 		myLimitsMax = myHingeJoint2D.limits.max;
@@ -170,6 +172,8 @@ public class PP_Cannon : MonoBehaviour {
 			myShellCharge = 0;
 			myShellAngleTarget = myShellAngleClosed;
 			myCannon.gameObject.SetActive (false);
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_Close);
 		}
 	}
 }

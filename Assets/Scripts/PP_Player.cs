@@ -57,6 +57,9 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] AudioClip mySFX_Dash;
 	[SerializeField] AudioClip mySFX_Freeze;
 
+	[Header("Select Ready")]
+	[SerializeField] bool selectReady = false;
+
 	// Use this for initialization
 	void Start () {
 		SetMyAbility (PP_MessageBox.Instance.GetPlayerAbility (myControl));
@@ -185,7 +188,7 @@ public class PP_Player : MonoBehaviour {
 			}
 
 			if (Input.GetButtonUp ("Skill" + myControl)) {
-				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+				CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
 				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio * myChargeTimer;
 				myStatus_DashTimer = myAbility_Dash_Time;
 				myChargeTimer = 0;
@@ -279,5 +282,13 @@ public class PP_Player : MonoBehaviour {
 			return;
 		myStatus_StunTimer = myAbility_Burp_StunTime;
 		mySpriteRenderer.color = myStunColor;
+	}
+
+	public void ToggleReady() {
+		selectReady = !selectReady;
+	}
+
+	public bool GetReadyStatus() {
+		return selectReady;
 	}
 }

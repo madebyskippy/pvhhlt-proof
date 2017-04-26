@@ -29,6 +29,8 @@ public class PP_BeanManager : MonoBehaviour {
 	private List<GameObject> myBeanPool = new List<GameObject> ();
 	[SerializeField] int myBeanMaxNumber = 30;
 
+	[SerializeField] GameObject myBoundsMarker;
+
 	// Use this for initialization
 	void Start () {
 		for (int i = 0; i < myBeanMaxNumber; i++) {
@@ -52,5 +54,9 @@ public class PP_BeanManager : MonoBehaviour {
 		GameObject t_bean = Instantiate (myBeanPrefeb, this.transform) as GameObject;
 		myBeanPool.Add (t_bean);
 		return t_bean;
+	}
+		
+	public Vector3 GetBounds() {
+		return myBoundsMarker.transform.position;
 	}
 }

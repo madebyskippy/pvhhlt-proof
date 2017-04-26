@@ -40,8 +40,8 @@ public class PP_Bean : MonoBehaviour {
 		myTargets = new Vector3[5];
 		for (int i = 0; i < myTargets.Length; i++) {
 			Vector3 t_targetPoint = g_spawnPosition + (Vector3)Random.insideUnitCircle.normalized * g_spawnRadius;
-			t_targetPoint.x = Mathf.Clamp (t_targetPoint.x, myManager.GetBounds ().x * -1f, myManager.GetBounds ().x);
-			t_targetPoint.y = Mathf.Clamp (t_targetPoint.y, myManager.GetBounds ().y * -1f, myManager.GetBounds ().y);
+			t_targetPoint.x = Mathf.Clamp (t_targetPoint.x, PP_BeanManager.Instance.GetBounds ().x * -1f, PP_BeanManager.Instance.GetBounds ().x);
+			t_targetPoint.y = Mathf.Clamp (t_targetPoint.y, PP_BeanManager.Instance.GetBounds ().y * -1f, PP_BeanManager.Instance.GetBounds ().y);
 			myTargets [i] = t_targetPoint;
 		}
 
