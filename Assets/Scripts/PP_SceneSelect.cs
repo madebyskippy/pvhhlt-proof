@@ -43,6 +43,9 @@ public class PP_SceneSelect : MonoBehaviour {
 	[SerializeField] GameObject dashObject;
 	[SerializeField] GameObject freezeObject;
 
+	//only call load scene once
+	private bool isLoading = false;
+
 	// Use this for initialization
 	void Start () {
 		teamA = new GameObject [3];
@@ -64,6 +67,10 @@ public class PP_SceneSelect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//only call load scene once
+		if (isLoading)
+			return;
+
 		//use timer to make sure the abilities updated
 		if (Time.time > 0.005 && !firstGenerate) {
 			firstGenerate = true;
@@ -93,6 +100,8 @@ public class PP_SceneSelect : MonoBehaviour {
 		if (checkTeamAReady && checkTeamBReady) {
 //			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
 			PP_MessageBox.Instance.LoadScenePlay ();
+			//only call load scene once
+			isLoading = true;
 		}
 	}
 

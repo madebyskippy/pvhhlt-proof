@@ -34,6 +34,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	private float myTutorialTimer = -1;
 //	[SerializeField] float myLoadingWaitTime = 5;
 	private string myNextScene;
+	private bool isStickActive = false;
 
 	// Use this for initialization
 	void Start () {
@@ -43,7 +44,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (myTutorialTimer);
+//		Debug.Log (myTutorialTimer);
 		if (myTutorialTimer < 0)
 			return;
 		
@@ -51,9 +52,26 @@ public class PP_TransitionManager : MonoBehaviour {
 
 		if (myTutorialTimer >= myTutorialSwitchTime) {
 			myTutorialTimer = 0;
-			myCurrentSlide++;
-			myCurrentSlide %= myTutorialSlides.Length;
-			myTutorialSpriteRenderer.sprite = myTutorialSlides [myCurrentSlide];
+			ShowNextSlide ();
+			Debug.Log ("Timer");
+		}
+
+		if (Input.GetAxisRaw ("Vertical") == 0) {
+			isStickActive = false;
+		}
+
+		if (Input.GetAxisRaw("Vertical") > 0 && !isStickActive) {
+			ShowNextSlide ();
+			Debug.Log ("Vertical");
+			myTutorialTimer = 0;
+			isStickActive = true;
+		}
+
+		if (Input.GetAxisRaw("Vertical") < 0 && !isStickActive) {
+			ShowNextSlide ();
+			Debug.Log ("Vertical");
+			myTutorialTimer = 0;
+			isStickActive = true;
 		}
 	}
 
@@ -74,6 +92,8 @@ public class PP_TransitionManager : MonoBehaviour {
 
 	public void TransitionOut () {
 		myTutorialTimer = 0;
+		ShowNextSlide ();
+		Debug.Log ("TransitionOut");
 		myAnimator.SetBool ("isTransitioning", true);
 	}
 
@@ -83,5 +103,12 @@ public class PP_TransitionManager : MonoBehaviour {
 
 	public void ShowPressToStart () {
 		myGrapeAnimator.SetBool ("isGrape", false);
+	}
+
+	private void ShowNextSlide () {
+		Debug.Log ("ShowNextSlide");
+		myCurrentSlide++;
+		myCurrentSlide %= myTutorialSlides.Length;
+		myTutorialSpriteRenderer.sprite = myTutorialSlides [myCurrentSlide];
 	}
 }
