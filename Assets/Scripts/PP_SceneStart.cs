@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PP_StartController : MonoBehaviour {
+public class PP_SceneStart : MonoBehaviour {
 
 	[SerializeField] Animator Elder_Eye_Red;
 	[SerializeField] Animator Elder_Eye_Yellow;
@@ -17,7 +17,7 @@ public class PP_StartController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown("Submit")) {
-			Application.LoadLevel("Select");
+			PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 		}
 
 		if (Random.Range (0f, 1f) < myBlinkProbability) {

@@ -34,6 +34,8 @@ public class PP_ScenePlay : MonoBehaviour {
 	private bool isGameStart = false;
 	private bool isGameEnd = false;
 
+	[SerializeField] GameObject[] myTrophies;
+
 	// Use this for initialization
 	void Start () {
 		PP_MessageBox.Instance.InitPlay ();
@@ -44,6 +46,9 @@ public class PP_ScenePlay : MonoBehaviour {
 		//Transition
 		PP_MessageBox.Instance.Pause (true);
 		PP_TransitionManager.Instance.ShowPressToStart ();
+
+		myTrophies[0].SetActive(false);
+		myTrophies[1].SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -71,7 +76,7 @@ public class PP_ScenePlay : MonoBehaviour {
 		
 		myScores [g_team] += g_score;
 		myScoreMethod [g_team * 2 + (int)g_method] += g_score;
-		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
+//		PP_UIPlay.Instance.ShowScore (g_team, myScores [g_team]);
 		myBases [g_team].ShowScore (myScores [g_team] / myWinnerScore);
 
 		//play sound
@@ -101,7 +106,8 @@ public class PP_ScenePlay : MonoBehaviour {
 			return;
 
 		if (myScores [g_team] >= myWinnerScore) {
-			PP_UIPlay.Instance.ShowWinner (g_team);
+//			PP_UIPlay.Instance.ShowWinner (g_team);
+			myTrophies[g_team].SetActive(true);
 			isGameEnd = true;
 		}
 	}
