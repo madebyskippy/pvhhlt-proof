@@ -135,7 +135,8 @@ public class PP_Player : MonoBehaviour {
 
 		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
-				myAnimator.SetTrigger ("isButtonDown");
+//				myAnimator.SetTrigger ("isButtonDown");
+				myAnimator.SetBool ("isPressed", true);
 			}
 			if (Input.GetButton ("Skill" + myControl)) {
 				myChargeTimer += Time.deltaTime;
@@ -149,7 +150,8 @@ public class PP_Player : MonoBehaviour {
 				myAbility_Burp_Prefab.transform.localScale = Vector3.one * myChargeTimer;
 				myChargeTimer = 0;
 				myAbility_Burp_Prefab.SetActive (true);
-				myAnimator.SetTrigger ("isButtonUp");
+//				myAnimator.SetTrigger ("isButtonUp");
+				myAnimator.SetBool ("isPressed", false);
 			}
 
 //			if (Input.GetButtonDown ("Skill" + myControl)) {
@@ -169,15 +171,18 @@ public class PP_Player : MonoBehaviour {
 //				myStatus_FrozenPosition = this.transform.position;
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
-				myAnimator.SetTrigger ("isButtonDown");
+//				myAnimator.SetTrigger ("isButtonDown");
+				myAnimator.SetBool ("isPressed", true);
 			} else if (Input.GetButtonUp ("Skill" + myControl)) {
 				myStatus_IsFrozen = false;
 				myRigidbody2D.isKinematic = false;
-				myAnimator.SetTrigger ("isButtonUp");
+//				myAnimator.SetTrigger ("isButtonUp");
+				myAnimator.SetBool ("isPressed", false);
 			}
 		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
 			if (Input.GetButtonDown ("Skill" + myControl)) {
-				myAnimator.SetTrigger ("isButtonDown");
+//				myAnimator.SetTrigger ("isButtonDown");
+				myAnimator.SetBool ("isPressed", true);
 			}
 
 			if (Input.GetButton ("Skill" + myControl)) {
@@ -192,7 +197,8 @@ public class PP_Player : MonoBehaviour {
 				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio * myChargeTimer;
 				myStatus_DashTimer = myAbility_Dash_Time;
 				myChargeTimer = 0;
-				myAnimator.SetTrigger ("isButtonUp");
+//				myAnimator.SetTrigger ("isButtonUp");
+				myAnimator.SetBool ("isPressed", false);
 			}
 		}
 
