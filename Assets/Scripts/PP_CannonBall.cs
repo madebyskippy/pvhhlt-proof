@@ -41,6 +41,7 @@ public class PP_CannonBall : MonoBehaviour {
 
 		if (Mathf.Abs (this.transform.position.x) - Mathf.Abs (myTargetPosition.x) > 0) {
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, myScore, PP_Global.ScoreMethod.Cannon);
+			PP_ScenePlay.Instance.ShowElderNibble (myTeamNumber);
 			this.gameObject.SetActive (false);
 			this.transform.position = Vector2.zero;
 		}

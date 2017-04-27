@@ -16,6 +16,7 @@ public class PP_Base : MonoBehaviour {
 	private float myScoreTarget = 0;
 	private float myScoreCurrent = 0;
 
+	[SerializeField] Animator myAnimator;
 
 
 	void Update () {
@@ -33,15 +34,29 @@ public class PP_Base : MonoBehaviour {
 		if (g_other.tag == PP_Global.TAG_BUTT) {
 //			Debug.Log ("POP");
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean, PP_Global.ScoreMethod.Bean);
+			ShowEat ();
 //			PP_ScenePlay.Instance.AddScore (myTeamNumber, 1, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean);
 		} else if (g_other.tag == PP_Global.TAG_GRAPE) {
 			g_other.GetComponent<PP_Grape> ().Kill ();
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, myScoreRatioGrape, PP_Global.ScoreMethod.Grape);
+			ShowEat ();
 //			PP_ScenePlay.Instance.AddScore (myTeamNumber, 0, myScoreRatioGrape);
 		}
 	}
 
 	public void ShowScore (float g_scoreRatio) {
 		myScoreTarget = g_scoreRatio;
+	}
+
+	public void ShowEat () {
+		myAnimator.SetTrigger ("isEat");
+	}
+
+	public void ShowNibble () {
+		myAnimator.SetTrigger ("isNibble");
+	}
+
+	public void ShowDead () {
+		myAnimator.SetTrigger ("isDead");
 	}
 }
