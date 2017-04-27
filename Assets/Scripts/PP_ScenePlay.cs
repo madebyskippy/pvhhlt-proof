@@ -38,6 +38,9 @@ public class PP_ScenePlay : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		myTrophies[0].SetActive(false);
+		myTrophies[1].SetActive(false);
+
 		PP_MessageBox.Instance.InitPlay ();
 
 		myBases [0].ShowScore (myScores[0]);
@@ -47,8 +50,6 @@ public class PP_ScenePlay : MonoBehaviour {
 		PP_MessageBox.Instance.Pause (true);
 		PP_TransitionManager.Instance.ShowPressToStart ();
 
-		myTrophies[0].SetActive(false);
-		myTrophies[1].SetActive(false);
 	}
 	
 	// Update is called once per frame
