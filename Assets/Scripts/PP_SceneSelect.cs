@@ -39,10 +39,6 @@ public class PP_SceneSelect : MonoBehaviour {
 	private bool checkTeamBReady;
 	private GameObject pauseCore;
 
-	[SerializeField] GameObject burpObject;
-	[SerializeField] GameObject dashObject;
-	[SerializeField] GameObject freezeObject;
-
 	//only call load scene once
 	private bool isLoading = false;
 
@@ -74,7 +70,7 @@ public class PP_SceneSelect : MonoBehaviour {
 		//use timer to make sure the abilities updated
 		if (Time.time > 0.005 && !firstGenerate) {
 			firstGenerate = true;
-			UpdateSelection (false);
+			UpdateSelection ();
 		}
 
 		for (int i = 0; i < 3; i++) {
@@ -84,25 +80,29 @@ public class PP_SceneSelect : MonoBehaviour {
 				teamA [i].GetComponent<PP_Player> ().ToggleReady ();
 				checkTeamAReady = CheckReadys (teamAReady, selectA);
 				checkTeamBReady = CheckReadys (teamBReady, selectB);
+
+				if (checkTeamAReady && checkTeamBReady) {
+					PP_MessageBox.Instance.LoadScenePlay ();
+					//only call load scene once
+					isLoading = true;
+				}
 			}
 
 			string name2 = "Ready" + (i * 2 + 2);
 			if (Input.GetButtonDown (name2) && Time.timeScale != 0) {
 				teamBReady [i] = !teamBReady[i];
-				teamA [i].GetComponent<PP_Player> ().ToggleReady ();
+				teamB [i].GetComponent<PP_Player> ().ToggleReady ();
 				checkTeamAReady = CheckReadys (teamAReady, selectA);
 				checkTeamBReady = CheckReadys (teamBReady, selectB);
+
+				if (checkTeamAReady && checkTeamBReady) {
+					PP_MessageBox.Instance.LoadScenePlay ();
+					//only call load scene once
+					isLoading = true;
+				}
 			}
 		}
 
-
-
-		if (checkTeamAReady && checkTeamBReady) {
-//			UnityEngine.SceneManagement.SceneManager.LoadScene ("Play");
-			PP_MessageBox.Instance.LoadScenePlay ();
-			//only call load scene once
-			isLoading = true;
-		}
 	}
 
 	void GetPauseInfo() {
@@ -120,93 +120,43 @@ public class PP_SceneSelect : MonoBehaviour {
 		for (int i = 0; i < players.Length; i++) {
 			GameObject currentPlayer = players [i];
 			int currentTeamNum = currentPlayer.GetComponent<PP_Player> ().GetMyTeamNumber();
-//			PP_Global.Abilities currentType = currentPlayer.GetComponent<PP_Player> ().GetMyAbility();
 			if (currentTeamNum == 0) {
 				teamA [teamACounter++] = currentPlayer;
 			} else {
-//				Debug.Log (teamB.Length);
-//				Debug.Log (teamBCounter);
 				teamB [teamBCounter++] = currentPlayer;
 			}
 		}
 	}
 
-	public void UpdateSelection(bool changed){
-		if (changed) {
-			ClearSelections ();
-		}
-		GenerateSelections (selectA, teamA, teamAReady, false);
-		GenerateSelections (selectB, teamB, teamBReady, false);
-		GenerateSelections (pauseA, teamA, teamAReady, true);
-		GenerateSelections (pauseB, teamB, teamBReady, true);
+	public void UpdateSelection(){
+		GenerateSelections (selectA, teamA);
+		GenerateSelections (selectB, teamB);
+		GenerateSelections (pauseA, teamA);
+		GenerateSelections (pauseB, teamB);
 	}
 
-	void GenerateSelections(GameObject[] positions, GameObject[] team, bool[] teamReady, bool isPause){
+	void GenerateSelections(GameObject[] positions, GameObject[] team){
 		for (int i = 0; i < 3; i++) {
 			PP_Global.Abilities currentAAbility = team [i].GetComponent<PP_Player> ().GetMyAbility();
-			GameObject currentType = burpObject;
-			switch (currentAAbility) {
-			case PP_Global.Abilities.Dash:
-				currentType = dashObject;
-				break;
-			case PP_Global.Abilities.Freeze:
-				currentType = freezeObject;
-				break;
-			}
-
-			GameObject currentSelect = Instantiate(currentType, positions[i].transform);
-			currentSelect.transform.localPosition = new Vector3 (0f, 1.6f, 0f);
-			currentSelect.transform.localScale = new Vector3 (0.3f, 0.3f, 0f);
-			currentSelect.GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColor();
-//			positions[i].GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
-			positions[i].transform.GetChild(0).GetComponent<SpriteRenderer>().color = team [i].GetComponent<PP_Player> ().GetMyColor();
-			currentSelect.transform.GetChild (0).GetComponent<SpriteRenderer> ().color = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
-
-			if (isPause) {
-				SpriteRenderer selfSprites = currentSelect.GetComponent<SpriteRenderer> ();
-				selfSprites.sortingOrder = 3;
-				selfSprites.sortingLayerName = "UI";
-				for (int j = 0; j < currentSelect.transform.childCount; j++) {
-					SpriteRenderer childSprites = currentSelect.transform.GetChild(j).GetComponent<SpriteRenderer> ();
-					childSprites.sortingOrder = 3 + j;
-					childSprites.sortingLayerName = "UI";
-				}
-			}
+			Color color = team [i].GetComponent<PP_Player> ().GetMyColor ();
+			Color colorDetail = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
+			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SwitchShow (currentAAbility);
+			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
+			positions [i].transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().color = color;
 		}
 	}
 
-	void ClearSelections() {
-		for (int i = 0; i < selectA.Length; i++) {
-			GameObject typeObj = selectA [i].transform.GetChild (2).gameObject;
-			Destroy (typeObj);
-			GameObject uiObj = pauseA [i].transform.GetChild (1).gameObject;
-			Destroy (uiObj);
-		}
-
-		for (int i = 0; i < selectB.Length; i++) {
-			GameObject typeObj = selectB [i].transform.GetChild (2).gameObject;
-			Destroy (typeObj);
-			GameObject uiObj = pauseB [i].transform.GetChild (1).gameObject;
-			Destroy (uiObj);
-		}
-	}
 
 	bool CheckReadys(bool[] teamReady, GameObject[] select) {
 		bool ready = true;
 		for (int i = 0; i < teamReady.Length; i++) {
-//			GameObject prompText = select [i].transform.FindChild ("ready_promp_text").gameObject;
 			GameObject readyText = select [i].transform.FindChild ("ready_text").gameObject;
-//			Color tmpPrompText = prompText.GetComponent<SpriteRenderer>().color;
 			Color tmpReadyText = readyText.GetComponent<SpriteRenderer> ().color;
 			if (teamReady [i]) {
-//				tmpPrompText.a = 0f;
 				tmpReadyText.a = 1f;
-//				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
 				readyText.GetComponent<SpriteRenderer> ().color = tmpReadyText;
 			} else {
-//				tmpPrompText.a = 1f;
 				tmpReadyText.a = 0f;
-//				prompText.GetComponent<SpriteRenderer> ().color = tmpPrompText;
 				readyText.GetComponent<SpriteRenderer> ().color = tmpReadyText;
 				ready = false;
 			}
