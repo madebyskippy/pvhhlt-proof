@@ -21,7 +21,7 @@ public class PP_CharacterSelect : MonoBehaviour {
 		if (coll.gameObject.tag == "Player" && changeable) {
 			if (!coll.gameObject.GetComponent<PP_Player> ().GetReadyStatus ()) {
 				coll.gameObject.GetComponent<PP_Player> ().SetMyAbility (ability);
-				sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection (true);
+				sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection ();
 			}
 		}
 //		

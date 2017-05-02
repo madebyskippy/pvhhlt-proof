@@ -17,7 +17,11 @@ public class PP_Base : MonoBehaviour {
 	private float myScoreCurrent = 0;
 
 	[SerializeField] Animator myAnimator;
+	[SerializeField] GameObject myParticle;
 
+	void Start () {
+		myParticle.SetActive (false);
+	}
 
 	void Update () {
 		Debug.Log (myScoreCurrent);
@@ -58,5 +62,9 @@ public class PP_Base : MonoBehaviour {
 
 	public void ShowDead () {
 		myAnimator.SetTrigger ("isDead");
+	}
+
+	public void ShowWinParticle () {
+		myParticle.SetActive (true);
 	}
 }

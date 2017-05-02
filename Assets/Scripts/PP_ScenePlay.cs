@@ -109,6 +109,7 @@ public class PP_ScenePlay : MonoBehaviour {
 		if (myScores [g_team] >= myWinnerScore) {
 //			PP_UIPlay.Instance.ShowWinner (g_team);
 			myTrophies[g_team].SetActive(true);
+			myBases [g_team].ShowWinParticle ();
 			myBases [1 - g_team].ShowDead ();
 			isGameEnd = true;
 		}
