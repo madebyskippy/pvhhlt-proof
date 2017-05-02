@@ -41,13 +41,14 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Transform myAbility_Burp_Position;
 	[SerializeField] GameObject myAbility_Burp_Prefab;
 	[SerializeField] Sprite myAbility_Burp_Sprite;
-//	[SerializeField] float myAbility_Burp_CD = 2;
-	[SerializeField] float myAbility_Burp_MaxChargeTime = 3;
-	[SerializeField] float myAbility_Burp_StunTime = 4;
+	[SerializeField] float myAbility_Burp_CD = 1;
+	[SerializeField] float myAbility_Burp_MaxChargeTime = 5;
+	[SerializeField] Vector2 myAbility_Burp_Size = new Vector2 (1, 3);
+	[SerializeField] float myAbility_Burp_StunTime = 2;
 	[Header(" - Dash")]
-//	[SerializeField] float myAbility_Dash_CD = 2;
+	[SerializeField] float myAbility_Dash_CD = 1;
 	[SerializeField] float myAbility_Dash_MaxChargeTime = 3;
-	[SerializeField] float myAbility_Dash_SpeedRatio = 10;
+	[SerializeField] Vector2 myAbility_Dash_SpeedRatio = new Vector2 (3, 10);
 	[SerializeField] float myAbility_Dash_Time = 0.5f;
 	[Header(" - Freeze")]
 	[SerializeField] Sprite myAbility_Freeze_Sprite;
@@ -147,11 +148,19 @@ public class PP_Player : MonoBehaviour {
 
 			if (Input.GetButtonUp ("Skill" + myControl)) {
 				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
-				myAbility_Burp_Prefab.transform.localScale = Vector3.one * myChargeTimer;
+				myAbility_Burp_Prefab.transform.localScale = 
+					Vector3.one * 
+					(
+						(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Burp_Size.y - myAbility_Burp_Size.x)) 
+						+ myAbility_Burp_Size.x
+					);
 				myChargeTimer = 0;
 				myAbility_Burp_Prefab.SetActive (true);
+				myAbility_Burp_Prefab.GetComponent<PP_Skill_Burp> ().UpdateTransform ();
 //				myAnimator.SetTrigger ("isButtonUp");
 				myAnimator.SetBool ("isPressed", false);
+
+				myCDTimer = myAbility_Burp_CD;
 			}
 
 //			if (Input.GetButtonDown ("Skill" + myControl)) {
@@ -194,11 +203,15 @@ public class PP_Player : MonoBehaviour {
 
 			if (Input.GetButtonUp ("Skill" + myControl)) {
 				CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
-				myStatus_SpeedRatio = myAbility_Dash_SpeedRatio * myChargeTimer;
+				myStatus_SpeedRatio = 
+					(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Dash_SpeedRatio.y - myAbility_Dash_SpeedRatio.x)) +
+					myAbility_Dash_SpeedRatio.x;
 				myStatus_DashTimer = myAbility_Dash_Time;
 				myChargeTimer = 0;
 //				myAnimator.SetTrigger ("isButtonUp");
 				myAnimator.SetBool ("isPressed", false);
+
+				myCDTimer = myAbility_Dash_CD;
 			}
 		}
 
@@ -208,7 +221,12 @@ public class PP_Player : MonoBehaviour {
 	private void UpdateMove () {
 		float t_inputHorizontal = Input.GetAxis ("Horizontal" + myControl);
 		float t_inputVertical = Input.GetAxis ("Vertical" + myControl);
-		myDirection = (Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal).normalized;
+
+		if (myStatus_DashTimer > 0) {
+			myDirection = myRotation.normalized;
+		} else {
+			myDirection = (Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal).normalized;
+		}
 
 		//		Camera.main.GetComponent<CS_Camera> ().SetPreMovePosition (myDirection);
 
