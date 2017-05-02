@@ -55,7 +55,7 @@ public class PP_TransitionManager : MonoBehaviour {
 		myTutorialSpriteRenderer.sprite = myTutorialSlides [0];
 		myCurrentSlide = 0;
 
-		Debug.Log (myAnimationTimer);
+//		Debug.Log (myAnimationTimer);
 	}
 	
 	// Update is called once per frame
@@ -65,7 +65,7 @@ public class PP_TransitionManager : MonoBehaviour {
 //		Debug.Log (myTutorialTimer);
 		UpdateTutorial ();
 
-		Debug.Log (myAnimationTimer);
+//		Debug.Log (myAnimationTimer);
 	}
 
 	public void UpdateTutorial () {

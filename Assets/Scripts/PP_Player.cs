@@ -27,6 +27,7 @@ public class PP_Player : MonoBehaviour {
 
 	[Header("Status")]
 	[SerializeField] Color myStunColor = Color.gray;
+	private bool myStatus_IsUsingAbility = false;
 	private float myStatus_StunTimer;
 	private bool myStatus_IsFrozen = false;
 //	private Vector2 myStatus_FrozenPosition;
@@ -51,7 +52,10 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Vector2 myAbility_Dash_SpeedRatio = new Vector2 (3, 10);
 	[SerializeField] float myAbility_Dash_Time = 0.5f;
 	[Header(" - Freeze")]
+	[SerializeField] float myAbility_Freeze_CD = 1;
 	[SerializeField] Sprite myAbility_Freeze_Sprite;
+	[SerializeField] float myAbility_Freeze_MaxEnergy;
+	private float myAbility_Freeze_Energy = 0;
 
 	[Header("SFX")]
 	[SerializeField] AudioClip mySFX_Burp;
@@ -117,6 +121,7 @@ public class PP_Player : MonoBehaviour {
 			}
 		}
 
+
 //		if (myStatus_IsFrozen) {
 //			this.transform.position = myStatus_FrozenPosition;
 //		}
@@ -134,88 +139,114 @@ public class PP_Player : MonoBehaviour {
 			return;
 		}
 
-		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
-			if (Input.GetButtonDown ("Skill" + myControl)) {
-//				myAnimator.SetTrigger ("isButtonDown");
-				myAnimator.SetBool ("isPressed", true);
+		if (myAbility == PP_Global.Abilities.Freeze && 
+			myStatus_IsFrozen == false && 
+			myAbility_Freeze_Energy < myAbility_Freeze_MaxEnergy) {
+			Debug.Log (myAbility_Freeze_Energy);
+			myAbility_Freeze_Energy += Time.deltaTime;
+			if (myStatus_DashTimer >= myAbility_Freeze_MaxEnergy) {
+				myAbility_Freeze_MaxEnergy = myAbility_Freeze_MaxEnergy;
 			}
-			if (Input.GetButton ("Skill" + myControl)) {
+		}
+
+		if (myAbility == PP_Global.Abilities.Burp && myCDTimer <= 0) {
+			UpdateAbility_Burp ();
+		} else if (myAbility == PP_Global.Abilities.Freeze && myCDTimer <= 0) {
+			UpdateAbility_Freeze ();
+		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
+			UpdateAbility_Dash ();
+		}
+
+//		Debug.Log (myChargeTimer);
+	}
+
+	private void UpdateAbility_Burp () {
+		if (Input.GetButton ("Skill" + myControl)) {
+			if (!myStatus_IsUsingAbility) {
+				myStatus_IsUsingAbility = true;
+				myAnimator.SetBool ("isPressed", true);
+			} else {
 				myChargeTimer += Time.deltaTime;
 				if (myChargeTimer > myAbility_Burp_MaxChargeTime) {
 					myChargeTimer = myAbility_Burp_MaxChargeTime;
 				}
 			}
+		}
 
-			if (Input.GetButtonUp ("Skill" + myControl)) {
-				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
-				myAbility_Burp_Prefab.transform.localScale = 
-					Vector3.one * 
-					(
-						(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Burp_Size.y - myAbility_Burp_Size.x)) 
-						+ myAbility_Burp_Size.x
-					);
-				myChargeTimer = 0;
-				myAbility_Burp_Prefab.SetActive (true);
-				myAbility_Burp_Prefab.GetComponent<PP_Skill_Burp> ().UpdateTransform ();
-//				myAnimator.SetTrigger ("isButtonUp");
-				myAnimator.SetBool ("isPressed", false);
+		if (myStatus_IsUsingAbility && Input.GetButtonUp ("Skill" + myControl)) {
+			myStatus_IsUsingAbility = false;
 
-				myCDTimer = myAbility_Burp_CD;
-			}
+			CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+			myAbility_Burp_Prefab.transform.localScale = 
+				Vector3.one * 
+				(
+					(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Burp_Size.y - myAbility_Burp_Size.x)) 
+					+ myAbility_Burp_Size.x
+				);
+			myChargeTimer = 0;
+			myAbility_Burp_Prefab.SetActive (true);
+			myAbility_Burp_Prefab.GetComponent<PP_Skill_Burp> ().UpdateTransform ();
+			myAnimator.SetBool ("isPressed", false);
 
-//			if (Input.GetButtonDown ("Skill" + myControl)) {
-//				CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
-//
-//				myAbility_Burp_Prefab.SetActive (true);
-//				
-//				myCDTimer = myAbility_Burp_CD;
-//
-//				myAnimator.SetTrigger ("isButtonDown");
-//			}
-		} else if (myAbility == PP_Global.Abilities.Freeze) {
-			if (Input.GetButtonDown ("Skill" + myControl)) {
+			myCDTimer = myAbility_Burp_CD;
+		}
+	}
+
+	private void UpdateAbility_Freeze () {
+		if (Input.GetButton ("Skill" + myControl) && myAbility_Freeze_Energy > 0) {
+			if (!myStatus_IsUsingAbility) {
+				myStatus_IsUsingAbility = true;
+
 				CS_AudioManager.Instance.PlaySFX (mySFX_Freeze);
 
 				myStatus_IsFrozen = true;
-//				myStatus_FrozenPosition = this.transform.position;
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
-//				myAnimator.SetTrigger ("isButtonDown");
 				myAnimator.SetBool ("isPressed", true);
-			} else if (Input.GetButtonUp ("Skill" + myControl)) {
-				myStatus_IsFrozen = false;
-				myRigidbody2D.isKinematic = false;
-//				myAnimator.SetTrigger ("isButtonUp");
-				myAnimator.SetBool ("isPressed", false);
+			} else {
+				myAbility_Freeze_Energy -= Time.deltaTime;
+				if (myAbility_Freeze_Energy <= 0) {
+					UpdateAbility_Freeze_End ();
+				}
 			}
-		} else if (myAbility == PP_Global.Abilities.Dash && myCDTimer <= 0) {
-			if (Input.GetButtonDown ("Skill" + myControl)) {
-//				myAnimator.SetTrigger ("isButtonDown");
-				myAnimator.SetBool ("isPressed", true);
-			}
+		} else if (myStatus_IsUsingAbility && Input.GetButtonUp ("Skill" + myControl)) {
+			UpdateAbility_Freeze_End ();
+		}
+	}
 
-			if (Input.GetButton ("Skill" + myControl)) {
+	private void UpdateAbility_Freeze_End () {
+		myStatus_IsUsingAbility = false;
+		myStatus_IsFrozen = false;
+		myRigidbody2D.isKinematic = false;
+		myAnimator.SetBool ("isPressed", false);
+		myCDTimer = myAbility_Burp_CD;
+	}
+
+	private void UpdateAbility_Dash () {
+		if (Input.GetButton ("Skill" + myControl)) {
+			if (!myStatus_IsUsingAbility) {
+				myStatus_IsUsingAbility = true;
+				myAnimator.SetBool ("isPressed", true);
+			} else {
 				myChargeTimer += Time.deltaTime;
 				if (myChargeTimer > myAbility_Dash_MaxChargeTime) {
 					myChargeTimer = myAbility_Dash_MaxChargeTime;
 				}
 			}
-
-			if (Input.GetButtonUp ("Skill" + myControl)) {
-				CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
-				myStatus_SpeedRatio = 
-					(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Dash_SpeedRatio.y - myAbility_Dash_SpeedRatio.x)) +
-					myAbility_Dash_SpeedRatio.x;
-				myStatus_DashTimer = myAbility_Dash_Time;
-				myChargeTimer = 0;
-//				myAnimator.SetTrigger ("isButtonUp");
-				myAnimator.SetBool ("isPressed", false);
-
-				myCDTimer = myAbility_Dash_CD;
-			}
 		}
 
-//		Debug.Log (myChargeTimer);
+		if (myStatus_IsUsingAbility && Input.GetButtonUp ("Skill" + myControl)) {
+			myStatus_IsUsingAbility = false;
+			CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
+			myStatus_SpeedRatio = 
+				(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Dash_SpeedRatio.y - myAbility_Dash_SpeedRatio.x)) +
+				myAbility_Dash_SpeedRatio.x;
+			myStatus_DashTimer = myAbility_Dash_Time;
+			myChargeTimer = 0;
+			myAnimator.SetBool ("isPressed", false);
+
+			myCDTimer = myAbility_Dash_CD;
+		}
 	}
 
 	private void UpdateMove () {
@@ -228,18 +259,14 @@ public class PP_Player : MonoBehaviour {
 			myDirection = (Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal).normalized;
 		}
 
-		//		Camera.main.GetComponent<CS_Camera> ().SetPreMovePosition (myDirection);
-
 		myMoveAxis += myDirection * moveSensitivity;
 		if (myMoveAxis.magnitude > 1)
 			myMoveAxis.Normalize ();
 
-		//		Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
 
 		//set the speed of the player
 
 //		myRigidbody2D.AddForce (myMoveAxis * mySpeed);
-
 		myRigidbody2D.velocity = myMoveAxis * mySpeed * myStatus_SpeedRatio;
 	
 		float t_moveAxisReduce = Time.fixedDeltaTime * moveGravity;
@@ -247,21 +274,14 @@ public class PP_Player : MonoBehaviour {
 			myMoveAxis = Vector2.zero;
 		else
 			myMoveAxis *= (myMoveAxis.magnitude - t_moveAxisReduce);
-
-		//Debug.Log ("ControlMove" + myDirection + " : " +myMoveAxis);
-
-		//Rotation
 	}
 
 	public void UpdateRotation () {
 		float t_inputHorizontal = Input.GetAxis ("Horizontal" + myControl);
 		float t_inputVertical = Input.GetAxis ("Vertical" + myControl);
 		if (Mathf.Abs(t_inputHorizontal) > 0.1f || Mathf.Abs(t_inputVertical) > 0.1f) {
-
-//			Debug.Log (t_inputHorizontal + " " + t_inputVertical);
 			myRotation = Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal;
 		}
-//		Debug.Log (myRotation);
 
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.up, myRotation) * Mathf.Sign (myRotation.x * -1));
