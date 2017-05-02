@@ -25,7 +25,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	}
 	//========================================================================
 
-	[SerializeField] Animator myAnimator;
+//	[SerializeField] Animator myAnimator;
 	[SerializeField] Animator myGrapeAnimator;
 	[SerializeField] SpriteRenderer myTutorialSpriteRenderer;
 	[SerializeField] Sprite[] myTutorialSlides; 
@@ -36,18 +36,40 @@ public class PP_TransitionManager : MonoBehaviour {
 	private string myNextScene;
 	private bool isStickActive = false;
 
+	private enum Status {
+		Idle,
+		TransitionIn,
+		TransitionOut
+	}
+
+	[SerializeField] Transform myTransition;
+	[SerializeField] Vector3 myPositionStart;
+	[SerializeField] Vector3 myPositionShow;
+	[SerializeField] Vector3 myPositionEnd;
+	[SerializeField] float myAnimationTime = 0.5f;
+	private float myAnimationTimer;
+	private Status myStatus = Status.TransitionIn;
+
 	// Use this for initialization
 	void Start () {
 		myTutorialSpriteRenderer.sprite = myTutorialSlides [0];
 		myCurrentSlide = 0;
+
+		myAnimationTimer = myAnimationTime;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		UpdateTransitionIn ();
+		UpdateTransitionOut ();
 //		Debug.Log (myTutorialTimer);
+		UpdateTutorial ();
+	}
+
+	public void UpdateTutorial () {
 		if (myTutorialTimer < 0)
 			return;
-		
+
 		myTutorialTimer += Time.unscaledDeltaTime;
 
 		if (myTutorialTimer >= myTutorialSwitchTime) {
@@ -75,6 +97,36 @@ public class PP_TransitionManager : MonoBehaviour {
 		}
 	}
 
+	public void UpdateTransitionIn () {
+		if (myStatus == Status.TransitionIn) {
+			myAnimationTimer -= Time.deltaTime;
+			if (myAnimationTimer <= 0) {
+				myAnimationTimer = 0;
+				myStatus = Status.Idle;
+
+				if (PP_PauseController.Instance != null) {
+					PP_PauseController.Instance.SetIsMenuActive (true);
+				}
+			}
+			//change the position
+			myTransition.position = (myAnimationTimer / myAnimationTime) * (myPositionShow - myPositionEnd) + myPositionEnd;
+		}
+	}
+
+	public void UpdateTransitionOut () {
+//		Debug.Log (myAnimationTimer);
+		if (myStatus == Status.TransitionOut) {
+			myAnimationTimer -= Time.deltaTime;
+			if (myAnimationTimer <= 0) {
+				myAnimationTimer = 0;
+				myStatus = Status.Idle;
+				StartLoading ();
+			}
+			//change the position
+			myTransition.position = (myAnimationTimer / myAnimationTime) * (myPositionStart - myPositionShow) + myPositionShow;
+		}
+	}
+
 	public void StartTransition (string g_scene) {
 		myNextScene = g_scene;
 		myGrapeAnimator.SetBool ("isGrape", true);
@@ -86,15 +138,23 @@ public class PP_TransitionManager : MonoBehaviour {
 	}
 
 	public void TransitionIn () {
+		
+		myAnimationTimer = myAnimationTime;
+		myStatus = Status.TransitionIn;
 		myTutorialTimer = -1;
-		myAnimator.SetBool ("isTransitioning", false);
+//		myAnimator.SetBool ("isTransitioning", false);
 	}
 
 	public void TransitionOut () {
+		Debug.Log ("TransitionOut");
+		if (PP_PauseController.Instance != null) {
+			PP_PauseController.Instance.SetIsMenuActive (false);
+		}
+		myAnimationTimer = myAnimationTime;
+		myStatus = Status.TransitionOut;
 		myTutorialTimer = 0;
 		ShowNextSlide ();
-		Debug.Log ("TransitionOut");
-		myAnimator.SetBool ("isTransitioning", true);
+//		myAnimator.SetBool ("isTransitioning", true);
 	}
 
 	public void StartLoading () {

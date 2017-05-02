@@ -24,7 +24,7 @@ public class PP_Base : MonoBehaviour {
 	}
 
 	void Update () {
-		Debug.Log (myScoreCurrent);
+//		Debug.Log (myScoreCurrent);
 		if (myScoreCurrent != myScoreTarget) {
 			myScoreCurrent = Mathf.Lerp (myScoreCurrent, myScoreTarget, Time.deltaTime * myScoreSpeed);
 			if (Mathf.Abs(myScoreTarget - myScoreCurrent) <= myScoreDelta) {

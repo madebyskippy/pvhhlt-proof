@@ -102,7 +102,6 @@ public class PP_MessageBox : MonoBehaviour {
 	}
 
 	public void LoadSceneSelect () {
-
 		PP_TransitionManager.Instance.StartTransition (mySceneSelect);
 	}
 }
