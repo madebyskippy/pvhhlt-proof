@@ -48,14 +48,14 @@ public class PP_TransitionManager : MonoBehaviour {
 	[SerializeField] Vector3 myPositionEnd;
 	[SerializeField] float myAnimationTime = 0.5f;
 	private float myAnimationTimer;
-	private Status myStatus = Status.TransitionIn;
+	private Status myStatus = Status.Idle;
 
 	// Use this for initialization
 	void Start () {
 		myTutorialSpriteRenderer.sprite = myTutorialSlides [0];
 		myCurrentSlide = 0;
 
-		myAnimationTimer = myAnimationTime;
+		Debug.Log (myAnimationTimer);
 	}
 	
 	// Update is called once per frame
@@ -64,6 +64,8 @@ public class PP_TransitionManager : MonoBehaviour {
 		UpdateTransitionOut ();
 //		Debug.Log (myTutorialTimer);
 		UpdateTutorial ();
+
+		Debug.Log (myAnimationTimer);
 	}
 
 	public void UpdateTutorial () {
@@ -99,7 +101,7 @@ public class PP_TransitionManager : MonoBehaviour {
 
 	public void UpdateTransitionIn () {
 		if (myStatus == Status.TransitionIn) {
-			myAnimationTimer -= Time.deltaTime;
+			myAnimationTimer -= Time.unscaledDeltaTime;
 			if (myAnimationTimer <= 0) {
 				myAnimationTimer = 0;
 				myStatus = Status.Idle;
@@ -116,7 +118,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	public void UpdateTransitionOut () {
 //		Debug.Log (myAnimationTimer);
 		if (myStatus == Status.TransitionOut) {
-			myAnimationTimer -= Time.deltaTime;
+			myAnimationTimer -= Time.unscaledDeltaTime;
 			if (myAnimationTimer <= 0) {
 				myAnimationTimer = 0;
 				myStatus = Status.Idle;

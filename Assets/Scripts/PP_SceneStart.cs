@@ -11,11 +11,13 @@ public class PP_SceneStart : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		PP_TransitionManager.Instance.EndTransition ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		PP_PauseController.Instance.SetIsMenuActive (false);
+
 		if (Input.GetButtonDown("Submit")) {
 			PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 		}

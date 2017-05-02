@@ -305,6 +305,7 @@ public class PP_Player : MonoBehaviour {
 		if (myStatus_IsFrozen)
 			return;
 		myStatus_StunTimer = myAbility_Burp_StunTime;
+		myChargeTimer = 0;
 		mySpriteRenderer.color = myStunColor;
 	}
 

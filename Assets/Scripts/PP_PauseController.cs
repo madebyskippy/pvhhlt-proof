@@ -72,7 +72,7 @@ public class PP_PauseController : MonoBehaviour {
 			Debug.Log ("change the menu Confirm key");
 			if (exitChoose) {
 //				Debug.Log ("do the return to menu function");
-				PP_MessageBox.Instance.LoadSceneSelect ();
+				PP_MessageBox.Instance.LoadSceneMenu ();
 			}
 
 			toggleMenuShowHide ();
