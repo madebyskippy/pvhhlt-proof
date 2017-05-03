@@ -128,7 +128,7 @@ public class PP_Cannon : MonoBehaviour {
 
 		myCannon.rotation.eulerAngles.Set (0, 0, t_angle);
 
-		myCannon.transform.localPosition = Vector3.zero;
+//		myCannon.transform.localPosition = Vector3.zero;
 	}
 
 	private void UpdateShell () {
