@@ -12,7 +12,12 @@ public class PP_Skill_Burp : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+//	void FixedUpdate () {
+//		this.transform.position = myTransform.position;
+//		this.transform.rotation = myTransform.rotation;
+//	}
+
+	public void UpdateTransform () {
 		this.transform.position = myTransform.position;
 		this.transform.rotation = myTransform.rotation;
 	}
