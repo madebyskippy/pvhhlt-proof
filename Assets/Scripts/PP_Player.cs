@@ -144,8 +144,8 @@ public class PP_Player : MonoBehaviour {
 			myAbility_Freeze_Energy < myAbility_Freeze_MaxEnergy) {
 			Debug.Log (myAbility_Freeze_Energy);
 			myAbility_Freeze_Energy += Time.deltaTime;
-			if (myStatus_DashTimer >= myAbility_Freeze_MaxEnergy) {
-				myAbility_Freeze_MaxEnergy = myAbility_Freeze_MaxEnergy;
+			if (myAbility_Freeze_Energy >= myAbility_Freeze_MaxEnergy) {
+				myAbility_Freeze_Energy = myAbility_Freeze_MaxEnergy;
 			}
 		}
 
@@ -219,7 +219,7 @@ public class PP_Player : MonoBehaviour {
 		myStatus_IsFrozen = false;
 		myRigidbody2D.isKinematic = false;
 		myAnimator.SetBool ("isPressed", false);
-		myCDTimer = myAbility_Burp_CD;
+		myCDTimer = myAbility_Freeze_CD;
 	}
 
 	private void UpdateAbility_Dash () {
