@@ -1,15 +1,12 @@
 fileFormatVersion: 2
-guid: 6a59e151997ae40299ab44315fb080fd
-timeCreated: 1493825375
+guid: efb2020f7c4704cc58d8b95b0de33a6d
+timeCreated: 1493825259
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: snake-sheet_0
-    21300002: snake-sheet_1
-    21300004: snake-sheet_2
-    21300006: snake-sheet_3
-    21300008: snake-sheet_4
-    21300010: snake-sheet_5
+    21300000: clam-right_0
+    21300002: clam-right_1
+    21300004: clam-right_2
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -46,7 +43,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 150
+  spritePixelsToUnits: 100
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -84,80 +81,41 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: snake-sheet_0
+      name: clam-right_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 384
-        width: 256
-        height: 384
+        y: 400
+        width: 384
+        height: 200
       alignment: 9
-      pivot: {x: 0.47, y: 0.19}
+      pivot: {x: 0.07, y: 0.62}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: snake-sheet_1
+      name: clam-right_1
       rect:
         serializedVersion: 2
-        x: 256
-        y: 384
-        width: 256
-        height: 384
+        x: 0
+        y: 200
+        width: 384
+        height: 200
       alignment: 9
-      pivot: {x: 0.47, y: 0.19}
+      pivot: {x: 0.07, y: 0.62}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: snake-sheet_2
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 384
-        width: 256
-        height: 384
-      alignment: 9
-      pivot: {x: 0.47, y: 0.19}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: snake-sheet_3
+      name: clam-right_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 384
+        width: 384
+        height: 200
       alignment: 9
-      pivot: {x: 0.47, y: 0.19}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: snake-sheet_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 256
-        height: 384
-      alignment: 9
-      pivot: {x: 0.47, y: 0.19}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: snake-sheet_5
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 256
-        height: 384
-      alignment: 9
-      pivot: {x: 0.47, y: 0.19}
+      pivot: {x: 0.07, y: 0.62}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
