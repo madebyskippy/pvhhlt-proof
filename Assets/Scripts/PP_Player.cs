@@ -111,6 +111,7 @@ public class PP_Player : MonoBehaviour {
 			if (myStatus_StunTimer <= 0) {
 				myStatus_StunTimer = 0;
 				mySpriteRenderer.color = myColor;
+				myAnimator.SetBool ("isStunned", false);
 			}
 		}
 		if (myStatus_DashTimer > 0) {
@@ -326,7 +327,12 @@ public class PP_Player : MonoBehaviour {
 			return;
 		myStatus_StunTimer = myAbility_Burp_StunTime;
 		myChargeTimer = 0;
-		mySpriteRenderer.color = myStunColor;
+//		mySpriteRenderer.color = myStunColor;
+		Color t_Color = mySpriteRenderer.color;
+		t_Color *= myStunColor.r;
+		t_Color.a = 1f;
+		mySpriteRenderer.color = t_Color;
+		myAnimator.SetBool ("isStunned", true);
 	}
 
 	public void ToggleReady() {
