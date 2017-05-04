@@ -26,7 +26,8 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] float moveSensitivity;
 
 	[Header("Status")]
-	[SerializeField] Color myStunColor = Color.gray;
+	[SerializeField] Color myStunMultiplier = Color.gray;
+	private Color myStunColor;
 	private bool myStatus_IsUsingAbility = false;
 	private float myStatus_StunTimer;
 	private bool myStatus_IsFrozen = false;
@@ -83,6 +84,9 @@ public class PP_Player : MonoBehaviour {
 		mySpriteRenderer.color = g_colorSet.myColors [0];
 		mySpriteRendererPattern.color = g_colorSet.myColors [1];
 		mySpriteRendererBorder.color = g_colorBorder;
+
+		myStunColor = myColor * myStunMultiplier.r; //assuming all rgb of stun color are the same cus it's gray
+		myStunColor.a = 1f;
 	}
 	
 	// Update is called once per frame
@@ -327,11 +331,7 @@ public class PP_Player : MonoBehaviour {
 			return;
 		myStatus_StunTimer = myAbility_Burp_StunTime;
 		myChargeTimer = 0;
-//		mySpriteRenderer.color = myStunColor;
-		Color t_Color = mySpriteRenderer.color;
-		t_Color *= myStunColor.r;
-		t_Color.a = 1f;
-		mySpriteRenderer.color = t_Color;
+		mySpriteRenderer.color = myStunColor;
 		myAnimator.SetBool ("isStunned", true);
 	}
 

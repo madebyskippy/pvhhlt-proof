@@ -17,6 +17,9 @@ public class PP_Hole : MonoBehaviour {
 	[SerializeField] float myOpenSizeDelta;
 	private float myCloseSize = 1;
 	private Status myStatus = Status.Idle;
+
+	[SerializeField] Animator myAnimator;
+
 	// Use this for initialization
 	void Start () {
 	}
@@ -35,6 +38,7 @@ public class PP_Hole : MonoBehaviour {
 			myTimer -= Time.deltaTime;
 			if (myTimer <= 0) {
 				myStatus = Status.Idle;
+				myAnimator.SetInteger ("state", 0);
 			}
 
 			this.transform.localScale = Vector3.Lerp (Vector3.one * (myOpenSizeDelta + myCloseSize), Vector3.one * myCloseSize, 1 - myTimer / myOpenTime);
@@ -42,6 +46,7 @@ public class PP_Hole : MonoBehaviour {
 			myTimer -= Time.deltaTime;
 			if (myTimer <= 0) {
 				myStatus = Status.Idle;
+				myAnimator.SetInteger ("state", 0);
 			}
 
 			this.transform.localScale = Vector3.Lerp (this.transform.localScale, Vector3.one * myCloseSize, 1 - myTimer / myPopTime);
@@ -52,12 +57,14 @@ public class PP_Hole : MonoBehaviour {
 		myCloseSize = g_closeSize;
 		myTimer = myOpenTime;
 		myStatus = Status.Open;
+		myAnimator.SetInteger ("state", 1);
 	}
 
 	public void Pop (float g_closeSize) {
 		myCloseSize = g_closeSize;
 		myTimer = myPopTime;
 		myStatus = Status.Pop;
+		myAnimator.SetInteger ("state", 2);
 	}
 
 }
