@@ -211,4 +211,8 @@ public class PP_Butt : MonoBehaviour {
 		myBeansCurrent = 0;
 		myButthole.GetComponent<PP_Hole> ().Pop (1);
 	}
+
+	public int GetBeansCurrent () {
+		return myBeansCurrent;
+	}
 }

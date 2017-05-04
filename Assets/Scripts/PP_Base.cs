@@ -10,6 +10,8 @@ public class PP_Base : MonoBehaviour {
 	[SerializeField] int myScoreRatioGrape = 100;
 
 	[SerializeField] SpriteRenderer myScoreSpriteRenderer;
+	[SerializeField] Gradient myScoreSpriteRenderer_Gradient;
+	[SerializeField] float myScoreSpriteRenderer_DeltaScore = 0.1f;
 
 	[SerializeField] float myScoreSpeed = 1;
 	[SerializeField] float myScoreDelta = 0.001f;
@@ -31,15 +33,18 @@ public class PP_Base : MonoBehaviour {
 				myScoreCurrent = myScoreTarget;
 			}
 			myScoreSpriteRenderer.material.SetFloat ("_Progress", 1 - myScoreCurrent);
+
+			myScoreSpriteRenderer.color = myScoreSpriteRenderer_Gradient.Evaluate (
+				Mathf.Clamp ((Mathf.Abs (myScoreTarget - myScoreCurrent) / myScoreSpriteRenderer_DeltaScore), 0, 1));
 		}
 	}
 
 	void OnTriggerEnter2D (Collider2D g_other) {
 		if (g_other.tag == PP_Global.TAG_BUTT) {
-//			Debug.Log ("POP");
-			PP_ScenePlay.Instance.AddScore (myTeamNumber, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean, PP_Global.ScoreMethod.Bean);
-			ShowEat ();
-//			PP_ScenePlay.Instance.AddScore (myTeamNumber, 1, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean);
+			if (g_other.GetComponent<PP_Butt> ().GetBeansCurrent () > 0) {
+				PP_ScenePlay.Instance.AddScore (myTeamNumber, g_other.GetComponent<PP_Butt> ().Pop () * myScoreRatioBean, PP_Global.ScoreMethod.Bean);
+				ShowEat ();
+			}
 		} else if (g_other.tag == PP_Global.TAG_GRAPE) {
 			g_other.GetComponent<PP_Grape> ().Kill ();
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, myScoreRatioGrape, PP_Global.ScoreMethod.Grape);
