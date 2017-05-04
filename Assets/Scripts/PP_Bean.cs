@@ -63,6 +63,7 @@ public class PP_Bean : MonoBehaviour {
 
 	void FixedUpdate () {
 		if (myState == PP_Global.BeanStatus.Idle) {
+			GetComponent<Animator> ().SetBool ("isStunned", false);
 			GetComponent<SpriteRenderer> ().color = Color.white;
 			GetDirection (myTargets [myCurrentTarget]);
 			Look ();
@@ -150,7 +151,8 @@ public class PP_Bean : MonoBehaviour {
 	public void Stun () {
 		if (myState != PP_Global.BeanStatus.Frozen) {
 			Debug.Log ("bean down");
-			GetComponent<SpriteRenderer> ().color = Color.gray;
+			GetComponent<Animator> ().SetBool ("isStunned", true);
+			GetComponent<SpriteRenderer> ().color = new Color (0.75f, 0.75f, 0.75f);
 			myState = PP_Global.BeanStatus.Frozen;
 			myStatus_FreezeTimer = 0f;
 		}
