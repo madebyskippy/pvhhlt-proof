@@ -147,7 +147,7 @@ public class PP_Player : MonoBehaviour {
 		if (myAbility == PP_Global.Abilities.Freeze && 
 			myStatus_IsFrozen == false && 
 			myAbility_Freeze_Energy < myAbility_Freeze_MaxEnergy) {
-			Debug.Log (myAbility_Freeze_Energy);
+//			Debug.Log (myAbility_Freeze_Energy);
 			myAbility_Freeze_Energy += Time.deltaTime;
 			if (myAbility_Freeze_Energy >= myAbility_Freeze_MaxEnergy) {
 				myAbility_Freeze_Energy = myAbility_Freeze_MaxEnergy;
