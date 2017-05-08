@@ -50,6 +50,7 @@ namespace JellyJoystick {
 		PS4,
 		PS3
 	}
+		
 }
 
 public class JellyJoystickManager : MonoBehaviour {
@@ -80,6 +81,9 @@ public class JellyJoystickManager : MonoBehaviour {
 
 	private Platform myPlatform;
 	private MapType[] myMapTypes = new MapType[NUMBER_MAX_JOYSTICK];
+
+	[SerializeField] bool useSimulator = false;
+	[SerializeField] JellyJoystickSimulator[] myJellyJoystickSimulators;
 
 	void Start () {
 		InitPlatform ();
@@ -161,6 +165,23 @@ public class JellyJoystickManager : MonoBehaviour {
 	}
 
 	public float GetAxis (AxisMethodName g_input, int g_joystickNumber, JoystickAxis g_axis) {
+		//check if it use simulator
+		if (useSimulator) {
+			foreach (JellyJoystickSimulator t_simulator in myJellyJoystickSimulators) {
+				if (t_simulator.myJoystickNumber == g_joystickNumber) {
+					foreach (JellyJoystickSimulator.Axis t_axis in t_simulator.myAxes) {
+						if (t_axis.myJoystickAxis == g_axis) {
+							float t_value = t_simulator.GetAxis (t_axis);
+							if (t_value != 0)
+								return t_value;
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
+
 		//get the input function
 		AxisMethod t_InputFunction;
 		if (g_input == AxisMethodName.Normal)
@@ -226,6 +247,18 @@ public class JellyJoystickManager : MonoBehaviour {
 				if (g_axis == JoystickAxis.RT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis10");
 
+			} else if (t_mapType == MapType.PS3) {
+
+				if (g_axis == JoystickAxis.LS_X)
+					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis2");
+				if (g_axis == JoystickAxis.LS_Y)
+					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis1") * -1;
+
+				if (g_axis == JoystickAxis.RS_X)
+					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis3");
+				if (g_axis == JoystickAxis.RS_Y)
+					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis5") * -1;
+
 			}
 		} else {
 			for (int i = 1; i <= NUMBER_MAX_JOYSTICK; i++) {
@@ -238,6 +271,22 @@ public class JellyJoystickManager : MonoBehaviour {
 	}
 
 	public bool GetButton (ButtonMethodName g_input, int g_joystickNumber, JoystickButton g_button) {
+		//check if it use simulator
+		if (useSimulator) {
+			foreach (JellyJoystickSimulator t_simulator in myJellyJoystickSimulators) {
+				if (t_simulator.myJoystickNumber == g_joystickNumber) {
+					foreach (JellyJoystickSimulator.Button t_button in t_simulator.myButtons) {
+						if (t_button.myJoystickButton == g_button) {
+							if (t_simulator.GetButton (g_input, t_button))
+								return true;
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
+
 		//get the input function
 		ButtonMethod t_InputFunction;
 		if (g_input == ButtonMethodName.Up)
@@ -331,6 +380,33 @@ public class JellyJoystickManager : MonoBehaviour {
 					return t_InputFunction (GetKeyCode (8, g_joystickNumber));
 				if (g_button == JoystickButton.RS)
 					return t_InputFunction (GetKeyCode (9, g_joystickNumber));
+				
+			} else if (t_mapType == MapType.PS3) {
+
+				if (g_button == JoystickButton.A)
+					return t_InputFunction (GetKeyCode (2, g_joystickNumber));
+				if (g_button == JoystickButton.B)
+					return t_InputFunction (GetKeyCode (1, g_joystickNumber));
+				if (g_button == JoystickButton.X)
+					return t_InputFunction (GetKeyCode (3, g_joystickNumber));
+				if (g_button == JoystickButton.Y)
+					return t_InputFunction (GetKeyCode (0, g_joystickNumber));
+
+				if (g_button == JoystickButton.LB)
+					return t_InputFunction (GetKeyCode (6, g_joystickNumber));
+				if (g_button == JoystickButton.RB)
+					return t_InputFunction (GetKeyCode (7, g_joystickNumber));
+
+				if (g_button == JoystickButton.BACK)
+					return t_InputFunction (GetKeyCode (8, g_joystickNumber));
+				if (g_button == JoystickButton.START)
+					return t_InputFunction (GetKeyCode (9, g_joystickNumber));
+
+				if (g_button == JoystickButton.LS)
+					return t_InputFunction (GetKeyCode (10, g_joystickNumber));
+				if (g_button == JoystickButton.RS)
+					return t_InputFunction (GetKeyCode (11, g_joystickNumber));
+				
 			}
 		} else {
 			for (int i = 1; i <= NUMBER_MAX_JOYSTICK; i++) {
@@ -343,5 +419,46 @@ public class JellyJoystickManager : MonoBehaviour {
 
 	private KeyCode GetKeyCode (int g_buttonNumber, int g_joystickNumber) {
 		return KeyCode.JoystickButton0 + g_buttonNumber + g_joystickNumber * 20;
+	}
+}
+
+[System.Serializable]
+public class JellyJoystickSimulator {
+
+	[System.Serializable]
+	public struct Button {
+		public JoystickButton myJoystickButton;
+		public KeyCode myKeyCode;
+	}; 
+
+	[System.Serializable]
+	public struct Axis {
+		public JoystickAxis myJoystickAxis;
+		public KeyCode myKeyCodeNegative;
+		public KeyCode myKeyCodePositive;
+	}; 
+
+	public int myJoystickNumber = 0;
+
+	public Button[] myButtons;
+	public Axis[] myAxes;
+
+	public bool GetButton (ButtonMethodName g_input, Button g_button) {
+		if (g_input == ButtonMethodName.Down)
+			return Input.GetKeyDown (g_button.myKeyCode);
+		if (g_input == ButtonMethodName.Hold)
+			return Input.GetKey (g_button.myKeyCode);
+		if (g_input == ButtonMethodName.Up)
+			return Input.GetKeyUp (g_button.myKeyCode);	
+		return false;
+	}
+
+	public float GetAxis (Axis g_axis) {
+		float t_value = 0;
+		if (Input.GetKey (g_axis.myKeyCodeNegative))
+			t_value -= 1;
+		if (Input.GetKey (g_axis.myKeyCodePositive))
+			t_value += 1;
+		return t_value;
 	}
 }
