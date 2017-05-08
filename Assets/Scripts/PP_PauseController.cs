@@ -69,7 +69,7 @@ public class PP_PauseController : MonoBehaviour {
 
 		if (Time.timeScale == 0 &&
 			!isStickActive &&
-			JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) > 0) {
+			JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) < 0) {
 			Debug.Log ("change the menu select key");
 			isStickActive = true;
 			toggleMenuSelect ();

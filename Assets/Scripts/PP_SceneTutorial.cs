@@ -10,6 +10,7 @@ public class PP_SceneTutorial : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		PP_TransitionManager.Instance.EndTransition ();
 		myCurrentSlide = 0;
 		myTutorialSpriteRenderer.sprite = myTutorialSlides [myCurrentSlide];
 	}

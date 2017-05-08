@@ -28,11 +28,11 @@ public class PP_SceneStart : MonoBehaviour {
 	void Update () {
 		PP_PauseController.Instance.SetIsMenuActive (false);
 
-		if (Input.GetAxisRaw ("Vertical") == 0) {
+		if (JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) == 0) {
 			isStickActive = false;
 		}
 
-		if (Input.GetAxisRaw ("Vertical") > 0 && !isStickActive) {
+		if (JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) > 0 && !isStickActive) {
 			if (selectIdx == 0) {
 				selectIdx = 2;
 			} else {
@@ -42,7 +42,7 @@ public class PP_SceneStart : MonoBehaviour {
 			ChangeBtnStatus ();
 		}
 
-		if (Input.GetAxisRaw ("Vertical") < 0 && !isStickActive) {
+		if (JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) < 0 && !isStickActive) {
 			if (selectIdx == 2) {
 				selectIdx = 0;
 			} else {
@@ -56,7 +56,7 @@ public class PP_SceneStart : MonoBehaviour {
 			if (selectIdx == 0) {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			} else if (selectIdx == 1) {
-				Debug.Log ("change to tutorial");
+				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_TUTORIAL);
 //				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			} else {
 				Debug.Log ("change to credits");
