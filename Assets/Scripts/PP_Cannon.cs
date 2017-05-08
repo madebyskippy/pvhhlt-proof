@@ -179,6 +179,7 @@ public class PP_Cannon : MonoBehaviour {
 
 			CS_AudioManager.Instance.PlaySFX (mySFX_Close);
 			myClamAnimator.SetTrigger ("closing");
+			myClamAnimator.SetFloat ("charge", 0);
 		}
 	}
 }
