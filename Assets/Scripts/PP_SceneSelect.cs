@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
 public class PP_SceneSelect : MonoBehaviour {
 	
@@ -74,8 +75,9 @@ public class PP_SceneSelect : MonoBehaviour {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			string name1 = "Ready" + (i * 2 + 1);
-			if (Input.GetButtonDown (name1) && Time.timeScale != 0) {
+			int t_controller_1 = i * 2 + 1;
+			if (JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, t_controller_1, JoystickButton.Y) && 
+				Time.timeScale != 0) {
 				teamAReady [i] = !teamAReady[i];
 				teamA [i].GetComponent<PP_Player> ().ToggleReady ();
 				checkTeamAReady = CheckReadys (teamAReady, selectA);
@@ -88,8 +90,9 @@ public class PP_SceneSelect : MonoBehaviour {
 				}
 			}
 
-			string name2 = "Ready" + (i * 2 + 2);
-			if (Input.GetButtonDown (name2) && Time.timeScale != 0) {
+			int t_controller_2 = i * 2 + 2;
+			if (JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, t_controller_2, JoystickButton.Y) && 
+				Time.timeScale != 0) {
 				teamBReady [i] = !teamBReady[i];
 				teamB [i].GetComponent<PP_Player> ().ToggleReady ();
 				checkTeamAReady = CheckReadys (teamAReady, selectA);

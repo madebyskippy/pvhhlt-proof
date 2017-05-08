@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
 public class PP_PauseController : MonoBehaviour {
 	private static PP_PauseController instance = null;
@@ -47,28 +48,35 @@ public class PP_PauseController : MonoBehaviour {
 		if (!isMenuActive)
 			return;
 		
-		if (Input.GetButtonDown("Menu")) {
+//		if (Input.GetButtonDown("Menu")) {
+		if (JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, 0, JoystickButton.START)) {
 			Debug.Log ("change the pause key");
 			toggleMenuShowHide ();
 		}
 
-		if (Input.GetAxisRaw ("Vertical") == 0) {
+//		if (Input.GetAxisRaw ("Vertical") == 0) {
+		if (JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) == 0) {
 			isStickActive = false;
 		}
 
-		if (Time.timeScale == 0 && Input.GetAxisRaw("Vertical") > 0 && !isStickActive) {
+		if (Time.timeScale == 0 && 
+			!isStickActive && 
+			JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) > 0) {
 			Debug.Log ("change the menu select key");
 			isStickActive = true;
 			toggleMenuSelect ();
 		}
 
-		if (Time.timeScale == 0 && Input.GetAxisRaw("Vertical") < 0 && !isStickActive) {
+		if (Time.timeScale == 0 &&
+			!isStickActive &&
+			JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) > 0) {
 			Debug.Log ("change the menu select key");
 			isStickActive = true;
 			toggleMenuSelect ();
 		}
 
-		if (Time.timeScale == 0 && Input.GetButtonDown("Submit")) {
+		if (Time.timeScale == 0 && 
+			JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, 0, JoystickButton.A)) {
 			Debug.Log ("change the menu Confirm key");
 			if (exitChoose) {
 //				Debug.Log ("do the return to menu function");

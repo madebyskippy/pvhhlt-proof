@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
 public class PP_SceneStart : MonoBehaviour {
 
@@ -51,7 +52,7 @@ public class PP_SceneStart : MonoBehaviour {
 			ChangeBtnStatus ();
 		}
 
-		if (Input.GetButtonDown("Submit")) {
+		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Down, 0, JoystickButton.A)) {
 			if (selectIdx == 0) {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			} else if (selectIdx == 1) {

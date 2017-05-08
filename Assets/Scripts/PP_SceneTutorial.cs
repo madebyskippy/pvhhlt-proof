@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
 public class PP_SceneTutorial : MonoBehaviour {
 	[SerializeField] SpriteRenderer myTutorialSpriteRenderer;
@@ -15,7 +16,7 @@ public class PP_SceneTutorial : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown ("Submit")) {
+		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Down, 0, JoystickButton.A)) {
 			ShowNextSlide ();
 		}
 	}

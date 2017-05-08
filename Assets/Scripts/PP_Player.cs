@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
 public class PP_Player : MonoBehaviour {
 
@@ -8,7 +9,7 @@ public class PP_Player : MonoBehaviour {
 
 	private int myTeamNumber = 1;
 	private GameObject myButt;
-	private string myControl = "1";
+	private int myControl = 1;
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 	[SerializeField] SpriteRenderer mySpriteRendererPattern;
@@ -24,6 +25,8 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] float mySpeed = 1;
 	[SerializeField] float moveGravity;
 	[SerializeField] float moveSensitivity;
+	private float myInputX;
+	private float myInputY;
 
 	[Header("Status")]
 	[SerializeField] Color myStunMultiplier = Color.gray;
@@ -75,7 +78,7 @@ public class PP_Player : MonoBehaviour {
 		myAbility_Burp_Prefab.SetActive (false);
 	}
 
-	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, string g_myControl) {
+	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, int g_myControl) {
 		myColor = g_colorSet.myColors [0];
 		myColorDetail = g_colorSet.myColors [1];
 		myTeamNumber = g_teamNumber;
@@ -95,6 +98,7 @@ public class PP_Player : MonoBehaviour {
 			return;
 		
 		if (myStatus_StunTimer <= 0 && !myStatus_IsFrozen) {
+			UpdateInput ();
 			if (isActive)
 				UpdateMove ();
 			UpdateRotation ();
@@ -166,7 +170,7 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	private void UpdateAbility_Burp () {
-		if (Input.GetButton ("Skill" + myControl)) {
+		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Hold, myControl, JoystickButton.A)) {
 			if (!myStatus_IsUsingAbility) {
 				myStatus_IsUsingAbility = true;
 				myAnimator.SetBool ("isPressed", true);
@@ -178,7 +182,8 @@ public class PP_Player : MonoBehaviour {
 			}
 		}
 
-		if (myStatus_IsUsingAbility && Input.GetButtonUp ("Skill" + myControl)) {
+		if (myStatus_IsUsingAbility && 
+			JellyJoystickManager.Instance.GetButton (ButtonMethodName.Up, myControl, JoystickButton.A)) {
 			myStatus_IsUsingAbility = false;
 
 			CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
@@ -198,7 +203,8 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	private void UpdateAbility_Freeze () {
-		if (Input.GetButton ("Skill" + myControl) && myAbility_Freeze_Energy > 0) {
+		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Hold, myControl, JoystickButton.A) && 
+			myAbility_Freeze_Energy > 0) {
 			if (!myStatus_IsUsingAbility) {
 				myStatus_IsUsingAbility = true;
 
@@ -214,7 +220,8 @@ public class PP_Player : MonoBehaviour {
 					UpdateAbility_Freeze_End ();
 				}
 			}
-		} else if (myStatus_IsUsingAbility && Input.GetButtonUp ("Skill" + myControl)) {
+		} else if (myStatus_IsUsingAbility && 
+			JellyJoystickManager.Instance.GetButton (ButtonMethodName.Up, myControl, JoystickButton.A)) {
 			UpdateAbility_Freeze_End ();
 		}
 	}
@@ -228,7 +235,7 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	private void UpdateAbility_Dash () {
-		if (Input.GetButton ("Skill" + myControl)) {
+		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Hold, myControl, JoystickButton.A)) {
 			if (!myStatus_IsUsingAbility) {
 				myStatus_IsUsingAbility = true;
 				myAnimator.SetBool ("isPressed", true);
@@ -240,7 +247,8 @@ public class PP_Player : MonoBehaviour {
 			}
 		}
 
-		if (myStatus_IsUsingAbility && Input.GetButtonUp ("Skill" + myControl)) {
+		if (myStatus_IsUsingAbility && 
+			JellyJoystickManager.Instance.GetButton (ButtonMethodName.Up, myControl, JoystickButton.A)) {
 			myStatus_IsUsingAbility = false;
 			CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
 			myStatus_SpeedRatio = 
@@ -254,14 +262,16 @@ public class PP_Player : MonoBehaviour {
 		}
 	}
 
-	private void UpdateMove () {
-		float t_inputHorizontal = Input.GetAxis ("Horizontal" + myControl);
-		float t_inputVertical = Input.GetAxis ("Vertical" + myControl);
+	private void UpdateInput () {
+		myInputX = JellyJoystickManager.Instance.GetAxis (AxisMethodName.Normal, myControl, JoystickAxis.LS_X);
+		myInputY = JellyJoystickManager.Instance.GetAxis (AxisMethodName.Normal, myControl, JoystickAxis.LS_Y);
+	}
 
+	private void UpdateMove () {
 		if (myStatus_DashTimer > 0) {
 			myDirection = myRotation.normalized;
 		} else {
-			myDirection = (Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal).normalized;
+			myDirection = (Vector3.up * myInputY + Vector3.right * myInputX).normalized;
 		}
 
 		myMoveAxis += myDirection * moveSensitivity;
@@ -282,10 +292,8 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	public void UpdateRotation () {
-		float t_inputHorizontal = Input.GetAxis ("Horizontal" + myControl);
-		float t_inputVertical = Input.GetAxis ("Vertical" + myControl);
-		if (Mathf.Abs(t_inputHorizontal) > 0.1f || Mathf.Abs(t_inputVertical) > 0.1f) {
-			myRotation = Vector3.up * t_inputVertical + Vector3.right * t_inputHorizontal;
+		if (Mathf.Abs(myInputX) > 0.1f || Mathf.Abs(myInputY) > 0.1f) {
+			myRotation = Vector3.up * myInputY + Vector3.right * myInputX;
 		}
 
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
@@ -294,7 +302,7 @@ public class PP_Player : MonoBehaviour {
 		this.transform.rotation = Quaternion.Lerp (this.transform.rotation, t_quaternion, Time.fixedDeltaTime * myRotationSpeed);
 	}
 
-	public void SetMyControl (string g_myControl) {
+	public void SetMyControl (int g_myControl) {
 		myControl = g_myControl;
 	}
 

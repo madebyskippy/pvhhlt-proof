@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [ExecuteInEditMode]
-public class PP_ManipulatingInputManager : MonoBehaviour {
+public class JellyJoystickManipulatingAxis : MonoBehaviour {
 	
 	[SerializeField] bool setupAxis = false;
 

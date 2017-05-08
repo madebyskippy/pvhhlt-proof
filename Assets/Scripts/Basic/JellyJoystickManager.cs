@@ -1,36 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
-public class PP_InputManager : MonoBehaviour {
-
-	private static PP_InputManager instance = null;
-
-	//========================================================================
-	public static PP_InputManager Instance {
-		get { 
-			return instance;
-		}
-	}
-
-	void Awake () {
-		if (instance != null && instance != this) {
-			Destroy(this.gameObject);
-		} else {
-			instance = this;
-		}
-		DontDestroyOnLoad(this.gameObject);
-	}
-	//========================================================================
-	private const int NUMBER_MAX_JOYSTICK = 8;
-
+namespace JellyJoystick {
+	
 	public enum ButtonMethodName {
 		Down,
 		Hold,
 		Up
 	}
 
-	public enum JoyStickButton {
+	public enum JoystickButton {
 		A,
 		B,
 		X,
@@ -48,7 +29,7 @@ public class PP_InputManager : MonoBehaviour {
 		Raw
 	}
 
-	public enum JoyStickAxis {
+	public enum JoystickAxis {
 		LS_X,
 		LS_Y,
 		RS_X,
@@ -57,18 +38,42 @@ public class PP_InputManager : MonoBehaviour {
 		RT,
 	}
 
-	private enum Platform {
+	public enum Platform {
 		OSX,
 		WIN
 	}
 
-	private enum MapType {
+	public enum MapType {
 		NONE,
 		OSX_XBOX,
 		WIN_XBOX,
 		PS4,
 		PS3
 	}
+}
+
+public class JellyJoystickManager : MonoBehaviour {
+
+	private static JellyJoystickManager instance = null;
+
+	//========================================================================
+	public static JellyJoystickManager Instance {
+		get { 
+			return instance;
+		}
+	}
+
+	void Awake () {
+		if (instance != null && instance != this) {
+			Destroy(this.gameObject);
+		} else {
+			instance = this;
+		}
+		DontDestroyOnLoad(this.gameObject);
+	}
+	//========================================================================
+
+	public const int NUMBER_MAX_JOYSTICK = 8;
 
 	private delegate bool ButtonMethod (KeyCode t_keyCode);
 	private delegate float AxisMethod (string t_axis);
@@ -92,28 +97,28 @@ public class PP_InputManager : MonoBehaviour {
 	}
 
 	void Update () {
-//		if (GetButton(ButtonMethodName.Down, 1, JoyStickButton.A)){
+//		if (GetButton(ButtonMethodName.Down, 1, JoystickButton.A)){
 //			Debug.Log ("A1!");
 //		}
 //
-//		if (GetButton(ButtonMethodName.Up, 1, JoyStickButton.A)){
+//		if (GetButton(ButtonMethodName.Up, 1, JoystickButton.A)){
 //			Debug.Log ("A1up!");
 //		}
 //
-//		if (GetButton(ButtonMethodName.Down, 2, JoyStickButton.A)){
+//		if (GetButton(ButtonMethodName.Down, 2, JoystickButton.A)){
 //			Debug.Log ("A2!");
 //		}
 //
-//		if (GetButton(ButtonMethodName.Down, 0, JoyStickButton.A)){
+//		if (GetButton(ButtonMethodName.Down, 0, JoystickButton.A)){
 //			Debug.Log ("A!!!!");
 //		}
 //
-//		Debug.Log ("1LX" + GetAxis (AxisMethodName.Normal, 1, JoyStickAxis.RS_X));
-//		Debug.Log ("1LY" + GetAxis (AxisMethodName.Normal, 1, JoyStickAxis.RS_Y));
-//		Debug.Log ("2LX" + GetAxis (AxisMethodName.Normal, 2, JoyStickAxis.RS_X));
-//		Debug.Log ("2LY" + GetAxis (AxisMethodName.Normal, 2, JoyStickAxis.RS_Y));
-//		Debug.Log ("LX" + GetAxis (AxisMethodName.Normal, 2, JoyStickAxis.RS_X));
-//		Debug.Log ("LY" + GetAxis (AxisMethodName.Normal, 2, JoyStickAxis.RS_Y));
+//		Debug.Log ("1LX" + GetAxis (AxisMethodName.Normal, 1, JoystickAxis.RS_X));
+//		Debug.Log ("1LY" + GetAxis (AxisMethodName.Normal, 1, JoystickAxis.RS_Y));
+//		Debug.Log ("2LX" + GetAxis (AxisMethodName.Normal, 2, JoystickAxis.RS_X));
+//		Debug.Log ("2LY" + GetAxis (AxisMethodName.Normal, 2, JoystickAxis.RS_Y));
+//		Debug.Log ("LX" + GetAxis (AxisMethodName.Normal, 2, JoystickAxis.RS_X));
+//		Debug.Log ("LY" + GetAxis (AxisMethodName.Normal, 2, JoystickAxis.RS_Y));
 	}
 
 	public void UpdateMyControllersType () {
@@ -155,7 +160,7 @@ public class PP_InputManager : MonoBehaviour {
 		return MapType.NONE;
 	}
 
-	public float GetAxis (AxisMethodName g_input, int g_joystickNumber, JoyStickAxis g_axis) {
+	public float GetAxis (AxisMethodName g_input, int g_joystickNumber, JoystickAxis g_axis) {
 		//get the input function
 		AxisMethod t_InputFunction;
 		if (g_input == AxisMethodName.Normal)
@@ -172,53 +177,53 @@ public class PP_InputManager : MonoBehaviour {
 
 			if (t_mapType == MapType.PS4) {
 				
-				if (g_axis == JoyStickAxis.LS_X)
+				if (g_axis == JoystickAxis.LS_X)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis1");
-				if (g_axis == JoyStickAxis.LS_Y)
+				if (g_axis == JoystickAxis.LS_Y)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis2") * -1;
 				
-				if (g_axis == JoyStickAxis.RS_X)
+				if (g_axis == JoystickAxis.RS_X)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis3");
-				if (g_axis == JoyStickAxis.RS_Y)
+				if (g_axis == JoystickAxis.RS_Y)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis4") * -1;
 				
-				if (g_axis == JoyStickAxis.LT)
+				if (g_axis == JoystickAxis.LT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis5");
-				if (g_axis == JoyStickAxis.RT)
+				if (g_axis == JoystickAxis.RT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis6");
 				
 			} else if (t_mapType == MapType.OSX_XBOX) {
 
-				if (g_axis == JoyStickAxis.LS_X)
+				if (g_axis == JoystickAxis.LS_X)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis1");
-				if (g_axis == JoyStickAxis.LS_Y)
+				if (g_axis == JoystickAxis.LS_Y)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis2") * -1;
 
-				if (g_axis == JoyStickAxis.RS_X)
+				if (g_axis == JoystickAxis.RS_X)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis3");
-				if (g_axis == JoyStickAxis.RS_Y)
+				if (g_axis == JoystickAxis.RS_Y)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis4") * -1;
 
-				if (g_axis == JoyStickAxis.LT)
+				if (g_axis == JoystickAxis.LT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis5");
-				if (g_axis == JoyStickAxis.RT)
+				if (g_axis == JoystickAxis.RT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis6");
 				
 			} else if (t_mapType == MapType.WIN_XBOX) {
 
-				if (g_axis == JoyStickAxis.LS_X)
+				if (g_axis == JoystickAxis.LS_X)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis1");
-				if (g_axis == JoyStickAxis.LS_Y)
+				if (g_axis == JoystickAxis.LS_Y)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis2") * -1;
 
-				if (g_axis == JoyStickAxis.RS_X)
+				if (g_axis == JoystickAxis.RS_X)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis4");
-				if (g_axis == JoyStickAxis.RS_Y)
+				if (g_axis == JoystickAxis.RS_Y)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis5") * -1;
 
-				if (g_axis == JoyStickAxis.LT)
+				if (g_axis == JoystickAxis.LT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis9");
-				if (g_axis == JoyStickAxis.RT)
+				if (g_axis == JoystickAxis.RT)
 					return t_InputFunction ("Joystick" + g_joystickNumber + "Axis10");
 
 			}
@@ -232,7 +237,7 @@ public class PP_InputManager : MonoBehaviour {
 		return 0;
 	}
 
-	public bool GetButton (ButtonMethodName g_input, int g_joystickNumber, JoyStickButton g_button) {
+	public bool GetButton (ButtonMethodName g_input, int g_joystickNumber, JoystickButton g_button) {
 		//get the input function
 		ButtonMethod t_InputFunction;
 		if (g_input == ButtonMethodName.Up)
@@ -251,80 +256,80 @@ public class PP_InputManager : MonoBehaviour {
 
 			if (t_mapType == MapType.PS4) {
 				
-				if (g_button == JoyStickButton.A)
+				if (g_button == JoystickButton.A)
 					return t_InputFunction (GetKeyCode (1, g_joystickNumber));
-				if (g_button == JoyStickButton.B)
+				if (g_button == JoystickButton.B)
 					return t_InputFunction (GetKeyCode (2, g_joystickNumber));
-				if (g_button == JoyStickButton.X)
+				if (g_button == JoystickButton.X)
 					return t_InputFunction (GetKeyCode (0, g_joystickNumber));
-				if (g_button == JoyStickButton.Y)
+				if (g_button == JoystickButton.Y)
 					return t_InputFunction (GetKeyCode (3, g_joystickNumber));
 				
-				if (g_button == JoyStickButton.LB)
+				if (g_button == JoystickButton.LB)
 					return t_InputFunction (GetKeyCode (4, g_joystickNumber));
-				if (g_button == JoyStickButton.RB)
+				if (g_button == JoystickButton.RB)
 					return t_InputFunction (GetKeyCode (5, g_joystickNumber));
 				
-				if (g_button == JoyStickButton.BACK)
+				if (g_button == JoystickButton.BACK)
 					return t_InputFunction (GetKeyCode (8, g_joystickNumber));
-				if (g_button == JoyStickButton.START)
+				if (g_button == JoystickButton.START)
 					return t_InputFunction (GetKeyCode (9, g_joystickNumber));
 				
-				if (g_button == JoyStickButton.LS)
+				if (g_button == JoystickButton.LS)
 					return t_InputFunction (GetKeyCode (10, g_joystickNumber));
-				if (g_button == JoyStickButton.RS)
+				if (g_button == JoystickButton.RS)
 					return t_InputFunction (GetKeyCode (11, g_joystickNumber));
 				
 			} else if (t_mapType == MapType.OSX_XBOX) {
 				
-				if (g_button == JoyStickButton.A)
+				if (g_button == JoystickButton.A)
 					return t_InputFunction (GetKeyCode (16, g_joystickNumber));
-				if (g_button == JoyStickButton.B)
+				if (g_button == JoystickButton.B)
 					return t_InputFunction (GetKeyCode (17, g_joystickNumber));
-				if (g_button == JoyStickButton.X)
+				if (g_button == JoystickButton.X)
 					return t_InputFunction (GetKeyCode (18, g_joystickNumber));
-				if (g_button == JoyStickButton.Y)
+				if (g_button == JoystickButton.Y)
 					return t_InputFunction (GetKeyCode (19, g_joystickNumber));
 
-				if (g_button == JoyStickButton.LB)
+				if (g_button == JoystickButton.LB)
 					return t_InputFunction (GetKeyCode (13, g_joystickNumber));
-				if (g_button == JoyStickButton.RB)
+				if (g_button == JoystickButton.RB)
 					return t_InputFunction (GetKeyCode (14, g_joystickNumber));
 
-				if (g_button == JoyStickButton.BACK)
+				if (g_button == JoystickButton.BACK)
 					return t_InputFunction (GetKeyCode (10, g_joystickNumber));
-				if (g_button == JoyStickButton.START)
+				if (g_button == JoystickButton.START)
 					return t_InputFunction (GetKeyCode (9, g_joystickNumber));
 
-				if (g_button == JoyStickButton.LS)
+				if (g_button == JoystickButton.LS)
 					return t_InputFunction (GetKeyCode (11, g_joystickNumber));
-				if (g_button == JoyStickButton.RS)
+				if (g_button == JoystickButton.RS)
 					return t_InputFunction (GetKeyCode (12, g_joystickNumber));
 				
 			} else if (t_mapType == MapType.WIN_XBOX) {
 
-				if (g_button == JoyStickButton.A)
+				if (g_button == JoystickButton.A)
 					return t_InputFunction (GetKeyCode (0, g_joystickNumber));
-				if (g_button == JoyStickButton.B)
+				if (g_button == JoystickButton.B)
 					return t_InputFunction (GetKeyCode (1, g_joystickNumber));
-				if (g_button == JoyStickButton.X)
+				if (g_button == JoystickButton.X)
 					return t_InputFunction (GetKeyCode (2, g_joystickNumber));
-				if (g_button == JoyStickButton.Y)
+				if (g_button == JoystickButton.Y)
 					return t_InputFunction (GetKeyCode (3, g_joystickNumber));
 
-				if (g_button == JoyStickButton.LB)
+				if (g_button == JoystickButton.LB)
 					return t_InputFunction (GetKeyCode (4, g_joystickNumber));
-				if (g_button == JoyStickButton.RB)
+				if (g_button == JoystickButton.RB)
 					return t_InputFunction (GetKeyCode (5, g_joystickNumber));
 
-				if (g_button == JoyStickButton.BACK)
+				if (g_button == JoystickButton.BACK)
 					return t_InputFunction (GetKeyCode (6, g_joystickNumber));
-				if (g_button == JoyStickButton.START)
+				if (g_button == JoystickButton.START)
 					return t_InputFunction (GetKeyCode (7, g_joystickNumber));
 
-				if (g_button == JoyStickButton.LS)
+				if (g_button == JoystickButton.LS)
 					return t_InputFunction (GetKeyCode (8, g_joystickNumber));
-				if (g_button == JoyStickButton.RS)
+				if (g_button == JoystickButton.RS)
 					return t_InputFunction (GetKeyCode (9, g_joystickNumber));
 			}
 		} else {

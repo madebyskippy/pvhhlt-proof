@@ -68,12 +68,12 @@ public class PP_MessageBox : MonoBehaviour {
 		return myScores;
 	}
 
-	public void SavePlayerAbility (string g_control, PP_Global.Abilities g_ability) {
-		myPlayerAbilities [int.Parse (g_control) - 1] = g_ability;
+	public void SavePlayerAbility (int g_control, PP_Global.Abilities g_ability) {
+		myPlayerAbilities [g_control - 1] = g_ability;
 	}
 
-	public PP_Global.Abilities GetPlayerAbility (string g_control) {
-		return myPlayerAbilities [int.Parse (g_control) - 1];
+	public PP_Global.Abilities GetPlayerAbility (int g_control) {
+		return myPlayerAbilities [g_control - 1];
 	}
 
 	public void Pause (bool g_status) {

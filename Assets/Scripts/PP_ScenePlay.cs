@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JellyJoystick;
 
 public class PP_ScenePlay : MonoBehaviour {
 	
@@ -56,7 +57,7 @@ public class PP_ScenePlay : MonoBehaviour {
 	void Update () {
 		if (!isGameStart) {
 //			Debug.Log ("!isGameStart");
-			if (Input.GetButtonDown ("Submit")) {
+			if (JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, 0, JoystickButton.A)) {
 //				Debug.Log ("Submit");
 				PP_MessageBox.Instance.Pause (false);
 				PP_TransitionManager.Instance.EndTransition ();
@@ -64,11 +65,11 @@ public class PP_ScenePlay : MonoBehaviour {
 			}
 		}
 
-		if (isGameEnd) {
-			if (Input.GetButtonDown ("Menu")) {
-				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
-			}
-		}
+//		if (isGameEnd) {
+//			if (JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, 0, JoystickButton.START)) {
+//				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
+//			}
+//		}
 	}
 		
 	public void AddScore (int g_team, float g_score, PP_Global.ScoreMethod g_method) {
