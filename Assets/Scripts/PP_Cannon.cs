@@ -38,7 +38,8 @@ public class PP_Cannon : MonoBehaviour {
 	private List<GameObject> myCannonBallPool = new List<GameObject> ();
 	private float myCannonTimer = 0;
 
-	[SerializeField] Animator myAnimator;
+	[SerializeField] Animator mySnakeAnimator;
+	[SerializeField] Animator myClamAnimator;
 
 	[SerializeField] Transform[] myBases;
 
@@ -113,7 +114,7 @@ public class PP_Cannon : MonoBehaviour {
 							myBases [t_myOwnerNumber].position, 
 							t_angle
 						);
-						myAnimator.SetTrigger ("isShooting");
+						mySnakeAnimator.SetTrigger ("isShooting");
 						myCannonTimer -= 1;
 						break;
 					}
@@ -137,10 +138,12 @@ public class PP_Cannon : MonoBehaviour {
 
 		if (myShellTimer > 0) {
 			myShellTimer -= Time.fixedDeltaTime;
+			myClamAnimator.SetFloat ("timer", myShellTimer);
 			if (myShellTimer <= 0) {
 				//Open
 				myShellTimer = 0;
 				myCannon.gameObject.SetActive (true);
+				myClamAnimator.SetTrigger ("opening");
 			}
 		} else {
 			myShellAngleTarget = 
@@ -166,6 +169,7 @@ public class PP_Cannon : MonoBehaviour {
 			return;
 		
 		myShellCharge += Time.fixedDeltaTime * myShellChargePerSecond;
+		myClamAnimator.SetFloat ("charge", myShellCharge);
 		if (myShellCharge > myShellChargeMax) {
 			//Close
 			myShellTimer = myShellClosedTime;
@@ -174,6 +178,7 @@ public class PP_Cannon : MonoBehaviour {
 			myCannon.gameObject.SetActive (false);
 
 			CS_AudioManager.Instance.PlaySFX (mySFX_Close);
+			myClamAnimator.SetTrigger ("closing");
 		}
 	}
 }
