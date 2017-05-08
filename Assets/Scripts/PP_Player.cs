@@ -306,6 +306,10 @@ public class PP_Player : MonoBehaviour {
 		myControl = g_myControl;
 	}
 
+	public int GetMyControl () {
+		return myControl;
+	}
+
 	public void SetMyAbility (PP_Global.Abilities g_ability) {
 		myAbility = g_ability;
 		PP_MessageBox.Instance.SavePlayerAbility (myControl, g_ability);

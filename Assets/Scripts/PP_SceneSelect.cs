@@ -111,11 +111,11 @@ public class PP_SceneSelect : MonoBehaviour {
 	void GetPauseInfo() {
 		pauseCore = GameObject.Find ("PauseScreen").transform.GetChild (0).gameObject;
 		pauseA [0] = pauseCore.transform.GetChild (0).GetChild (0).gameObject;
-		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
-		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
+		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
+		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
 		pauseB [0] = pauseCore.transform.GetChild (1).GetChild (0).gameObject;
-		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
-		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
+		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
+		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
 	}
 		
 	void GetPlayersStatus() {
