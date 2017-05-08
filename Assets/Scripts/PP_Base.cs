@@ -111,7 +111,11 @@ public class PP_Base : MonoBehaviour {
 	}
 
 	public void ShowDead () {
-		myAnimator.SetTrigger ("isDead");
+		myAnimator.SetBool ("isDead", true);
+	}
+
+	public void ShowWinner () {
+		myAnimator.SetBool ("isWinner", true);
 	}
 
 	public void ShowWinParticle () {
