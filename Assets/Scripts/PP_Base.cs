@@ -84,7 +84,7 @@ public class PP_Base : MonoBehaviour {
 			myTimer -= Time.deltaTime;
 			if (myTimer <= 0) {
 				myStatus = Status.Idle;
-				myAnimator.SetInteger ("state", 0);
+//				myAnimator.SetInteger ("state", 0);
 			}
 
 			myScaleTransform.transform.localScale = Vector3.Lerp (Vector3.one * (myMaxSizeDelta + myNormalSize), Vector3.one * myNormalSize, 1 - myTimer / myShrinkTime);
