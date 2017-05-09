@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// JellyJoystick Ver.0.1 
 /// made by Hang Ruan
-/// pecial thanks to Tim
+/// special thanks to Tim
 /// </summary>
 
 using System.Collections;
