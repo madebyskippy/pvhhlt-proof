@@ -220,6 +220,10 @@ public class PP_Player : MonoBehaviour {
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
 				myAnimator.SetBool ("isPressed", true);
+				myAnimator.Play ("Player_Freeze_Effect", -1, 1.0f - (float) myAbility_Freeze_Energy / (float) myAbility_Freeze_MaxEnergy);
+//				myAnimator.SetTarget (null, myAbility_Freeze_Energy / myAbility_Freeze_MaxEnergy * 5f);
+//				myAnimator.playbackTime = myAbility_Freeze_Energy / myAbility_Freeze_MaxEnergy * 5f;
+
 			} else {
 				myAbility_Freeze_Energy -= Time.deltaTime;
 				if (myAbility_Freeze_Energy <= 0) {
