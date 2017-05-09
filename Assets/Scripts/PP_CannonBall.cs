@@ -14,9 +14,14 @@ public class PP_CannonBall : MonoBehaviour {
 	[SerializeField] float mySpeedRatio = 1;
 	private Vector2 myDirection;
 
+	[SerializeField] Sprite[] mySprites;
+	private SpriteRenderer mySpriteRenderer;
+
 	// Use this for initialization
 	void Start () {
 		this.gameObject.SetActive (false);
+		mySpriteRenderer = GetComponent<SpriteRenderer> ();
+		mySpriteRenderer.sprite = mySprites [Random.Range (0, mySprites.Length)];
 	}
 
 	public void Init (Vector3 g_position, int g_teamNumber, Vector3 g_TargetPosition, float g_angle) {
