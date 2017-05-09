@@ -1,10 +1,14 @@
 ﻿//http://plyoung.appspot.com/blog/manipulating-input-manager-in-script.html
+
+#if UNITY_EDITOR
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 [ExecuteInEditMode]
+
 public class JellyJoystickManipulatingAxis : MonoBehaviour {
 	
 	[SerializeField] bool setupAxis = false;
@@ -133,3 +137,5 @@ public class JellyJoystickManipulatingAxis : MonoBehaviour {
 		}
 	}
 }
+
+#endif
