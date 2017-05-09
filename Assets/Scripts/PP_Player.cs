@@ -68,6 +68,8 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] CS_AudioClip myAC_Dash;
 	[SerializeField] CS_AudioClip myAC_Freeze;
 
+	[SerializeField] AudioClip mySFX_Select_Ready;
+	[SerializeField] AudioClip mySFX_Select_Unready;
 	[SerializeField] AudioClip mySFX_Select_Burp;
 	[SerializeField] AudioClip mySFX_Select_Dash;
 	[SerializeField] AudioClip mySFX_Select_Freeze;
@@ -385,6 +387,11 @@ public class PP_Player : MonoBehaviour {
 
 	public void ToggleReady() {
 		selectReady = !selectReady;
+		if (selectReady) {
+			CS_AudioManager.Instance.PlaySFX (mySFX_Select_Ready);
+		} else {
+			CS_AudioManager.Instance.PlaySFX (mySFX_Select_Unready);
+		}
 	}
 
 	public bool GetReadyStatus() {

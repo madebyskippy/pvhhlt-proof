@@ -14,6 +14,9 @@ public class PP_SceneStart : MonoBehaviour {
 	private int selectIdx;
 	private bool isStickActive = false;
 
+	[SerializeField] AudioClip mySFX_Move;
+	[SerializeField] AudioClip mySFX_Confirm;
+
 	// Use this for initialization
 	void Start () {
 		PP_TransitionManager.Instance.EndTransition ();
@@ -40,6 +43,8 @@ public class PP_SceneStart : MonoBehaviour {
 			}
 			isStickActive = true;
 			ChangeBtnStatus ();
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_Move);
 		}
 
 		if (JellyJoystickManager.Instance.GetAxis (AxisMethodName.Raw, 0, JoystickAxis.LS_Y) < 0 && !isStickActive) {
@@ -50,6 +55,8 @@ public class PP_SceneStart : MonoBehaviour {
 			}
 			isStickActive = true;
 			ChangeBtnStatus ();
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_Move);
 		}
 
 		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Down, 0, JoystickButton.A)) {
@@ -62,6 +69,8 @@ public class PP_SceneStart : MonoBehaviour {
 				Debug.Log ("change to credits");
 //				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			}
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_Confirm);
 		}
 
 		if (Random.Range (0f, 1f) < myBlinkProbability) {
