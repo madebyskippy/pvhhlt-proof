@@ -32,7 +32,8 @@ public class PP_CannonBall : MonoBehaviour {
 		myTargetPosition = g_TargetPosition;
 
 		myDirection = Quaternion.Euler (0, 0, g_angle) * Vector2.up;
-//		Debug.Log (myDirection);
+		//		Debug.Log (myDirection);
+		transform.Rotate (0f, 0f, Random.Range (0,360));
 		this.gameObject.SetActive (true);
 	}
 	
