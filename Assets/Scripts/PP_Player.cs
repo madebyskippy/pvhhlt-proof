@@ -13,6 +13,7 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] Rigidbody2D myRigidbody2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 	[SerializeField] SpriteRenderer mySpriteRendererPattern;
+	[SerializeField] SpriteRenderer mySpriteEffect;
 	[SerializeField] Animator myAnimator;
 	private Color myColor;
 	private Color myColorDetail;
@@ -45,6 +46,7 @@ public class PP_Player : MonoBehaviour {
 	[Header(" - Burp")]
 	[SerializeField] Transform myAbility_Burp_Position;
 	[SerializeField] GameObject myAbility_Burp_Prefab;
+	private GameObject myAbility_Burp_GameObject;
 	[SerializeField] Sprite myAbility_Burp_Sprite;
 	[SerializeField] float myAbility_Burp_CD = 1;
 	[SerializeField] float myAbility_Burp_MaxChargeTime = 5;
@@ -69,13 +71,11 @@ public class PP_Player : MonoBehaviour {
 	[Header("Select Ready")]
 	[SerializeField] bool selectReady = false;
 
+
 	// Use this for initialization
 	void Start () {
 		SetMyAbility (PP_MessageBox.Instance.GetPlayerAbility (myControl));
-
-		myAbility_Burp_Prefab = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
-		myAbility_Burp_Prefab.GetComponent<PP_Skill_Burp> ().Init (this.gameObject, myAbility_Burp_Position);
-		myAbility_Burp_Prefab.SetActive (false);
+	
 	}
 
 	public void Init (int g_teamNumber, GameObject g_butt, PP_ColorSetPlayer g_colorSet, Color g_colorBorder, int g_myControl) {
@@ -87,6 +87,12 @@ public class PP_Player : MonoBehaviour {
 		mySpriteRenderer.color = g_colorSet.myColors [0];
 		mySpriteRendererPattern.color = g_colorSet.myColors [1];
 		mySpriteRendererBorder.color = g_colorBorder;
+		mySpriteEffect.color = g_colorSet.myColors [1];
+
+		myAbility_Burp_GameObject = Instantiate (myAbility_Burp_Prefab, myAbility_Burp_Position.position, Quaternion.identity) as GameObject;
+		myAbility_Burp_GameObject.GetComponent<PP_Skill_Burp> ().Init (this.gameObject, myAbility_Burp_Position);
+		myAbility_Burp_GameObject.SetActive (false);
+		myAbility_Burp_GameObject.GetComponent<PP_Skill_Burp> ().SetColor (g_colorSet.myColors [1]);
 
 		myStunColor = myColor * myStunMultiplier.r; //assuming all rgb of stun color are the same cus it's gray
 		myStunColor.a = 1f;
@@ -187,15 +193,15 @@ public class PP_Player : MonoBehaviour {
 			myStatus_IsUsingAbility = false;
 
 			CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
-			myAbility_Burp_Prefab.transform.localScale = 
+			myAbility_Burp_GameObject.transform.localScale = 
 				Vector3.one * 
 				(
 					(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Burp_Size.y - myAbility_Burp_Size.x)) 
 					+ myAbility_Burp_Size.x
 				);
 			myChargeTimer = 0;
-			myAbility_Burp_Prefab.SetActive (true);
-			myAbility_Burp_Prefab.GetComponent<PP_Skill_Burp> ().UpdateTransform ();
+			myAbility_Burp_GameObject.SetActive (true);
+			myAbility_Burp_GameObject.GetComponent<PP_Skill_Burp> ().UpdateTransform ();
 			myAnimator.SetBool ("isPressed", false);
 
 			myCDTimer = myAbility_Burp_CD;

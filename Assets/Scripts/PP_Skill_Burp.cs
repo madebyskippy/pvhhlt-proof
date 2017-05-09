@@ -5,6 +5,7 @@ using UnityEngine;
 public class PP_Skill_Burp : MonoBehaviour {
 	private GameObject myCaster;
 	private Transform myTransform;
+	[SerializeField] SpriteRenderer mySprite;
 	// Use this for initialization
 	void Start () {
 		//		this.GetComponent<Animator> ().Play ("Burp");
@@ -45,5 +46,9 @@ public class PP_Skill_Burp : MonoBehaviour {
 		Debug.Log ("HideMyself");
 		this.gameObject.SetActive (false);
 //		this.GetComponent<Animator> ().enabled = false;
+	}
+
+	public void SetColor (Color g_color) {
+		mySprite.color = g_color;
 	}
 }
