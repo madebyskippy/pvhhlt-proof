@@ -54,7 +54,7 @@ public class PP_TransitionManager : MonoBehaviour {
 	void Start () {
 		myTutorialSpriteRenderer.sprite = myTutorialSlides [0];
 		myCurrentSlide = 0;
-
+		myTutorialTimer = 0;
 //		Debug.Log (myAnimationTimer);
 	}
 	
