@@ -33,8 +33,6 @@ public class PP_SceneSelect : MonoBehaviour {
 	private GameObject[] pauseB;
 	private bool[] teamAReady;
 	private bool[] teamBReady;
-	private int teamACounter = 0;
-	private int teamBCounter = 0;
 	private bool firstGenerate = false;
 	private bool checkTeamAReady;
 	private bool checkTeamBReady;
@@ -111,11 +109,11 @@ public class PP_SceneSelect : MonoBehaviour {
 	void GetPauseInfo() {
 		pauseCore = GameObject.Find ("PauseScreen").transform.GetChild (0).gameObject;
 		pauseA [0] = pauseCore.transform.GetChild (0).GetChild (0).gameObject;
-		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
-		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
+		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
+		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
 		pauseB [0] = pauseCore.transform.GetChild (1).GetChild (0).gameObject;
-		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
-		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
+		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
+		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
 	}
 		
 	void GetPlayersStatus() {
@@ -123,10 +121,11 @@ public class PP_SceneSelect : MonoBehaviour {
 		for (int i = 0; i < players.Length; i++) {
 			GameObject currentPlayer = players [i];
 			int currentTeamNum = currentPlayer.GetComponent<PP_Player> ().GetMyTeamNumber();
+			int currentIdx = currentPlayer.GetComponent<PP_Player> ().GetMyControl ();
 			if (currentTeamNum == 0) {
-				teamA [teamACounter++] = currentPlayer;
+				teamA [(currentIdx + 1)/2 - 1] = currentPlayer;
 			} else {
-				teamB [teamBCounter++] = currentPlayer;
+				teamB [currentIdx/2 - 1] = currentPlayer;
 			}
 		}
 	}
@@ -146,6 +145,11 @@ public class PP_SceneSelect : MonoBehaviour {
 			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SwitchShow (currentAAbility);
 			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
 			positions [i].transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().color = color;
+			if (positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ()) {
+				Color nowColor = color;
+				nowColor.a = 0;
+				positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color = nowColor;
+			}
 		}
 	}
 
