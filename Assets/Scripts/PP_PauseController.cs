@@ -50,7 +50,7 @@ public class PP_PauseController : MonoBehaviour {
 		
 //		if (Input.GetButtonDown("Menu")) {
 		if (JellyJoystickManager.Instance.GetButton(ButtonMethodName.Down, 0, JoystickButton.START)) {
-			Debug.Log ("change the pause key");
+//			Debug.Log ("change the pause key");
 			toggleMenuShowHide ();
 		}
 
@@ -109,6 +109,12 @@ public class PP_PauseController : MonoBehaviour {
 		bool isPaused = messageBox.GetComponent<PP_MessageBox> ().GetIsPaused();
 		messageBox.GetComponent<PP_MessageBox> ().Pause(!isPaused);
 		this.transform.GetChild(0).gameObject.SetActive (!isPaused);
+
+//		if (Application.loadedLevelName == "Tutorial") {
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Tutorial") {
+			this.transform.GetChild (0).GetChild (0).gameObject.SetActive (isPaused);
+			this.transform.GetChild (0).GetChild (1).gameObject.SetActive (isPaused);
+		}
 	}
 
 	public void SetIsMenuActive (bool g_isActive) {

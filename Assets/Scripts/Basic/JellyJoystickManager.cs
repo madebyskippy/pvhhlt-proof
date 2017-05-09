@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/// <summary>
+/// JellyJoystick Ver.0.1 
+/// made by Hang Ruan
+/// special thanks to Tim
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using JellyJoystick;
