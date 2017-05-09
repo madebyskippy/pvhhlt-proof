@@ -68,8 +68,15 @@ public class PP_Player : MonoBehaviour {
 	[SerializeField] AudioClip mySFX_Dash;
 	[SerializeField] AudioClip mySFX_Freeze;
 
+	[SerializeField] AudioClip mySFX_Select_Burp;
+	[SerializeField] AudioClip mySFX_Select_Dash;
+	[SerializeField] AudioClip mySFX_Select_Freeze;
+
+
 	[Header("Select Ready")]
 	[SerializeField] bool selectReady = false;
+
+
 
 
 	// Use this for initialization
@@ -321,11 +328,30 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	public void SetMyAbility (PP_Global.Abilities g_ability) {
+
 		myAbility = g_ability;
 		PP_MessageBox.Instance.SavePlayerAbility (myControl, g_ability);
 
 		myAnimator.SetInteger ("ability", (int)myAbility);
 //		myButt.GetComponent<PP_Butt>().SetBodySprite(int.Parse(myControl) % 3, )
+
+
+	}
+
+	public void PlaySFX_Select (PP_Global.Abilities g_ability) {
+		if (myAbility != g_ability) {
+			switch (g_ability) {
+			case PP_Global.Abilities.Burp:
+				CS_AudioManager.Instance.PlaySFX (mySFX_Select_Burp);
+				break;
+			case PP_Global.Abilities.Dash:
+				CS_AudioManager.Instance.PlaySFX (mySFX_Select_Dash);
+				break;
+			case PP_Global.Abilities.Freeze:
+				CS_AudioManager.Instance.PlaySFX (mySFX_Select_Freeze);
+				break;
+			}
+		}
 	}
 
 	public int GetMyTeamNumber () {

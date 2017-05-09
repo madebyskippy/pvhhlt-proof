@@ -35,6 +35,10 @@ public class PP_PauseController : MonoBehaviour {
 
 	private bool isMenuActive = true;
 
+	[SerializeField] AudioClip mySFX_Move;
+	[SerializeField] AudioClip mySFX_Resume;
+	[SerializeField] AudioClip mySFX_Back;
+
 	// Use this for initialization
 	void Start () {
 		resumeBtn = this.transform.GetChild (0).GetChild (2).gameObject;
@@ -65,6 +69,8 @@ public class PP_PauseController : MonoBehaviour {
 			Debug.Log ("change the menu select key");
 			isStickActive = true;
 			toggleMenuSelect ();
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_Move);
 		}
 
 		if (Time.timeScale == 0 &&
@@ -73,6 +79,8 @@ public class PP_PauseController : MonoBehaviour {
 			Debug.Log ("change the menu select key");
 			isStickActive = true;
 			toggleMenuSelect ();
+
+			CS_AudioManager.Instance.PlaySFX (mySFX_Move);
 		}
 
 		if (Time.timeScale == 0 && 
@@ -81,6 +89,11 @@ public class PP_PauseController : MonoBehaviour {
 			if (exitChoose) {
 //				Debug.Log ("do the return to menu function");
 				PP_MessageBox.Instance.LoadSceneMenu ();
+
+				CS_AudioManager.Instance.PlaySFX (mySFX_Back);
+			} else {
+
+				CS_AudioManager.Instance.PlaySFX (mySFX_Resume);
 			}
 
 			toggleMenuShowHide ();

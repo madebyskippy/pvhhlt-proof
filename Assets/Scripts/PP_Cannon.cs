@@ -178,8 +178,13 @@ public class PP_Cannon : MonoBehaviour {
 			myCannon.gameObject.SetActive (false);
 
 			CS_AudioManager.Instance.PlaySFX (mySFX_Close);
+//			Invoke ("PlayCloseSound", 0.3f);
 			myClamAnimator.SetTrigger ("closing");
 			myClamAnimator.SetFloat ("charge", 0);
 		}
+	}
+
+	private void PlayCloseSound () {
+		CS_AudioManager.Instance.PlaySFX (mySFX_Close);
 	}
 }
