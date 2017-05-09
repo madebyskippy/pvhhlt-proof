@@ -64,9 +64,9 @@ public class PP_Player : MonoBehaviour {
 	private float myAbility_Freeze_Energy = 0;
 
 	[Header("SFX")]
-	[SerializeField] AudioClip mySFX_Burp;
-	[SerializeField] AudioClip mySFX_Dash;
-	[SerializeField] AudioClip mySFX_Freeze;
+	[SerializeField] CS_AudioClip myAC_Burp;
+	[SerializeField] CS_AudioClip myAC_Dash;
+	[SerializeField] CS_AudioClip myAC_Freeze;
 
 	[SerializeField] AudioClip mySFX_Select_Burp;
 	[SerializeField] AudioClip mySFX_Select_Dash;
@@ -199,7 +199,7 @@ public class PP_Player : MonoBehaviour {
 			JellyJoystickManager.Instance.GetButton (ButtonMethodName.Up, myControl, JoystickButton.A)) {
 			myStatus_IsUsingAbility = false;
 
-			CS_AudioManager.Instance.PlaySFX (mySFX_Burp);
+			CS_AudioManager.Instance.PlaySFX (myAC_Burp);
 			myAbility_Burp_GameObject.transform.localScale = 
 				Vector3.one * 
 				(
@@ -221,7 +221,7 @@ public class PP_Player : MonoBehaviour {
 			if (!myStatus_IsUsingAbility) {
 				myStatus_IsUsingAbility = true;
 
-				CS_AudioManager.Instance.PlaySFX (mySFX_Freeze);
+				CS_AudioManager.Instance.PlaySFX (myAC_Freeze);
 
 				myStatus_IsFrozen = true;
 				myRigidbody2D.isKinematic = true;
@@ -267,7 +267,7 @@ public class PP_Player : MonoBehaviour {
 		if (myStatus_IsUsingAbility && 
 			JellyJoystickManager.Instance.GetButton (ButtonMethodName.Up, myControl, JoystickButton.A)) {
 			myStatus_IsUsingAbility = false;
-			CS_AudioManager.Instance.PlaySFX (mySFX_Dash);
+			CS_AudioManager.Instance.PlaySFX (myAC_Dash);
 			myStatus_SpeedRatio = 
 				(myChargeTimer / myAbility_Burp_MaxChargeTime * (myAbility_Dash_SpeedRatio.y - myAbility_Dash_SpeedRatio.x)) +
 				myAbility_Dash_SpeedRatio.x;

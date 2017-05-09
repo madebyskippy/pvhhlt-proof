@@ -9,6 +9,8 @@ public class PP_GrapeManager : MonoBehaviour {
 	[SerializeField] float mySpawnTime = 5;
 	private float myTimer;
 
+	[SerializeField] AudioClip mySFX_Spawn;
+
 	// Use this for initialization
 	void Start () {
 		myTimer = myFirstSpawnTime;
@@ -25,6 +27,8 @@ public class PP_GrapeManager : MonoBehaviour {
 				myGrapePrefab.transform.position = this.transform.position;
 				myGrapePrefab.SetActive (true);
 				myTimer = 0;
+
+				CS_AudioManager.Instance.PlaySFX (mySFX_Spawn);
 			}
 		}
 	}
