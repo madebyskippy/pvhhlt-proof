@@ -386,6 +386,7 @@ public class PP_Player : MonoBehaviour {
 	}
 
 	public void ToggleReady() {
+		Debug.Log (myControl + ":" + !selectReady);
 		selectReady = !selectReady;
 		if (selectReady) {
 			CS_AudioManager.Instance.PlaySFX (mySFX_Select_Ready);

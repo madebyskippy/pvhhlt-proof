@@ -146,8 +146,10 @@ public class PP_SceneSelect : MonoBehaviour {
 			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
 			positions [i].transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().color = color;
 			if (positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ()) {
+				//bug fixed? 0513
+				Color oldColor = positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color;
 				Color nowColor = color;
-				nowColor.a = 0;
+				nowColor.a = oldColor.a;
 				positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color = nowColor;
 			}
 		}
@@ -155,6 +157,7 @@ public class PP_SceneSelect : MonoBehaviour {
 
 
 	bool CheckReadys(bool[] teamReady, GameObject[] select) {
+		Debug.Log ("CheckReadys");
 		bool ready = true;
 		for (int i = 0; i < teamReady.Length; i++) {
 			GameObject readyText = select [i].transform.FindChild ("ready_text").gameObject;
