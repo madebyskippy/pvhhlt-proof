@@ -69,7 +69,7 @@ public class PP_SceneSelect : MonoBehaviour {
 		//use timer to make sure the abilities updated
 		if (Time.time > 0.005 && !firstGenerate) {
 			firstGenerate = true;
-			UpdateSelection ();
+			UpdateSelection (true);
 		}
 
 		for (int i = 0; i < 3; i++) {
@@ -130,27 +130,30 @@ public class PP_SceneSelect : MonoBehaviour {
 		}
 	}
 
-	public void UpdateSelection(){
-		GenerateSelections (selectA, teamA);
-		GenerateSelections (selectB, teamB);
-		GenerateSelections (pauseA, teamA);
-		GenerateSelections (pauseB, teamB);
+	public void UpdateSelection(bool isFirstTime){
+		GenerateSelections (selectA, teamA, isFirstTime);
+		GenerateSelections (selectB, teamB, isFirstTime);
+		GenerateSelections (pauseA, teamA, isFirstTime);
+		GenerateSelections (pauseB, teamB, isFirstTime);
 	}
 
-	void GenerateSelections(GameObject[] positions, GameObject[] team){
+	void GenerateSelections(GameObject[] positions, GameObject[] team, bool isFirstTime){
 		for (int i = 0; i < 3; i++) {
 			PP_Global.Abilities currentAAbility = team [i].GetComponent<PP_Player> ().GetMyAbility();
-			Color color = team [i].GetComponent<PP_Player> ().GetMyColor ();
-			Color colorDetail = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
 			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SwitchShow (currentAAbility);
-			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
-			positions [i].transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().color = color;
-			if (positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ()) {
-				//bug fixed? 0513
-				Color oldColor = positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color;
-				Color nowColor = color;
-				nowColor.a = oldColor.a;
-				positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color = nowColor;
+
+			if (isFirstTime) {
+				Color color = team [i].GetComponent<PP_Player> ().GetMyColor ();
+				Color colorDetail = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
+				positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
+				positions [i].transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().color = color;
+				if (positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ()) {
+					//bug fixed? 0513
+					Color oldColor = positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color;
+					Color nowColor = color;
+					nowColor.a = oldColor.a;
+					positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ().color = nowColor;
+				}
 			}
 		}
 	}
