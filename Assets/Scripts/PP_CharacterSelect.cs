@@ -27,7 +27,7 @@ public class PP_CharacterSelect : MonoBehaviour {
 			if (!coll.gameObject.GetComponent<PP_Player> ().GetReadyStatus ()) {
 				coll.gameObject.GetComponent<PP_Player> ().PlaySFX_Select (ability);
 				coll.gameObject.GetComponent<PP_Player> ().SetMyAbility (ability);
-				sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection ();
+				sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection (false);
 				sprite.color = coll.gameObject.GetComponent<PP_Player> ().GetMyColor ();
 			}
 		}
