@@ -105,6 +105,8 @@ public class PP_Player : MonoBehaviour {
 
 		myStunColor = myColor * myStunMultiplier.r; //assuming all rgb of stun color are the same cus it's gray
 		myStunColor.a = 1f;
+
+		myAnimator.SetFloat ("offset", Random.Range (0f, 0.33f) * 3f);
 	}
 	
 	// Update is called once per frame
@@ -229,9 +231,8 @@ public class PP_Player : MonoBehaviour {
 				myRigidbody2D.isKinematic = true;
 				myRigidbody2D.velocity = Vector3.zero;
 				myAnimator.SetBool ("isPressed", true);
-				myAnimator.Play ("Player_Freeze_Effect", -1, 1.0f - (float) myAbility_Freeze_Energy / (float) myAbility_Freeze_MaxEnergy);
-//				myAnimator.SetTarget (null, myAbility_Freeze_Energy / myAbility_Freeze_MaxEnergy * 5f);
-//				myAnimator.playbackTime = myAbility_Freeze_Energy / myAbility_Freeze_MaxEnergy * 5f;
+//				myAnimator.Play ("Player_Freeze_Effect", -1, 1.0f - (float) myAbility_Freeze_Energy / (float) myAbility_Freeze_MaxEnergy);
+				myAnimator.SetFloat("offset",1.0f - (float) myAbility_Freeze_Energy / (float) myAbility_Freeze_MaxEnergy);
 
 			} else {
 				myAbility_Freeze_Energy -= Time.deltaTime;
