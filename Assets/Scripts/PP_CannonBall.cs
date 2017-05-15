@@ -44,6 +44,7 @@ public class PP_CannonBall : MonoBehaviour {
 		float t_ratio = Mathf.Clamp01 (mySpeedRatio * Time.fixedDeltaTime);
 		myDirection = ((Vector2)(myTargetPosition - this.transform.position) * t_ratio + myDirection * (1 - t_ratio)).normalized;
 //		Debug.Log (myDirection.magnitude + " " + t_ratio);
+		this.transform.Rotate(new Vector3(0f,0f,0.25f));
 
 		if (Mathf.Abs (this.transform.position.x) - Mathf.Abs (myTargetPosition.x) > 0) {
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, myScore, PP_Global.ScoreMethod.Cannon);
