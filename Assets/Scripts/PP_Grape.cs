@@ -12,18 +12,21 @@ public class PP_Grape : MonoBehaviour {
 	private Rigidbody2D myRigidbody2D;
 	private Vector2 myMoveDireciton;
 	private float myMoveSpeed = 0;
-	[SerializeField] float myScaleRatio = 0.1f;
+	[SerializeField] float myScaleRatio = 1;
+	[Range (1.01f, 2)]
+	[SerializeField] float myScaleMax = 1.5f;
+	private float myScaleOffset;
 	[SerializeField] float myScaleSpeed = 1f;
-	float moveSpeedX;
-	float moveSpeedY;
 
 	void Awake () {
 		myRigidbody2D = GetComponent<Rigidbody2D> ();
+		myScaleOffset = myScaleRatio / (myScaleMax - 1);
 	}
 
 	void FixedUpdate () {
 		myMoveDireciton = myRigidbody2D.velocity.normalized;
 		myMoveSpeed = myRigidbody2D.velocity.sqrMagnitude;
+//		myMoveSpeed = myRigidbody2D.velocity.magnitude;
 
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.up, myMoveDireciton) * Mathf.Sign (myMoveDireciton.x * -1));
@@ -32,7 +35,7 @@ public class PP_Grape : MonoBehaviour {
 		myDirectionGO.transform.rotation = 
 			Quaternion.Lerp (myDirectionGO.transform.rotation, t_quaternion, Time.fixedDeltaTime * myScaleSpeed);
 		
-		float t_ratio = myMoveSpeed * myScaleRatio + 1;
+		float t_ratio = myScaleRatio * -1 / (myMoveSpeed + myScaleOffset) + myScaleMax;
 
 		Vector3 t_scale = new Vector3 (1 / t_ratio, t_ratio, 1);
 
