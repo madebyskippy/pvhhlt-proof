@@ -21,6 +21,7 @@ public class PP_Player : MonoBehaviour {
 
 	private Vector2 myDirection;
 	private Vector2 myRotation = Vector2.up;
+//	private Vector2 myRotationLast = Vector2.up;
 	[SerializeField] float myRotationSpeed = 2;
 	private Vector2 myMoveAxis;
 	[SerializeField] float mySpeed = 1;
@@ -319,7 +320,13 @@ public class PP_Player : MonoBehaviour {
 		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
 			Vector2.Angle (Vector2.up, myRotation) * Mathf.Sign (myRotation.x * -1));
 
+//		myRigidbody2D.angularVelocity = 
+//			Vector2.Angle (myRotationLast, myRotation) * Mathf.Sign (Vector3.Cross (myRotationLast, myRotation).z);
+//
+//		Debug.Log (Vector2.Angle (myRotationLast, myRotation));
 		this.transform.rotation = Quaternion.Lerp (this.transform.rotation, t_quaternion, Time.fixedDeltaTime * myRotationSpeed);
+
+//		myRotationLast = myRotation;
 	}
 
 	public void SetMyControl (int g_myControl) {

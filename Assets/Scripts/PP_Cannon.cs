@@ -53,6 +53,8 @@ public class PP_Cannon : MonoBehaviour {
 	[SerializeField] Transform myShellLeft;
 	[SerializeField] Transform myShellRight;
 	private float myShellCharge = 0;
+	[SerializeField] float myShakeThreshold = 35;
+	[SerializeField] float myShakeThresholdHarder = 50;
 	[SerializeField] float myShellChargeMax = 60;
 	[SerializeField] float myShellChargePerSecond = 1;
 	private float myShellTimer;
@@ -63,6 +65,10 @@ public class PP_Cannon : MonoBehaviour {
 	[SerializeField] float myShellAngleClosed = 0;
 
 	[SerializeField] AudioClip mySFX_Close;
+	[SerializeField] float myChargeSoundCharge = 0;
+	[SerializeField] float myChargeSoundInterval = 5;
+	[SerializeField] AudioClip mySFX_Charge;
+	[SerializeField] AudioClip mySFX_ChargeDanger;
 
 	// Use this for initialization
 	void Start () {
@@ -207,18 +213,37 @@ public class PP_Cannon : MonoBehaviour {
 			return;
 		
 		myShellCharge += Time.fixedDeltaTime * myShellChargePerSecond;
-		myClamAnimator.SetFloat ("charge", myShellCharge);
+
+		if (myShellCharge > myShakeThresholdHarder) {
+			myClamAnimator.SetInteger ("chargeShake", 2);
+		} else if (myShellCharge > myShakeThreshold) {
+			myClamAnimator.SetInteger ("chargeShake", 1);
+		}
+			
+		myChargeSoundCharge += Time.fixedDeltaTime * myShellChargePerSecond;
+
+		if (myChargeSoundCharge > myChargeSoundInterval) {
+			if (myShellCharge > myShakeThresholdHarder) {
+				CS_AudioManager.Instance.PlaySFX (mySFX_ChargeDanger);
+			} else {
+				myClamAnimator.SetInteger ("chargeShake", 1);
+				CS_AudioManager.Instance.PlaySFX (mySFX_Charge);
+			}
+			myChargeSoundCharge = 0;
+		}
+
 		if (myShellCharge > myShellChargeMax) {
 			//Close
 			myShellTimer = myShellClosedTime;
 			myShellCharge = 0;
 			myShellAngleTarget = myShellAngleClosed;
 			myCannon.gameObject.SetActive (false);
+			myChargeSoundCharge = 0;
 
 			CS_AudioManager.Instance.PlaySFX (mySFX_Close);
 //			Invoke ("PlayCloseSound", 0.3f);
 			myClamAnimator.SetTrigger ("closing");
-			myClamAnimator.SetFloat ("charge", 0);
+			myClamAnimator.SetInteger ("chargeShake", 0);
 		}
 	}
 
