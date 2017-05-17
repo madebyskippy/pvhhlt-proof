@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PP_Bean : MonoBehaviour {
 
-
 	[SerializeField] GameObject myEffect;
 	[SerializeField] Animator myAnimator;
 	private PP_BeanSpawnPoint myManager;

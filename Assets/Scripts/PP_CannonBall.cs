@@ -10,8 +10,11 @@ public class PP_CannonBall : MonoBehaviour {
 	private float myPosition;
 
 	[SerializeField] float myScore = 1;
-	[SerializeField] float mySpeed = 1;
-	[SerializeField] float mySpeedRatio = 1;
+	[SerializeField] float mySpeedStart = 10;
+	[SerializeField] float mySpeedMin = 1;
+	[SerializeField] float mySpeedMaintainRatio = 0.5f;
+	private float mySpeedCurrent;
+	[SerializeField] float mySpeedRotateRatio = 0.2f;
 	private Vector2 myDirection;
 
 	[SerializeField] Sprite[] mySprites;
@@ -34,14 +37,16 @@ public class PP_CannonBall : MonoBehaviour {
 		myDirection = Quaternion.Euler (0, 0, g_angle) * Vector2.up;
 		//		Debug.Log (myDirection);
 		transform.Rotate (0f, 0f, Random.Range (0,360));
+
+		mySpeedCurrent = mySpeedStart;
+
 		this.gameObject.SetActive (true);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-		this.transform.position += (Vector3)myDirection * mySpeed * Time.fixedDeltaTime;
-		float t_ratio = Mathf.Clamp01 (mySpeedRatio * Time.fixedDeltaTime);
+		this.transform.position += (Vector3)myDirection * mySpeedCurrent * Time.fixedDeltaTime;
+		float t_ratio = Mathf.Clamp01 (mySpeedRotateRatio * Time.fixedDeltaTime);
 		myDirection = ((Vector2)(myTargetPosition - this.transform.position) * t_ratio + myDirection * (1 - t_ratio)).normalized;
 //		Debug.Log (myDirection.magnitude + " " + t_ratio);
 		this.transform.Rotate(new Vector3(0f,0f,0.25f));
@@ -52,5 +57,7 @@ public class PP_CannonBall : MonoBehaviour {
 			this.gameObject.SetActive (false);
 			this.transform.position = Vector2.zero;
 		}
+
+		mySpeedCurrent = (mySpeedCurrent - mySpeedMin) * mySpeedMaintainRatio + mySpeedMin;
 	}
 }
