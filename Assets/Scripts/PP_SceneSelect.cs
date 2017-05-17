@@ -27,8 +27,8 @@ public class PP_SceneSelect : MonoBehaviour {
 
 	private GameObject[] teamA;
 	private GameObject[] teamB;
-	private GameObject[] selectA;
-	private GameObject[] selectB;
+	[SerializeField] private GameObject[] selectA;
+	[SerializeField] private GameObject[] selectB;
 	private GameObject[] pauseA;
 	private GameObject[] pauseB;
 	private bool[] teamAReady;
@@ -37,6 +37,8 @@ public class PP_SceneSelect : MonoBehaviour {
 	private bool checkTeamAReady;
 	private bool checkTeamBReady;
 	private GameObject pauseCore;
+
+
 
 	//only call load scene once
 	private bool isLoading = false;
@@ -49,8 +51,8 @@ public class PP_SceneSelect : MonoBehaviour {
 		pauseB = new GameObject [3];
 		teamAReady = new bool[3] { false, false, false };
 		teamBReady = new bool[3] { false, false, false };
-		selectA = GameObject.FindGameObjectsWithTag ("SelectA");
-		selectB = GameObject.FindGameObjectsWithTag ("SelectB");
+//		selectA = GameObject.FindGameObjectsWithTag ("SelectA");
+//		selectB = GameObject.FindGameObjectsWithTag ("SelectB");
 		GetPauseInfo ();
 		PP_MessageBox.Instance.InitPlay ();
 		GetPlayersStatus ();
@@ -109,11 +111,11 @@ public class PP_SceneSelect : MonoBehaviour {
 	void GetPauseInfo() {
 		pauseCore = GameObject.Find ("PauseScreen").transform.GetChild (0).gameObject;
 		pauseA [0] = pauseCore.transform.GetChild (0).GetChild (0).gameObject;
-		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
-		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
+		pauseA [1] = pauseCore.transform.GetChild (0).GetChild (1).gameObject;
+		pauseA [2] = pauseCore.transform.GetChild (0).GetChild (2).gameObject;
 		pauseB [0] = pauseCore.transform.GetChild (1).GetChild (0).gameObject;
-		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
-		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
+		pauseB [1] = pauseCore.transform.GetChild (1).GetChild (1).gameObject;
+		pauseB [2] = pauseCore.transform.GetChild (1).GetChild (2).gameObject;
 	}
 		
 	void GetPlayersStatus() {

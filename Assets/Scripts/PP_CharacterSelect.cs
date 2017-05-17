@@ -10,11 +10,14 @@ public class PP_CharacterSelect : MonoBehaviour {
 	private Color defaultColor;
 	private SpriteRenderer sprite;
 
+	Vector3 myScale;
+
 	// Use this for initialization
 	void Start () {
 		sprite = this.GetComponent<SpriteRenderer> ();
 		defaultColor = sprite.color;
 		sceneSelect = GameObject.Find("SelectManager");
+		myScale = this.transform.localScale;
 	}
 	
 	// Update is called once per frame
@@ -29,6 +32,7 @@ public class PP_CharacterSelect : MonoBehaviour {
 				coll.gameObject.GetComponent<PP_Player> ().SetMyAbility (ability);
 				sceneSelect.GetComponent<PP_SceneSelect> ().UpdateSelection (false);
 				sprite.color = coll.gameObject.GetComponent<PP_Player> ().GetMyColor ();
+				this.transform.localScale = myScale * 1.05f;
 			}
 		}
 //		
@@ -39,6 +43,7 @@ public class PP_CharacterSelect : MonoBehaviour {
 		if (coll.gameObject.tag == "Player" && changeable) {
 			if (!coll.gameObject.GetComponent<PP_Player> ().GetReadyStatus ()) {
 				sprite.color = defaultColor;
+				this.transform.localScale = myScale;
 			}
 		}
 	}
