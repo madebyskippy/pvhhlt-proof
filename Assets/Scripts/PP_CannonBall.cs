@@ -21,7 +21,7 @@ public class PP_CannonBall : MonoBehaviour {
 	private SpriteRenderer mySpriteRenderer;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		this.gameObject.SetActive (false);
 		mySpriteRenderer = GetComponent<SpriteRenderer> ();
 		mySpriteRenderer.sprite = mySprites [Random.Range (0, mySprites.Length)];
@@ -52,6 +52,9 @@ public class PP_CannonBall : MonoBehaviour {
 		this.transform.Rotate(new Vector3(0f,0f,0.25f));
 
 		if (Mathf.Abs (this.transform.position.x) - Mathf.Abs (myTargetPosition.x) > 0) {
+			//show paticle
+			PP_Cannon.Instance.ShowCannonParticle (this.transform.position);
+
 			PP_ScenePlay.Instance.AddScore (myTeamNumber, myScore, PP_Global.ScoreMethod.Cannon);
 			PP_ScenePlay.Instance.ShowElderNibble (myTeamNumber);
 			this.gameObject.SetActive (false);

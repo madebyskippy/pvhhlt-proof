@@ -38,6 +38,11 @@ public class PP_Cannon : MonoBehaviour {
 	private List<GameObject> myCannonBallPool = new List<GameObject> ();
 	private float myCannonTimer = 0;
 
+	[SerializeField] GameObject myCannonParticlePrefab;
+	[SerializeField] int myCannonParticleMaxNumber = 5;
+	private List<GameObject> myCannonParticlePool = new List<GameObject> ();
+
+
 	[SerializeField] Animator mySnakeAnimator;
 	[SerializeField] Animator myClamAnimator;
 
@@ -72,12 +77,35 @@ public class PP_Cannon : MonoBehaviour {
 		for (int i = 0; i < myCannonBallMaxNumber; i++) {
 			myCannonBallPool.Add (Instantiate (myCannonBallPrefab, this.transform));
 		}
+
+		//Init the particle pool
+		for (int i = 0; i < myCannonParticleMaxNumber; i++) {
+			myCannonParticlePool.Add (Instantiate (myCannonParticlePrefab, this.transform));
+		}
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		UpdateShoot ();
 		UpdateShell ();
+	}
+
+	public void ShowCannonParticle (Vector3 t_position) {
+		for (int i = 0; i < myCannonParticlePool.Count; i++) {
+			if (myCannonParticlePool [i].activeSelf == false) {
+				myCannonParticlePool [i].GetComponent<PP_CannonParticle> ().Init (t_position);
+				break;
+			}
+
+			if (i == myCannonParticlePool.Count - 1) {
+				Debug.Log ("Run out of cannon particle!");
+
+				GameObject t_newParticle = Instantiate (myCannonParticlePrefab, this.transform) as GameObject;
+				myCannonParticlePool.Add (t_newParticle);
+				t_newParticle.GetComponent<PP_CannonParticle> ().Init (t_position);
+				break;
+			}
+		}
 	}
 
 	private void UpdateShoot () {
@@ -121,7 +149,17 @@ public class PP_Cannon : MonoBehaviour {
 
 					if (i == myCannonBallPool.Count - 1) {
 						Debug.Log ("Run out of cannon ball!");
-						myCannonBallPool.Add (Instantiate (myCannonBallPrefab, this.transform));
+						GameObject t_newBall = Instantiate (myCannonBallPrefab, this.transform) as GameObject;
+						myCannonBallPool.Add (t_newBall);
+						t_newBall.GetComponent<PP_CannonBall>().Init (
+							myCannonHole.position,
+							t_myOwnerNumber, 
+							myBases [t_myOwnerNumber].position, 
+							t_angle
+						);
+						mySnakeAnimator.SetTrigger ("isShooting");
+						myCannonTimer -= 1;
+						break;
 					}
 				}
 			}
