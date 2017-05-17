@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 70a6888844547464a9197092f2da6a32
-timeCreated: 1494314115
+timeCreated: 1495043152
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -10,6 +10,8 @@ TextureImporter:
     21300006: MENU_elder2_sheet_3
     21300008: MENU_elder2_sheet_4
     21300010: MENU_elder2_sheet_5
+    21300012: MENU_elder2_sheet_6
+    21300014: MENU_elder2_sheet_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -88,9 +90,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1233
-        width: 1233
-        height: 1233
+        y: 2464
+        width: 1232
+        height: 1232
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -100,10 +102,10 @@ TextureImporter:
       name: MENU_elder2_sheet_1
       rect:
         serializedVersion: 2
-        x: 1233
-        y: 1233
-        width: 1233
-        height: 1233
+        x: 1232
+        y: 2464
+        width: 1232
+        height: 1232
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -113,10 +115,10 @@ TextureImporter:
       name: MENU_elder2_sheet_2
       rect:
         serializedVersion: 2
-        x: 2466
-        y: 1233
-        width: 1233
-        height: 1233
+        x: 2464
+        y: 2464
+        width: 1232
+        height: 1232
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,9 +129,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 1233
-        height: 1233
+        y: 1232
+        width: 1232
+        height: 1232
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,10 +141,10 @@ TextureImporter:
       name: MENU_elder2_sheet_4
       rect:
         serializedVersion: 2
-        x: 1233
-        y: 0
-        width: 1233
-        height: 1233
+        x: 1232
+        y: 1232
+        width: 1232
+        height: 1232
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,10 +154,36 @@ TextureImporter:
       name: MENU_elder2_sheet_5
       rect:
         serializedVersion: 2
-        x: 2466
+        x: 2464
+        y: 1232
+        width: 1232
+        height: 1232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: MENU_elder2_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 0
-        width: 1233
-        height: 1233
+        width: 1232
+        height: 1232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: MENU_elder2_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 1232
+        y: 0
+        width: 1232
+        height: 1232
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
