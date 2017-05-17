@@ -124,7 +124,7 @@ public class PP_PauseController : MonoBehaviour {
 		this.transform.GetChild(0).gameObject.SetActive (!isPaused);
 
 //		if (Application.loadedLevelName == "Tutorial") {
-		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Tutorial") {
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Tutorial" || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Credits") {
 			this.transform.GetChild (0).GetChild (0).gameObject.SetActive (isPaused);
 			this.transform.GetChild (0).GetChild (1).gameObject.SetActive (isPaused);
 		}
