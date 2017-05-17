@@ -66,7 +66,8 @@ public class PP_SceneStart : MonoBehaviour {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_TUTORIAL);
 //				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			} else {
-				Debug.Log ("change to credits");
+				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_CREDITS);
+//				Debug.Log ("change to credits");
 //				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			}
 

@@ -30,4 +30,5 @@ public static class PP_Global {
 	public const string SCENE_PLAY = "Play";
 	public const string SCENE_SELECT = "Select";
 	public const string SCENE_TUTORIAL = "Tutorial";
+	public const string SCENE_CREDITS = "Credits";
 }
