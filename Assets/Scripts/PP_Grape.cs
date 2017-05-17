@@ -18,6 +18,10 @@ public class PP_Grape : MonoBehaviour {
 	private float myScaleOffset;
 	[SerializeField] float myScaleSpeed = 1f;
 
+	[SerializeField] CS_AudioClip mySFX_Hit;
+	[SerializeField] float mySoundInterval = 0.2f;
+	private float mySoundTimer;
+
 	void Awake () {
 		myRigidbody2D = GetComponent<Rigidbody2D> ();
 		myScaleOffset = myScaleRatio / (myScaleMax - 1);
@@ -43,6 +47,10 @@ public class PP_Grape : MonoBehaviour {
 			Vector3.Lerp (myDirectionGO.transform.localScale, t_scale, Time.fixedDeltaTime * myScaleSpeed);
 
 		mySpriteGO.transform.rotation = this.transform.rotation;
+
+		if (mySoundTimer > 0) {
+			mySoundTimer -= Time.fixedDeltaTime;
+		}
 	}
 
 	public void SetMyManager (PP_GrapeManager g_manager) {
@@ -55,5 +63,12 @@ public class PP_Grape : MonoBehaviour {
 		}
 		myManager.StartSpawnTimer ();
 		this.gameObject.SetActive (false);
+	}
+
+	void OnCollisionEnter2D (Collision2D coll) {
+		if (mySoundTimer <= 0) {
+			mySoundTimer += mySoundInterval;
+			CS_AudioManager.Instance.PlaySFX (mySFX_Hit);
+		}
 	}
 }
