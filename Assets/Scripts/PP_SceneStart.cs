@@ -10,7 +10,7 @@ public class PP_SceneStart : MonoBehaviour {
 	[SerializeField] Sprite[] btnSprites;
 
 	private float myBlinkProbability = 0.005f;
-	private GameObject[] btns;
+	[SerializeField] GameObject[] btns;
 	private int selectIdx;
 	private bool isStickActive = false;
 
@@ -20,10 +20,6 @@ public class PP_SceneStart : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PP_TransitionManager.Instance.EndTransition ();
-		btns = new GameObject[3];
-		btns [0] = transform.GetChild (0).gameObject;
-		btns [1] = transform.GetChild (1).gameObject;
-		btns [2] = transform.GetChild (2).gameObject;
 		selectIdx = 0;
 	}
 	
