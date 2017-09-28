@@ -142,12 +142,12 @@ public class PP_SceneSelect : MonoBehaviour {
 	void GenerateSelections(GameObject[] positions, GameObject[] team, bool isFirstTime){
 		for (int i = 0; i < 3; i++) {
 			PP_Global.Abilities currentAAbility = team [i].GetComponent<PP_Player> ().GetMyAbility();
-			positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SwitchShow (currentAAbility);
+			positions [i].transform.Find ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SwitchShow (currentAAbility);
 
 			if (isFirstTime) {
 				Color color = team [i].GetComponent<PP_Player> ().GetMyColor ();
 				Color colorDetail = team [i].GetComponent<PP_Player> ().GetMyColorDetail ();
-				positions [i].transform.FindChild ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
+				positions [i].transform.Find ("SelectCharacterContainer").GetComponent<PP_SelectCharacterManager> ().SetColors (color, colorDetail);
 				positions [i].transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().color = color;
 				if (positions [i].transform.GetChild (1).gameObject.GetComponent<SpriteRenderer> ()) {
 					//bug fixed? 0513
@@ -165,7 +165,7 @@ public class PP_SceneSelect : MonoBehaviour {
 		Debug.Log ("CheckReadys");
 		bool ready = true;
 		for (int i = 0; i < teamReady.Length; i++) {
-			GameObject readyText = select [i].transform.FindChild ("ready_text").gameObject;
+			GameObject readyText = select [i].transform.Find ("ready_text").gameObject;
 			Color tmpReadyText = readyText.GetComponent<SpriteRenderer> ().color;
 			if (teamReady [i]) {
 				tmpReadyText.a = 1f;

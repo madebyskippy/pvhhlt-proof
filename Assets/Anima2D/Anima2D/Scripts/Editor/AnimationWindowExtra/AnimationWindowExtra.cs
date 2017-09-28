@@ -52,7 +52,8 @@ namespace Anima2D
 #elif UNITY_5_6
 			s_Impl = new AnimationWindowImpl_56();
 #endif
-			s_Impl.InitializeReflection();
+			s_Impl = new AnimationWindowImpl_56();
+//			s_Impl.InitializeReflection();
 		}
 
 		public static int frame {

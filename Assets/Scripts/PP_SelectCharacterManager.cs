@@ -55,9 +55,9 @@ public class PP_SelectCharacterManager : MonoBehaviour {
 	}
 
 	void ChangeCharacter() {
-		burper = transform.FindChild ("SelectBurp").gameObject;
-		dasher = transform.FindChild ("SelectDash").gameObject;
-		freezer = transform.FindChild ("SelectFreezer").gameObject;
+		burper = transform.Find ("SelectBurp").gameObject;
+		dasher = transform.Find ("SelectDash").gameObject;
+		freezer = transform.Find ("SelectFreezer").gameObject;
 		burper.SetActive (burperShow);
 		freezer.SetActive (freezerShow);
 		dasher.SetActive (dasherShow);
