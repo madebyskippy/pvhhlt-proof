@@ -10,11 +10,7 @@ public class PP_SceneStart : MonoBehaviour {
 	[SerializeField] Sprite[] btnSprites;
 
 	private float myBlinkProbability = 0.005f;
-<<<<<<< Updated upstream
 	[SerializeField] GameObject[] btns;
-=======
-	[SerializeField] private GameObject[] btns;
->>>>>>> Stashed changes
 	private int selectIdx;
 	private bool isStickActive = false;
 
@@ -24,10 +20,10 @@ public class PP_SceneStart : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PP_TransitionManager.Instance.EndTransition ();
-<<<<<<< Updated upstream
-=======
-//		btns = new GameObject[3];
->>>>>>> Stashed changes
+//<<<<<<< Updated upstream
+//=======
+////		btns = new GameObject[3];
+//>>>>>>> Stashed changes
 		selectIdx = 0;
 	}
 	
@@ -66,11 +62,14 @@ public class PP_SceneStart : MonoBehaviour {
 		if (JellyJoystickManager.Instance.GetButton (ButtonMethodName.Down, 0, JoystickButton.A)) {
 			if (selectIdx == 0) {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
+				this.enabled = false;
 			} else if (selectIdx == 1) {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_TUTORIAL);
+				this.enabled = false;
 //				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			} else {
 				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_CREDITS);
+				this.enabled = false;
 //				Debug.Log ("change to credits");
 //				PP_TransitionManager.Instance.StartTransition (PP_Global.SCENE_SELECT);
 			}
